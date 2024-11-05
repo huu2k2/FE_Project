@@ -33,7 +33,7 @@ export const LoginPage: React.FC = () => {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <CustomButton title="Đăng nhập"></CustomButton>
+                <CustomButton bgColor="#FFAA02" title="Đăng nhập"></CustomButton>
               </div>
             </form>
           </div>
