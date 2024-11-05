@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+interface CustomCheckboxProps {
+  isAllActive: boolean;
+}
 
-export const CustomCheckbox: React.FC = () => {
-  const [checked, setChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    setChecked(!checked);
-  };
-
+export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ isAllActive }) => {
+ 
   return (
     <div className="flex items-center">
       <div
-        onClick={handleCheckboxChange}
         className={`w-6 h-6 rounded-full border-2 border-transparent cursor-pointer flex items-center justify-center transition-colors duration-300 ${
-          checked ? "bg-[#FFAA02]" : "bg-gray-400"
+          isAllActive ? "bg-[#FFAA02]" : "bg-gray-400"
         }`}
       >
         {

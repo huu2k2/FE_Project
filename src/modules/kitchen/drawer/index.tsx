@@ -1,30 +1,51 @@
-import React from "react";
-import img from "../../../assets/orderBlack.png";
-
+import React, { useLayoutEffect, useState } from "react";
+import { ItemDrawer } from "./item";
+import { useNavigate } from "react-router-dom";
 export const DrawerBar: React.FC = () => {
+  const navigate = useNavigate();
+  const data = [
+    {
+      nameTable: "A01",
+      numberOfOrder: 3,
+      time: "19:12 pm",
+      orderId: "1234567890",
+    },
+    {
+      nameTable: "A02",
+      numberOfOrder: 2,
+      time: "19:12 pm",
+      orderId: "1234567891",
+    },
+    {
+      nameTable: "A03",
+      numberOfOrder: 1,
+      time: "19:12 pm",
+      orderId: "1234567892",
+    },
+  ];
+  const [position, setPosition] = useState<number>(0);
+  const onClick = (index: number, orderId: string) => {
+    setPosition(index);
+    navigate(`/kitchen/order_id/${orderId}`);
+    localStorage.setItem("index", index.toString());
+  };
+  useLayoutEffect(() => {
+    const index = localStorage.getItem("index");
+    if (index) {
+      setPosition(parseInt(index));
+    }
+  }, []);
   return (
     <aside className="w-64 bg-[#FFAA02] shadow-lg p-2 max-h-screen overflow-y-auto">
       <ul>
-        {[...Array(10)].map((_, index) => (
-          <li
+        {data.map((item, index) => (
+          <ItemDrawer
+            index={index}
             key={index}
-            className="py-3 px-4 bg-white rounded-lg shadow-md mb-2 hover:shadow-lg transition-shadow duration-200  cursor-pointer"
-          >
-            <div className="flex">
-              <div className="w-[30%] flex justify-center items-center">
-                <img src={img} alt={`Bàn A0${index + 1}`} />
-              </div>
-              <div className="flex flex-col flex-1 pl-4 justify-between">
-                <span className="font-bold text-lg text-black">
-                  Bàn A0{index + 1}
-                </span>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>3 món</span>
-                  <span>19:12 pm</span>
-                </div>
-              </div>
-            </div>
-          </li>
+            {...item}
+            isActiveItem={position === index}
+            onClick={() => onClick(index, item.orderId)}
+          />
         ))}
       </ul>
     </aside>
