@@ -1,4 +1,3 @@
-import { CustomButton } from "../../../components/CustomButton";
 import logo from "../../../assets/logo.png";
 export const NavBar: React.FC = () => {
   return (
@@ -8,7 +7,12 @@ export const NavBar: React.FC = () => {
           <img src={logo} alt="Logo" className="h-[100%]" />
         </div>
         <div>
-          <CustomButton bgColor="#FFAA02" title="Đăng xuất"></CustomButton>
+          <button
+            type="submit"
+            className={` w-[200px] py-2 text-white text-sm font-bold px-4 rounded-lg hover:bg-[#FFAA02]/80 bg-[#FFAA02]`}
+          >
+            Đăng xuất
+          </button>
         </div>
       </nav>
     </>
