@@ -13,9 +13,9 @@ export default {
     },
   },
   plugins: [require("daisyui")],
-  // Optional: You can configure daisyUI options here
+
   daisyui: {
-    themes: ["light", "dark"], // You can add more themes or customize them
+    themes: ["light", "dark"], 
     darkTheme: "dark",
     base: true,
     styled: true,
