@@ -3,6 +3,22 @@ import debounce from "lodash/debounce";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
 import { SearchInput } from "../../../../components/inputs/search";
+import { TableItem } from "../../../../components/TableItem";
+import { Form } from "./form";
+
+type Table = {
+  id: string;
+  name: string;
+  status: string;
+  area: string;
+};
+
+const tables: Table[] = Array(8).fill({
+  id: "tb5143541243534",
+  name: "Bàn 12",
+  status: "empty",
+  area: "Khu vực A",
+});
 
 export const TableCompoment: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -23,27 +39,68 @@ export const TableCompoment: React.FC = () => {
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setTextSearch(value); // Immediate update for input field
-    debounceSearch(value); // Update `debouncedText` after delay
+    setTextSearch(value);
+    debounceSearch(value);
   };
   // handle call api search text
   console.log(debouncedText);
+
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const [data, setData] = useState({ id: "", name: "", area: "" });
+
+  const handleCreate = () => {
+    handleOpenForm();
+    setIsUpdate(false);
+    setData({ id: "", name: "", area: "" });
+  };
+
+  const handleEdit = (
+    idTable: string,
+    nameTable: string,
+    tableArea: string
+  ) => {
+    handleOpenForm();
+    setIsUpdate(true);
+    setData({ id: idTable, name: nameTable, area: tableArea });
+  };
+
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <TitleText name="Quản lý bàn" />
       <div className="bg-white p-4 rounded-lg shadow-md">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <CreateButton name={"Thêm bàn mới"} handleOpenForm={handleOpenForm} />
-          {/* {isFormOpen && <AddForm onClose={handleCloseForm} />} */}
+          <CreateButton name={"Thêm bàn mới"} handleOpenForm={handleCreate} />
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
         </div>
 
         {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          
+          {tables.map((table, index) => (
+            <TableItem
+              key={index}
+              table={{
+                id: table.id,
+                name: table.name,
+                status: table.status,
+                area: table.area,
+              }}
+              handleEdit={() =>
+                handleEdit(table.id, table.name, table.area)
+              }></TableItem>
+          ))}
         </div>
       </div>
+
+      {isFormOpen && (
+        <Form
+          closeModal={handleCloseForm}
+          formData={data}
+          setData={setData}
+          isUpdate={isUpdate}
+        />
+      )}
     </div>
   );
 };
