@@ -31,7 +31,7 @@ const MenuEditDelete: React.FC<DropdownMenuProps> = ({
       ref={menuRef}
       className="absolute right-0 top-full mt-2 w-[100px] bg-white shadow-lg items-center rounded-lg p-2">
       <button
-        className="block w-full text-left p-1 hover:bg-gray-200"
+        className="block w-full text-left p-1 hover:bg-gray-200 text-green-600"
         onClick={() => {
           onEdit();
           onClose();
@@ -39,7 +39,7 @@ const MenuEditDelete: React.FC<DropdownMenuProps> = ({
         Chỉnh sửa
       </button>
       <button
-        className="block w-full text-left p-1 hover:bg-gray-200"
+        className="block w-full text-left p-1 hover:bg-gray-200 text-red-600"
         onClick={() => {
           onDelete();
           onClose();
