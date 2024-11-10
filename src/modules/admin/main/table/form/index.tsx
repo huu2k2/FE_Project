@@ -53,7 +53,8 @@ export const Form: React.FC<FormPros> = ({
                 <div className="flex items-center mb-4">
                   <label
                     htmlFor="name"
-                    className="font-semibold text-black mr-2 min-w-[70px]">
+                    className="font-semibold text-black mr-2 min-w-[70px]"
+                  >
                     Tên bàn
                   </label>
                   <input
@@ -70,17 +71,20 @@ export const Form: React.FC<FormPros> = ({
                 <div className="flex items-center">
                   <label
                     htmlFor="area"
-                    className="font-semibold text-black mr-2 min-w-[70px]">
+                    className="font-semibold text-black mr-2 min-w-[70px]"
+                  >
                     Khu vực
                   </label>
-                  <input
-                    type="text"
-                    id="area"
-                    value={formData.area}
-                    onChange={(e) => handleChangeData(e.target.value, "area")}
-                    className="w-full text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
-                    placeholder="Khu vực"
-                  />
+ 
+                  <select className="select  w-full  text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor">
+                    <option disabled selected>
+                    Khu vực
+                    </option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>D</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -90,11 +94,13 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Xác nhận"
               bgColor="#FFAA02"
-              onClick={() => handleSubmit()}></CustomButton>
+              onClick={() => handleSubmit()}
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}></CustomButton>
+              onClick={closeModal}
+            ></CustomButton>
           </div>
         </div>
       </div>
