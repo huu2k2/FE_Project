@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import imageUrl from "../assets/product.webp";
 
 interface NotificationPros {
@@ -14,8 +13,7 @@ export const HistoryOrderItem: React.FC<NotificationPros> = ({ data }) => {
     <>
       <a
         className="flex items-start p-4 border border-gray-300 rounded-lg shadow-sm max-w-md"
-        href={`/order/history/${data.id}`}
-      >
+        href={`/order/history/${data.id}`}>
         <img
           src={imageUrl}
           alt="Dish"

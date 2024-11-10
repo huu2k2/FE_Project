@@ -55,6 +55,7 @@ export const HomeComponent: React.FC = () => {
               .map((_, index) => (
                 <ProductItem
                   key={index}
+                  id="1231"
                   image="https://via.placeholder.com/150" // Replace with actual image path or dynamic data
                   title="Hủ tiếu kho"
                   price="45.000đ"
