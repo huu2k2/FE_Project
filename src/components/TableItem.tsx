@@ -1,12 +1,17 @@
 import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
+import QRCodeGenerator from "./QRCodeGenerator";
 
-interface AreaPros {
-  area: { id: string; name: string };
-  handleEdit: (value: { idArea: string; nameArea: string }) => void;
+interface TablePros {
+  table: { id: string; name: string; status: string; area: string };
+  handleEdit: (value: {
+    idTable: string;
+    nameTable: string;
+    tableArea: string;
+  }) => void;
 }
 
-export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
+export const TableItem: React.FC<TablePros> = (data: TablePros) => {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{
     top: number;
@@ -14,7 +19,11 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
   }>({ top: 0, left: 0 });
 
   const handleShowEditForm = () => {
-    data.handleEdit({ idArea: data.area.id, nameArea: data.area.name });
+    data.handleEdit({
+      idTable: data.table.id,
+      nameTable: data.table.name,
+      tableArea: data.table.area,
+    });
   };
 
   const handleDelete = () => {
@@ -24,7 +33,22 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
   return (
     <>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="relative">
+        <div className="relative flex items-center justify-center">
+          <QRCodeGenerator
+            value={data.table.id}
+            size={270}
+            bgColor="#ffffff"
+            fgColor="#000000"
+            level="M"
+          />
+        </div>
+        <div
+          className={`relative p-4 ${
+            data.table.status === "occupied"
+              ? "bg-backgroundColor"
+              : "bg-green-800"
+          } text-center`}>
+          {/* Button positioned absolutely within this relative div */}
           <div className="absolute w-[43px] h-[21px] right-0 top-0">
             <button
               className="w-full h-full"
@@ -47,18 +71,7 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
               />
             )}
           </div>
-          <img
-            src="https://via.placeholder.com/150"
-            alt={data.area.name}
-            className="w-full h-40 object-cover"
-          />
-        </div>
-        <div className="p-4 bg-backgroundColor text-white">
-          <h2
-            className="text-md font-bold text-black"
-            style={{ textAlign: "center" }}>
-            {data.area.name}
-          </h2>
+          <h2 className="text-md font-bold text-white">{data.table.name}</h2>
         </div>
       </div>
     </>
