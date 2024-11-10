@@ -58,15 +58,13 @@ export const StaffCompoment: React.FC = () => {
 
   const handleOpenForm = () => setIsFormOpen(true);
   const handleCloseForm = () => setIsFormOpen(false);
-  // ====================
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
 
-  // Define a debounced function
   const debounceSearch = useCallback(
     debounce((value: string) => {
-      setDebouncedText(value); // Update only after debounce delay
-    }, 500), // Adjust delay as needed (500ms here)
+      setDebouncedText(value);
+    }, 500),
     []
   );
 
@@ -82,11 +80,13 @@ export const StaffCompoment: React.FC = () => {
       <div className="p-4 bg-gray-100 min-h-screen">
         <TitleText name="Quản lý món ăn" />
         <div className="bg-white p-4 rounded-lg shadow-md">
-          {/* Header */}
           <div className="flex items-center justify-between mb-4">
-            <CreateButton name={"Tạo món ăn"} handleOpenForm={handleOpenForm} />
+            <CreateButton
+              name={"Tạo nhân viên"}
+              handleOpenForm={handleOpenForm}
+            />
             {isFormOpen && <Form closeModal={handleCloseForm} />}
-            {/* Drop down */}
+
             <DropDown categories={categories} />
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>

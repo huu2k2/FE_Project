@@ -38,13 +38,13 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
     CCCD: "",
   });
 
-  const handleInfo = (key:string,value:string)=>{
-    setFormData({...formData,[key]:value})
-  }
+  const handleInfo = (key: string, value: string) => {
+    setFormData({ ...formData, [key]: value });
+  };
 
-  const handleSave =()=>{
-    console.log(formData)
-  }
+  const handleSave = () => {
+    console.log(formData);
+  };
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 ">
@@ -57,7 +57,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.ho}
-                  onChange={(e)=>handleInfo('ho',e.target.value)}
+                  onChange={(e) => handleInfo("ho", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập họ"
                 />
@@ -68,7 +68,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.username}
-                  onChange={(e)=>handleInfo('username',e.target.value)}
+                  onChange={(e) => handleInfo("username", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập tên đăng nhập"
                 />
@@ -79,7 +79,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.ten}
-                  onChange={(e)=>handleInfo('ten',e.target.value)}
+                  onChange={(e) => handleInfo("ten", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập tên"
                 />
@@ -90,7 +90,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.passport}
-                  onChange={(e)=>handleInfo('passport',e.target.value)}
+                  onChange={(e) => handleInfo("passport", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập mật khẩu"
                 />
@@ -101,7 +101,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.addres}
-                  onChange={(e)=>handleInfo('addres',e.target.value)}
+                  onChange={(e) => handleInfo("addres", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập địa chỉ"
                 />
@@ -112,7 +112,9 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.confirmPassport}
-                  onChange={(e)=>handleInfo('confirmPassport',e.target.value)}
+                  onChange={(e) =>
+                    handleInfo("confirmPassport", e.target.value)
+                  }
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập lại mật khẩu"
                 />
@@ -123,7 +125,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.phone}
-                  onChange={(e)=>handleInfo('phone',e.target.value)}
+                  onChange={(e) => handleInfo("phone", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập số điện thoại"
                 />
@@ -134,7 +136,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.role}
-                  onChange={(e)=>handleInfo('role',e.target.value)}
+                  onChange={(e) => handleInfo("role", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập chức vụ"
                 />
@@ -145,7 +147,7 @@ export const Form: React.FC<FormPros> = ({ closeModal }: FormPros) => {
                 <input
                   type="text"
                   value={formData.CCCD}
-                  onChange={(e)=>handleInfo('CCCD',e.target.value)}
+                  onChange={(e) => handleInfo("CCCD", e.target.value)}
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập CCCD"
                 />
