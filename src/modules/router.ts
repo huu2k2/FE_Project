@@ -5,6 +5,7 @@ import RouterKitchenPage from "./kitchen/router";
 import RouterAdmin from "./admin/router";
 import RouterCusomerLogin from "./confirm/router";
 import RouterCusomer from "./customer/router";
+import RouterHistoryOrder from "./customer/order-history/router";
 
 export const routers = createBrowserRouter([
   RouterPage404,
@@ -13,4 +14,5 @@ export const routers = createBrowserRouter([
   RouterAdmin,
   RouterCusomerLogin,
   RouterCusomer,
+  RouterHistoryOrder, 
 ]);
