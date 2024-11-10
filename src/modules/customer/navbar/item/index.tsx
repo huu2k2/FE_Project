@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface BottomNavItem {
   path: string;
@@ -10,10 +10,14 @@ export const BottomNavItem: React.FC<BottomNavItem> = ({
   path,
 }: BottomNavItem) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.pathname === `/${path}`;
   return (
     <>
       <a
-        className="text-3xl text-black hover:text-backgroundColor"
+        className={`text-3xl ${
+          isActive ? "text-backgroundColor" : "text-black"
+        } hover:text-backgroundColor`}
         onClick={() => navigate(`/${path}`)}
       >
         {content}

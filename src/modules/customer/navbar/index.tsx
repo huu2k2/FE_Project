@@ -26,15 +26,17 @@ export const NavBar: React.FC = () => {
   ];
   return (
     <>
-      <nav className="bg-[#D9D9D9] h-[8%] p-2 flex justify-around items-center">
-        {data.map((item, index) => (
-          <BottomNavItem
-            key={index}
-            path={item.path}
-            content={item.icon}
-          ></BottomNavItem>
-        ))}
-      </nav>
+      <div className="fixed bottom-0 w-full h-[8%]">
+        <nav className="bg-[#D9D9D9] h-full p-2 flex justify-around items-center">
+          {data.map((item, index) => (
+            <BottomNavItem
+              key={index}
+              path={item.path}
+              content={item.icon}
+            ></BottomNavItem>
+          ))}
+        </nav>
+      </div>
     </>
   );
 };
