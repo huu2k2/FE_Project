@@ -14,7 +14,7 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
       onClick={onClick}
       type="submit"
       style={{ backgroundColor: bgColor }}
-      className={`w-full h-full text-white text-2xl font-bold p-2 rounded-lg hover:bg-[#FFAA02]/80`}
+      className={`w-full h-full text-white text-2xl font-bold p-2 border rounded-full hover:bg-[#FFAA02]/80`}
     >
       {title}
     </button>

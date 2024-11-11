@@ -7,7 +7,7 @@ export const LayoutCustomer: React.FC = () => {
     <>
       <div className="flex flex-col h-screen">
         <div className="flex flex-1 overflow-hidden">
-          <main className="flex-1 p-2 overflow-y-auto bg-[#fff]">
+          <main className="flex-1 overflow-y-auto bg-[#fff]">
             <Outlet />
           </main>
         </div>

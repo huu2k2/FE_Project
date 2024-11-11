@@ -18,11 +18,13 @@ export const NotificaationComponent: React.FC = () => {
 
   return (
     <>
-      <CustomerHeader isBack={true} title="Thông báo"></CustomerHeader>
-      <div className="flex gap-2 flex-col mt-4">
-        {data.map((item, index) => (
-          <NotificationItem data={item}></NotificationItem>
-        ))}
+      <div className="p-4">
+        <CustomerHeader isBack={true} title="Thông báo"></CustomerHeader>
+        <div className="flex gap-2 flex-col mt-4">
+          {data.map((item, index) => (
+            <NotificationItem data={item}></NotificationItem>
+          ))}
+        </div>
       </div>
     </>
   );
