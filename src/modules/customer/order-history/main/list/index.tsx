@@ -13,12 +13,85 @@ export const ListComponent: React.FC = () => {
       title: "Bàn A03",
       description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
     },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
+    {
+      id: "asdd",
+      title: "Bàn A03",
+      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
+    },
   ];
 
   return (
     <>
       <CustomerHeader isBack={true} title="Lịch sử đơn gọi"></CustomerHeader>
-      <div className="flex gap-2 flex-col mt-4">
+      <div className="flex flex-col mt-[40px]">
         {data.map((item, index) => (
           <HistoryOrderItem data={item}></HistoryOrderItem>
         ))}

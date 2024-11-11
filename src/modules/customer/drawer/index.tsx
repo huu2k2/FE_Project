@@ -5,7 +5,8 @@ export const Drawer: React.FC = () => {
         <label
           htmlFor="my-drawer"
           aria-label="close sidebar"
-          className="drawer-overlay"></label>
+          className="drawer-overlay"
+        ></label>
         <div className="flex flex-col min-h-full w-80 bg-backgroundColor rounded-r-[30px]">
           {/* Profile Section */}
           <div className="flex flex-col items-center p-4 bg-backgroundColor rounded-r-[30px]">

@@ -47,11 +47,66 @@ const products = [
     title: "Beefsteak",
     price: "45.000đ",
   },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
 ];
 
 export const HomeComponent: React.FC = () => {
   return (
-    <div className="p-4">
+    <div className="px-4 pt-4 min-h-screen">
       <div className="flex items-center">
         <label htmlFor="my-drawer" className="drawer-button cursor-pointer">
           <img src={Logo} alt="logo" className="w-20 h-20 mr-2" />
@@ -70,12 +125,12 @@ export const HomeComponent: React.FC = () => {
         </div>
       </div>
 
-      {/* Categories */}
       <div>
         <h2 className="text-[30px] text-black font-bold mb-4">Danh mục</h2>
         <div
-          className="flex space-x-3 overflow-x-auto pt-[10px] scrollbar-hide"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+          className="flex  overflow-x-auto  scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {categories.map((category, index) => (
             <CategoryItem
               key={index}
@@ -86,12 +141,12 @@ export const HomeComponent: React.FC = () => {
         </div>
       </div>
 
-      {/* Food items */}
-      <div>
+      <div className="h-full">
         <h2 className="text-[30px] text-black font-bold mb-4">Tất cả</h2>
         <div
-          className="overflow-y-auto w-full h-[450px]"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+          className="overflow-y-auto w-full h-[528px]"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {" "}
           <div className="grid grid-cols-2 gap-4">
             {products.map((product, index) => (

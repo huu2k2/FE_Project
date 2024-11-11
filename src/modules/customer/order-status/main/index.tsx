@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { OrderStatusItem } from "../../../../components/customer/orderStatusItem";
+import { CustomerHeader } from "../../../../components/CustomerHeader";
 
 const items = [
   {
@@ -34,6 +35,136 @@ const items = [
     status: "Đang chờ xác nhận",
     quantity: 2,
   },
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
+  {
+    id: "sfsdfsdf",
+    name: "Cá kho",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang nấu",
+    quantity: 3,
+  },
+  {
+    id: "hdvuyfdvhf",
+    name: "Cá lóc nướng",
+    price: 45000,
+    imageSrc: "https://via.placeholder.com/150",
+    status: "Đang chờ xác nhận",
+    quantity: 2,
+  },
 ];
 
 const OrderStatus: React.FC = () => {
@@ -48,13 +179,9 @@ const OrderStatus: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-md mx-auto bg-white shadow-lg">
-      <h2 className="text-2xl font-bold text-center mb-4 text-[#ffaa02] border-b-2 border-gray-300 pb-2">
-        Trạng thái đơn gọi
-      </h2>
-
-      {/* Order Items List */}
-      <div className="space-y-2 flex-grow overflow-y-auto">
+    <div className="flex flex-col h-full max-w-md mx-auto bg-white">
+      <CustomerHeader isBack={true} title="Trạng thái đơn gọi"></CustomerHeader>
+      <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
         {items.map((item, index) => (
           <OrderStatusItem
             id={item.id}

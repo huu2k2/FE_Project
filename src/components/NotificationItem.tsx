@@ -11,7 +11,7 @@ interface NotificationPros {
 export const NotificationItem: React.FC<NotificationPros> = ({ data }) => {
   return (
     <>
-      <div className="flex items-start p-4 border border-gray-300 rounded-lg shadow-sm max-w-md">
+      <div className="flex items-start p-4 border-y border-gray-300 rounded-lg shadow-sm max-w-md">
         <img
           src={imageUrl}
           alt="Dish"

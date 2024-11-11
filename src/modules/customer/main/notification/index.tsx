@@ -77,7 +77,7 @@ export const NotificaationComponent: React.FC = () => {
       timestamp: "27/10/2024 15:30pm",
     },
     {
-      title: "Món đã huỷ",
+      title: "Món đã huỷ qweqweqweqw",
       description: "Bếp không đủ nguyên liệu.",
       timestamp: "27/10/2024 15:30pm",
     },
@@ -85,9 +85,13 @@ export const NotificaationComponent: React.FC = () => {
 
   return (
     <>
-      <div className="p-4 mt-6">
-        <CustomerHeader isBack={true} title="Thông báo"></CustomerHeader>
-        <div className="flex gap-2 flex-col mt-4">
+      <div className="p-4 mt-6 min-h-screen mb-[40px]">
+        <CustomerHeader
+          isBack={false}
+          title="Thông báo"
+          bg="white"
+        ></CustomerHeader>
+        <div className="flex flex-col mt-4">
           {data.map((item, index) => (
             <NotificationItem data={item}></NotificationItem>
           ))}

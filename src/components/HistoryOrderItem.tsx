@@ -12,8 +12,9 @@ export const HistoryOrderItem: React.FC<NotificationPros> = ({ data }) => {
   return (
     <>
       <a
-        className="flex items-start p-4 border border-gray-300 rounded-lg shadow-sm max-w-md"
-        href={`/order/history/${data.id}`}>
+        className="flex items-start p-4 border-y border-gray-300  shadow-sm max-w-md"
+        href={`/order/history/${data.id}`}
+      >
         <img
           src={imageUrl}
           alt="Dish"

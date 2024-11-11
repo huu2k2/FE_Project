@@ -15,6 +15,80 @@ export const DetailComponent: React.FC = () => {
       price: 3,
       quantity: 3,
     },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
+    {
+      id: "asdasd",
+      name: "Món đã xác nhận",
+      price: 3,
+      quantity: 3,
+    },
   ];
 
   return (
@@ -23,7 +97,7 @@ export const DetailComponent: React.FC = () => {
         isBack={true}
         title="Bàn A02 - 27/10/2024"
       ></CustomerHeader>
-      <div className="flex gap-2 flex-col mt-4">
+      <div className="flex flex-col mt-[40px]">
         {data.map((item, index) => (
           <FinishOrderItem data={item}></FinishOrderItem>
         ))}
