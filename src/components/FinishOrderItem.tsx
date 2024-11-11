@@ -12,7 +12,7 @@ interface FinishOrderItemPros {
 export const FinishOrderItem: React.FC<FinishOrderItemPros> = ({ data }) => {
   return (
     <>
-      <div className="flex items-start p-4 border border-gray-300 rounded-lg shadow-sm max-w-md">
+      <div className="flex items-start p-4 border-t border-b border-gray-300 rounded-lg shadow-sm max-w-md">
         <img
           src={imageUrl}
           alt="Dish"

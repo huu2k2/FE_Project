@@ -8,7 +8,7 @@ export const CustomerHeader: React.FC<CustomerHeaderProps> = ({
   isBack,
 }) => {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between fixed top-0 bg-white left-0 right-0 px-4 pt-4">
       <div>
         {isBack ? (
           <button className="text-3xl text-black" onClick={() => {}}>
