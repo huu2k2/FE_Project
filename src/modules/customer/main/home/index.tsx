@@ -106,7 +106,7 @@ const products = [
 
 export const HomeComponent: React.FC = () => {
   return (
-    <div className="px-4 pt-4 min-h-screen">
+    <div className="px-4 pt-4 min-h-screen overscroll-none">
       <div className="flex items-center">
         <label htmlFor="my-drawer" className="drawer-button cursor-pointer">
           <img src={Logo} alt="logo" className="w-20 h-20 mr-2" />
@@ -141,7 +141,7 @@ export const HomeComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="h-full">
+      <div className="h-full mb-20">
         <h2 className="text-[30px] text-black font-bold mb-4">Tất cả</h2>
         <div
           className="overflow-y-auto w-full h-[528px]"

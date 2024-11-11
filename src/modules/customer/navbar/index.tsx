@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { BottomNavItem } from "./item";
+ import { BottomNavItem } from "./item";
 
 export const NavBar: React.FC = () => {
   const data = [

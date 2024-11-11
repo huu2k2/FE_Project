@@ -1,139 +1,56 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { OrderItem } from "../../../../components/customer/orderItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 
 export const Cart: React.FC = () => {
   const items = [
     {
+      id: 1,
       name: "Hủ tiếu kho",
       price: 45000,
       imageSrc: "https://via.placeholder.com/150",
     },
     {
+      id: 2,
       name: "Bò kho",
       price: 45000,
       imageSrc: "https://via.placeholder.com/150",
     },
     {
+      id: 3,
       name: "Cá kho",
       price: 45000,
       imageSrc: "https://via.placeholder.com/150",
     },
-    {
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
+    // Thêm các mục khác với `id` khác nhau
   ];
 
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [quantities, setQuantities] = useState<number[]>(
     Array(items.length).fill(1)
   );
 
+  // Hàm chọn tất cả các items theo `id`
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(items.map((item) => item.name));
+      setSelectedItems(items.map((item) => item.id));
     }
     setSelectAll(!selectAll);
   };
 
-  const handleItemSelect = (name: string) => {
+  // Hàm chọn/lọc một item dựa trên `id`
+  const handleItemSelect = (id: number) => {
     setSelectedItems((prevSelectedItems) =>
-      prevSelectedItems.includes(name)
-        ? prevSelectedItems.filter((item) => item !== name)
-        : [...prevSelectedItems, name]
+      prevSelectedItems.includes(id)
+        ? prevSelectedItems.filter((itemId) => itemId !== id)
+        : [...prevSelectedItems, id]
     );
   };
 
+  // Hàm cập nhật số lượng của từng item
   const handleQuantityChange = (index: number, amount: number) => {
     setQuantities((prevQuantities) =>
       prevQuantities.map((quantity, i) =>
@@ -142,13 +59,22 @@ export const Cart: React.FC = () => {
     );
   };
 
+  // Tính tổng tiền của các item đã chọn
   const totalAmount = items.reduce((acc, item, index) => {
-    if (selectedItems.includes(item.name)) {
+    if (selectedItems.includes(item.id)) {
       return acc + item.price * quantities[index];
     }
     return acc;
   }, 0);
 
+  useEffect(()=>{
+    function  handleSelectAll(){
+      const isFullCheck = selectedItems.length === items.length
+      setSelectAll(isFullCheck)
+    }
+    handleSelectAll()
+  },[selectedItems])
+ 
   return (
     <div className="p-4  min-h-screen mt-[40px] mb-[136px]">
       <CustomerHeader
@@ -160,19 +86,19 @@ export const Cart: React.FC = () => {
       <div className="flex flex-col ">
         {items.map((item, index) => (
           <OrderItem
-            key={index}
+            key={item.id}
             name={item.name}
             price={item.price}
             imageSrc={item.imageSrc}
-            selected={selectedItems.includes(item.name)}
-            onSelect={() => handleItemSelect(item.name)}
+            selected={selectedItems.includes(item.id)}
+            onSelect={() => handleItemSelect(item.id)}
             quantity={quantities[index]}
             onQuantityChange={(amount) => handleQuantityChange(index, amount)}
           />
         ))}
       </div>
 
-      <div className="bg-white p-4 rounded-t-lg border-t border-gray-200 fixed left-0 right-0 bottom-[73px]">
+      <div className="bg-white p-4 rounded-t-lg border-t border-gray-200 fixed left-0 right-0 bottom-[50px]">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button
@@ -192,7 +118,7 @@ export const Cart: React.FC = () => {
             </span>
           </div>
         </div>
-        <button className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg">
+        <button className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5">
           Gửi đơn
         </button>
       </div>
