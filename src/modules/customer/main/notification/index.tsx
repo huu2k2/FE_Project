@@ -14,11 +14,78 @@ export const NotificaationComponent: React.FC = () => {
       description: "Bếp không đủ nguyên liệu.",
       timestamp: "27/10/2024 15:30pm",
     },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
+    {
+      title: "Món đã huỷ",
+      description: "Bếp không đủ nguyên liệu.",
+      timestamp: "27/10/2024 15:30pm",
+    },
   ];
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-4 mt-6">
         <CustomerHeader isBack={true} title="Thông báo"></CustomerHeader>
         <div className="flex gap-2 flex-col mt-4">
           {data.map((item, index) => (

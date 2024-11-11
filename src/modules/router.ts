@@ -7,6 +7,7 @@ import RouterCusomerLogin from "./confirm/router";
 import RouterCusomer from "./customer/router";
 import RouterHistoryOrder from "./customer/order-history/router";
 import RouterProductDetail from "./customer/product-detail/router";
+import RouterPayment from "./customer/payment/router";
 
 export const routers = createBrowserRouter([
   RouterPage404,
@@ -17,4 +18,5 @@ export const routers = createBrowserRouter([
   RouterCusomer,
   RouterHistoryOrder,
   RouterProductDetail,
+  RouterPayment,
 ]);
