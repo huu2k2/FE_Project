@@ -138,6 +138,7 @@ export const Payment: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Bàn A02 - 27/10/2024"
+        bg="white"
       ></CustomerHeader>
       <div className="flex flex-1 flex-col mt-4">
         {data.map((item, index) => (
@@ -145,7 +146,7 @@ export const Payment: React.FC = () => {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white shadow-lg pt-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg pt-4">
         <div className="flex items-center justify-between mb-4 mx-4">
           <p className="text-backgroundColor text-2xl font-bold">
             Loại thanh toán:
