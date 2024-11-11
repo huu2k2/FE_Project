@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { OrderItem } from "../../../../components/customer/orderItem";
 
-export const Order: React.FC = () => {
+export const Cart: React.FC = () => {
   const items = [
     {
       name: "Hủ tiếu kho",
