@@ -10,6 +10,45 @@ const categories = [
   { name: "Phở", image: "https://via.placeholder.com/150" },
 ];
 
+const products = [
+  {
+    id: "1231",
+    image: "https://via.placeholder.com/150",
+    title: "Hủ tiếu kho",
+    price: "45.000đ",
+  },
+  {
+    id: "123425231",
+    image: "https://via.placeholder.com/150",
+    title: "Bò kho",
+    price: "45.000đ",
+  },
+  {
+    id: "127944331",
+    image: "https://via.placeholder.com/150",
+    title: "Cá lóc nướng",
+    price: "45.000đ",
+  },
+  {
+    id: "122223431",
+    image: "https://via.placeholder.com/150",
+    title: "Mỳ ý sốt bò",
+    price: "45.000đ",
+  },
+  {
+    id: "23423424",
+    image: "https://via.placeholder.com/150",
+    title: "Cơm sườn bò",
+    price: "45.000đ",
+  },
+  {
+    id: "23028374924",
+    image: "https://via.placeholder.com/150",
+    title: "Beefsteak",
+    price: "45.000đ",
+  },
+];
+
 export const HomeComponent: React.FC = () => {
   return (
     <div className="p-4">
@@ -34,7 +73,9 @@ export const HomeComponent: React.FC = () => {
       {/* Categories */}
       <div>
         <h2 className="text-[30px] text-black font-bold mb-4">Danh mục</h2>
-        <div className="flex space-x-3 overflow-x-auto pt-[10px]">
+        <div
+          className="flex space-x-3 overflow-x-auto pt-[10px] scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           {categories.map((category, index) => (
             <CategoryItem
               key={index}
@@ -48,20 +89,20 @@ export const HomeComponent: React.FC = () => {
       {/* Food items */}
       <div>
         <h2 className="text-[30px] text-black font-bold mb-4">Tất cả</h2>
-        <div className="overflow-y-auto w-full h-[450px]">
+        <div
+          className="overflow-y-auto w-full h-[450px]"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           {" "}
           <div className="grid grid-cols-2 gap-4">
-            {Array(4)
-              .fill("")
-              .map((_, index) => (
-                <ProductItem
-                  key={index}
-                  id="1231"
-                  image="https://via.placeholder.com/150" // Replace with actual image path or dynamic data
-                  title="Hủ tiếu kho"
-                  price="45.000đ"
-                />
-              ))}
+            {products.map((product, index) => (
+              <ProductItem
+                key={index}
+                id={product.id}
+                image={product.image}
+                title={product.title}
+                price={product.price}
+              />
+            ))}
           </div>
         </div>
       </div>
