@@ -13,9 +13,10 @@ const categories = [
 export const HomeComponent: React.FC = () => {
   return (
     <div className="p-4">
-      {/* Search bar */}
       <div className="flex items-center">
-        <img src={Logo} alt="logo" className="w-20 h-20 mr-2" />
+        <label htmlFor="my-drawer" className="drawer-button cursor-pointer">
+          <img src={Logo} alt="logo" className="w-20 h-20 mr-2" />
+        </label>
         <div className="relative w-[80%] h-[60px] ">
           <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
             <i className="fa-solid fa-magnifying-glass text-gray-600"></i>

@@ -19,9 +19,7 @@ export const FinishOrderItem: React.FC<FinishOrderItemPros> = ({ data }) => {
           className="w-20 h-20 object-cover rounded-lg mr-4"
         />
         <div className="flex-1">
-          <h2 className="font-semibold text-lg text-black font-bold">
-            {data.name}
-          </h2>
+          <h2 className="text-lg text-black font-bold">{data.name}</h2>
           <p className="text-backgroundColor ">{data.price} đ</p>
           <p className=" text-black font-bold">Số lượng: {data.quantity}</p>
         </div>
