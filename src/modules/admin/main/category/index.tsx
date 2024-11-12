@@ -6,8 +6,10 @@ import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
 import debounce from "lodash/debounce";
 import { SearchInput } from "../../../../components/inputs/search";
+import { CategoryModel } from "../../../../models/category";
+import { DeleteModal } from "../../../../components/DeleteModal";
 export const CategoryCompoment: React.FC = () => {
-  const userData = [
+  const categoryData = [
     {
       id: "Trieu123",
       name: "Bui Quoc Trieu",
@@ -25,11 +27,11 @@ export const CategoryCompoment: React.FC = () => {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [isUpdate, setIsUpdate] = useState(false);
+  const [isState, setIsState] = useState(0);
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    setIsState(0);
   };
 
   const handleModalOpen = () => {
@@ -46,18 +48,28 @@ export const CategoryCompoment: React.FC = () => {
     []
   );
 
-  const [data, setData] = useState({ id: "", name: "" });
+  const [data, setData] = useState<CategoryModel>({ id: "", name: "" });
 
-  const handleEdit = (data: { id: string; name: string }) => {
+  const handleEdit = (data: CategoryModel) => {
     handleModalOpen();
-    setIsUpdate(true);
+    setIsState(1);
     setData(data);
   };
 
   const handleCreate = () => {
     handleModalOpen();
-    setIsUpdate(false);
+    setIsState(2);
     setData({ id: "", name: "" });
+  };
+
+  const clickDelete = (data: CategoryModel) => {
+    handleModalOpen();
+    setIsState(3);
+    setData(data);
+  };
+
+  const handleDelete = (data: CategoryModel) => {
+    console.log("delete: ", data);
   };
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,20 +106,29 @@ export const CategoryCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {userData.map((user, index) => (
+              {categoryData.map((category, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
-                  <td className="text-black border-b py-2 px-4">{user.id}</td>
-                  <td className="border-b py-2 px-4 text-black">{user.name}</td>
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                >
+                  <td className="text-black border-b py-2 px-4">
+                    {category.id}
+                  </td>
+                  <td className="border-b py-2 px-4 text-black">
+                    {category.name}
+                  </td>
                   <td className="border-b py-2 px-4">
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(user)}>
+                        onClick={() => handleEdit(category)}
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
-                      <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">
+                      <button
+                        className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
+                        onClick={() => clickDelete(category)}
+                      >
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -121,17 +142,28 @@ export const CategoryCompoment: React.FC = () => {
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}></Pagination>
+              goToPage={handlePageChange}
+            ></Pagination>
           </div>
         </div>
       </div>
-      {isModalOpen && (
+      {isModalOpen && isState != 0 && isState != 3 && (
         <Form
           closeModal={handleModalClose}
           formData={data}
           setData={setData}
-          isUpdate={isUpdate}
+          isState={isState}
         />
+      )}
+
+      {isModalOpen && isState == 3 && (
+        <DeleteModal
+          title="Bạn chắc chắn xoá danh mục này"
+          closeModel={handleModalClose}
+          handle={() => {
+            handleDelete(data);
+          }}
+        ></DeleteModal>
       )}
     </>
   );

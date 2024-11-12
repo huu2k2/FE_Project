@@ -56,6 +56,7 @@ export const Form: React.FC<FormPros> = ({
               title="Xác nhận"
               bgColor="#FFAA02"
               onClick={() => handleSubmit()}></CustomButton>
+
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
