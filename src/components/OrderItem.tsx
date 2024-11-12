@@ -1,7 +1,7 @@
 import { CustomCheckbox } from "./CustomCheckbox";
 
 interface OrderItemProps {
-  id: number;
+  id: string;
   img: string;
   name: string;
   price: number;

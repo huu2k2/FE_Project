@@ -3,10 +3,12 @@ import { CustomButton } from "../../../../../components/CustomButton";
 
 interface ReasonFormPros {
   closeModal: () => void;
+  data: string[];
 }
 
 export const ReasonForm: React.FC<ReasonFormPros> = ({
   closeModal,
+  data,
 }: ReasonFormPros) => {
   const [reason, setReason] = useState("");
 
@@ -15,7 +17,8 @@ export const ReasonForm: React.FC<ReasonFormPros> = ({
   };
 
   const handleSubmitReason = () => {
-    console.log(reason);
+    console.log(reason, data);
+
     closeModal();
   };
 

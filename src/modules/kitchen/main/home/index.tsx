@@ -6,7 +6,7 @@ import { ReasonForm } from "./components/form";
 
 const data = [
   {
-    id: 1,
+    id: "1",
     img: "https://res.cloudinary.com/duoqtvvff/image/upload/v1722355413/upload_image/wtlgef0wdfl5j8zkntjd.jpg",
     name: "Cá khô kho đồng",
     price: 45000,
@@ -14,7 +14,7 @@ const data = [
     status: "chưa làm",
   },
   {
-    id: 2,
+    id: "2",
     img: "https://res.cloudinary.com/duoqtvvff/image/upload/v1722355413/upload_image/wtlgef0wdfl5j8zkntjd.jpg",
     name: "Cá khô kho đồng",
     price: 45000,
@@ -22,7 +22,7 @@ const data = [
     status: "chưa làm",
   },
   {
-    id: 3,
+    id: "3",
     img: "https://res.cloudinary.com/duoqtvvff/image/upload/v1722355413/upload_image/wtlgef0wdfl5j8zkntjd.jpg",
     name: "Cá khô kho đồng",
     price: 45000,
@@ -64,9 +64,22 @@ export const ListItemProductPage: React.FC = () => {
     setMapIsActive(newMap);
   };
 
+  const handleCOnfirm = () => {
+    console.log("Active items:", activeItems());
+  };
+
+  const handleFinish = () => {
+    console.log("Active items:", activeItems());
+  };
+
+  const activeItems = (): string[] => {
+    return Array.from(mapIsActive.entries())
+      .filter(([_, value]) => value)
+      .map(([key]) => key);
+  };
+
   return (
     <div className="w-full h-full flex flex-col gap-10">
-      
       <div className="flex justify-between pt-6 border-t-2 px-5">
         <div className="flex items-center" onClick={handleCheckboxChange}>
           <CustomCheckbox isAllActive={isAllActive} />
@@ -74,12 +87,20 @@ export const ListItemProductPage: React.FC = () => {
             Chọn Tất cả
           </span>
         </div>
-        <div className="flex w-[60%] h-[36px] justify-between">
+        <div className="flex w-[60%] h-[50px] justify-between">
           <div className="w-[32%]">
-            <CustomButton bgColor="#008000" title="Hoàn thành" />
+            <CustomButton
+              bgColor="#008000"
+              title="Hoàn thành"
+              onClick={handleFinish}
+            />
           </div>
           <div className="w-[32%]">
-            <CustomButton bgColor="#FFAA02" title="Xác nhận nấu" />
+            <CustomButton
+              bgColor="#FFAA02"
+              title="Xác nhận nấu"
+              onClick={() => handleCOnfirm()}
+            />
           </div>
           <div className="w-[32%]">
             <CustomButton
@@ -100,7 +121,9 @@ export const ListItemProductPage: React.FC = () => {
           />
         ))}
       </div>
-      {isModalOpen && <ReasonForm closeModal={handleModalClose} />}
+      {isModalOpen && (
+        <ReasonForm data={activeItems()} closeModal={handleModalClose} />
+      )}
     </div>
   );
 };
