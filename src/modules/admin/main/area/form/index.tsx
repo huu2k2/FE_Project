@@ -56,12 +56,12 @@ export const Form: React.FC<FormPros> = ({
               title="Xác nhận"
               bgColor="#FFAA02"
               onClick={() => handleSubmit()}
-              Width={"50%"}></CustomButton>
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
               onClick={closeModal}
-              Width={"50%"}></CustomButton>
+            ></CustomButton>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { CustomButton } from "../../../../../components/CustomButton";
+import { createCategory } from "../../../../../services/category-service";
 
 interface FormPros {
   closeModal: () => void;
@@ -7,24 +8,24 @@ interface FormPros {
     name: string;
   };
   setData: (value: { id: string; name: string }) => void;
-  isUpdate: boolean;
+  isState: number;
 }
 
 export const Form: React.FC<FormPros> = ({
   closeModal,
   formData,
   setData,
-  isUpdate,
+  isState,
 }: FormPros) => {
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = () => {
-    if (isUpdate) {
-      console.log("update", formData);
+  const handleSubmit = async () => {
+    if (isState == 1) {
+      console.log("update: ", formData);
     } else {
-      console.log("create", formData);
+      console.log("create: ", formData);
     }
   };
 
@@ -53,12 +54,12 @@ export const Form: React.FC<FormPros> = ({
               title="Xác nhận"
               bgColor="#FFAA02"
               onClick={() => handleSubmit()}
-              Width={""}></CustomButton>
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
               onClick={closeModal}
-              Width={""}></CustomButton>
+            ></CustomButton>
           </div>
         </div>
       </div>
