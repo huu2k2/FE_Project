@@ -1,9 +1,11 @@
 import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
+import { DeleteModal } from "./DeleteModal";
+import { ProductModel } from "../models/product";
 
 interface ProductPros {
-  product: { name: string; price: string; type: string };
-  handleEdit: (value: { name: string; price: string; type: string }) => void;
+  product: ProductModel;
+  handleEdit: (value: ProductModel) => void;
 }
 
 export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
@@ -22,10 +24,23 @@ export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
   };
 
   const handleDelete = () => {
-    console.log("Deleted");
+    setIsModalOpen(true);
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
+      {isModalOpen && (
+        <DeleteModal
+          title="Bạn chắc chắn sản phẩm này"
+          closeModel={() => setIsModalOpen(false)}
+          handle={() => {
+            console.log("Deleted", data.product);
+          }}
+        ></DeleteModal>
+      )}
+
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="relative">
           <div className="absolute w-[43px] h-[21px] right-0 top-0">
@@ -35,10 +50,12 @@ export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 setMenuPosition({ top: rect.bottom, left: rect.right - 100 });
                 setShowMenu((prev) => !prev);
-              }}>
+              }}
+            >
               <i
                 className="fa-solid fa-ellipsis fa-2xl"
-                style={{ color: "#000000" }}></i>
+                style={{ color: "#000000" }}
+              ></i>
             </button>
             {/* Chose edit/delete */}
             {showMenu && (

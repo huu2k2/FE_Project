@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { OrderItem } from "../../../../components/customer/orderItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 
@@ -22,7 +22,6 @@ export const Cart: React.FC = () => {
       price: 45000,
       imageSrc: "https://via.placeholder.com/150",
     },
-    // Thêm các mục khác với `id` khác nhau
   ];
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -31,7 +30,6 @@ export const Cart: React.FC = () => {
     Array(items.length).fill(1)
   );
 
-  // Hàm chọn tất cả các items theo `id`
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedItems([]);
@@ -41,7 +39,6 @@ export const Cart: React.FC = () => {
     setSelectAll(!selectAll);
   };
 
-  // Hàm chọn/lọc một item dựa trên `id`
   const handleItemSelect = (id: number) => {
     setSelectedItems((prevSelectedItems) =>
       prevSelectedItems.includes(id)
@@ -50,7 +47,6 @@ export const Cart: React.FC = () => {
     );
   };
 
-  // Hàm cập nhật số lượng của từng item
   const handleQuantityChange = (index: number, amount: number) => {
     setQuantities((prevQuantities) =>
       prevQuantities.map((quantity, i) =>
@@ -59,7 +55,6 @@ export const Cart: React.FC = () => {
     );
   };
 
-  // Tính tổng tiền của các item đã chọn
   const totalAmount = items.reduce((acc, item, index) => {
     if (selectedItems.includes(item.id)) {
       return acc + item.price * quantities[index];
@@ -67,14 +62,21 @@ export const Cart: React.FC = () => {
     return acc;
   }, 0);
 
-  useEffect(()=>{
-    function  handleSelectAll(){
-      const isFullCheck = selectedItems.length === items.length
-      setSelectAll(isFullCheck)
+  useEffect(() => {
+    function handleSelectAll() {
+      const isFullCheck = selectedItems.length === items.length;
+      setSelectAll(isFullCheck);
     }
-    handleSelectAll()
-  },[selectedItems])
- 
+    handleSelectAll();
+  }, [selectedItems]);
+
+  const submit = () => {
+    const filteredItems = items.filter((item) =>
+      selectedItems.includes(item.id)
+    );
+    console.log(filteredItems);
+  };
+
   return (
     <div className="p-4  min-h-screen mt-[40px] mb-[136px]">
       <CustomerHeader
@@ -118,7 +120,10 @@ export const Cart: React.FC = () => {
             </span>
           </div>
         </div>
-        <button className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5">
+        <button
+          className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5"
+          onClick={submit}
+        >
           Gửi đơn
         </button>
       </div>

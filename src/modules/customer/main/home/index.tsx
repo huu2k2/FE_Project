@@ -119,7 +119,7 @@ export const HomeComponent: React.FC = () => {
             type="text"
             placeholder="Tìm kiếm"
             className="placeholder-gray-600 font-bold bg-transparent focus:outline-none 
-            w-full h-full text-gray-600 rounded-[25px] pl-10" // Thêm padding-left để tránh chồng lên icon
+            w-full h-full text-gray-600 rounded-[25px] pl-10"
             style={{ backgroundColor: "#D9D9D9", color: "000000" }}
           />
         </div>

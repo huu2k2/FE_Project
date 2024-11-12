@@ -10,15 +10,11 @@ import { SearchInput } from "../../../../components/inputs/search";
 
 import debounce from "lodash/debounce";
 import { DropDown } from "../../../../components/dropdowns/dropdows";
+import { ProductModel } from "../../../../models/product";
 
-type Product = {
-  name: string;
-  price: string;
-  type: string;
-};
 const categories = ["Tất cả", "Mì", "Cơm", "Hải sản"];
 
-const products: Product[] = Array(6).fill({
+const products: ProductModel[] = Array(6).fill({
   name: "Phở Gà Hà Nội",
   price: "30.000 vnđ",
   type: "Phở",
@@ -116,7 +112,8 @@ export const ProductCompoment: React.FC = () => {
               }}
               handleEdit={() =>
                 handleEdit(product.name, product.price, product.type)
-              }></ProductItem>
+              }
+            ></ProductItem>
           ))}
         </div>
       </div>
