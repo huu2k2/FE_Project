@@ -76,14 +76,18 @@ export const Form: React.FC<FormPros> = ({
                     Khu vực
                   </label>
 
-                  <select className="select  w-full  text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor">
+                  <select
+                    value={formData.area}
+                    onChange={(e) => handleChangeData(e.target.value, "area")}
+                    className="select w-full text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
+                  >
                     <option disabled selected>
-                      Khu vực
+                      Chọn khu vực
                     </option>
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
-                    <option>D</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
                   </select>
                 </div>
               </div>

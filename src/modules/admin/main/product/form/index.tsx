@@ -1,36 +1,52 @@
 import React, { useState } from "react";
 
 interface IFormData {
-  name: string;
-  price: string;
-  describe: string;
-  type: string;
-  image?: string;
-}
-export const AddForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [formData, setFormData] = useState<IFormData>({
-    name: "",
-    price: "",
-    describe: "",
-    type: "",
-    image: "",
-  });
+  closeModal: () => void;
 
+  formData: {
+    name: string;
+    price: string;
+    describe: string;
+    type: string;
+    image?: string;
+  };
+
+  setData: (value: {
+    name: string;
+    price: string;
+    describe: string;
+    type: string;
+    image?: string;
+  }) => void;
+  isUpdate: boolean;
+}
+export const Form: React.FC<IFormData> = ({
+  closeModal,
+  formData,
+  setData,
+  isUpdate,
+}: IFormData) => {
   const handleOpenImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setFormData({ ...formData, image: reader.result as string }); // Set the image data URL
+        setData({ ...formData, image: reader.result as string });
       };
-      reader.readAsDataURL(file); // Read the file as a data URL
+      reader.readAsDataURL(file);
     }
   };
+
   const handleChangeData = (value: string, key: string) => {
-    setFormData({ ...formData, [key]: value });
+    setData({ ...formData, [key]: value });
   };
+
   const handleSave = () => {
-    console.log(formData);
+    if (isUpdate) {
+      console.log("update", formData);
+    } else {
+      console.log("create", formData);
+    }
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
@@ -67,8 +83,7 @@ export const AddForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <select
               className="w-full p-2 mb-2 border rounded bg-gray-200 text-black placeholder:text-gray-500"
               value={formData.type}
-              onChange={(e) => handleChangeData(e.target.value, "type")}
-            >
+              onChange={(e) => handleChangeData(e.target.value, "type")}>
               <option>Phở</option>
               <option>Mì</option>
               <option>Cơm</option>
@@ -80,8 +95,7 @@ export const AddForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <label className="block mb-2">Thêm ảnh</label>
             <label
               htmlFor="openImage"
-              className="w-full h-full bg-gray-300 flex items-center justify-center rounded mb-4 cursor-pointer relative"
-            >
+              className="w-full h-full bg-gray-300 flex items-center justify-center rounded mb-4 cursor-pointer relative">
               {formData.image ? (
                 <img
                   src={formData.image}
@@ -90,10 +104,12 @@ export const AddForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 />
               ) : (
                 <img
-                src={"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"}
-                alt="Selected"
-                className="rounded  w-full h-full"
-              />
+                  src={
+                    "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+                  }
+                  alt="Selected"
+                  className="rounded  w-full h-full"
+                />
               )}
             </label>
             <input
@@ -107,15 +123,13 @@ export const AddForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </div>
         <div className="flex justify-end">
           <button
-            onClick={onClose}
-            className="px-4 py-2 bg-red-500 text-white rounded mr-2"
-          >
+            onClick={closeModal}
+            className="px-4 py-2 bg-red-500 text-white rounded mr-2">
             Huỷ
           </button>
           <button
             className="px-4 py-2 bg-yellow-500 text-white rounded"
-            onClick={handleSave}
-          >
+            onClick={handleSave}>
             Lưu món
           </button>
         </div>
