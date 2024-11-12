@@ -91,12 +91,12 @@ export const AreaCompoment: React.FC = () => {
                 id: area.id,
                 name: area.name,
               }}
-              handleEdit={() => handleEdit(area.id, area.name)}></AreaItem>
+              handleEdit={() => handleEdit(area.id, area.name)}
+            ></AreaItem>
           ))}
         </div>
       </div>
 
-      {/* Render modal with condition */}
       {isModalOpen && (
         <Form
           closeModal={handleModalClose}

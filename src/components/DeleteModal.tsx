@@ -11,7 +11,7 @@ export const DeleteModal: React.FC<DeleteModalPros> = ({
 }) => {
   return (
     <>
-      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
         <div className="bg-white p-6 rounded-lg w-1/3">
           <h2 className="text-xl font-semibold mb-4">Xác nhận xóa</h2>
           <p>{title}</p>

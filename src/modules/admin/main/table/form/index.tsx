@@ -75,10 +75,10 @@ export const Form: React.FC<FormPros> = ({
                   >
                     Khu vực
                   </label>
- 
+
                   <select className="select  w-full  text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor">
                     <option disabled selected>
-                    Khu vực
+                      Khu vực
                     </option>
                     <option>A</option>
                     <option>B</option>

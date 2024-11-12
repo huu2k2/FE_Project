@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
+import { DeleteModal } from "./DeleteModal";
 
 interface AreaPros {
   area: { id: string; name: string };
@@ -18,11 +19,23 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
   };
 
   const handleDelete = () => {
-    console.log("Deleted");
+    setIsModalOpen(true);
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
+      {isModalOpen && (
+        <DeleteModal
+          title="Bạn chắc chắn xoá khu vực này"
+          closeModel={() => setIsModalOpen(false)}
+          handle={() => {
+            console.log("Deleted", data.area);
+          }}
+        ></DeleteModal>
+      )}
+
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="relative">
           <div className="absolute w-[43px] h-[21px] right-0 top-0">
@@ -32,12 +45,13 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 setMenuPosition({ top: rect.bottom, left: rect.right - 100 });
                 setShowMenu((prev) => !prev);
-              }}>
+              }}
+            >
               <i
                 className="fa-solid fa-ellipsis fa-2xl"
-                style={{ color: "#000000" }}></i>
+                style={{ color: "#000000" }}
+              ></i>
             </button>
-            {/* Chose edit/delete */}
             {showMenu && (
               <MenuEditDelete
                 onEdit={handleShowEditForm}
@@ -56,7 +70,8 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
         <div className="p-4 bg-backgroundColor text-white">
           <h2
             className="text-md font-bold text-black"
-            style={{ textAlign: "center" }}>
+            style={{ textAlign: "center" }}
+          >
             {data.area.name}
           </h2>
         </div>

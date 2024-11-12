@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { TitleText } from "../../../../components/texts/title";
 import LineChart from "../../../../components/LineChart";
 import img from "../../../../assets/product.webp";
+import { CustomButton } from "../../../../components/CustomButton";
 
 export const TurnoverCompoment: React.FC = () => {
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
   const labels = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"];
   const dataPoints = [5000000, 7000000, 8000000, 6500000, 9000000];
 
@@ -21,6 +25,12 @@ export const TurnoverCompoment: React.FC = () => {
     },
   ];
 
+  const handleSearch = () => {
+    console.log("Từ ngày:", startDate);
+    console.log("Đến ngày:", endDate);
+    // Thực hiện logic tìm kiếm ở đây
+  };
+
   return (
     <>
       <div className="p-4 bg-gray-100 min-h-screen">
@@ -31,6 +41,8 @@ export const TurnoverCompoment: React.FC = () => {
               <h3 className="text-black">Từ ngày</h3>
               <input
                 type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
                 className="w-full px-3 py-2 border text-white bg-[#615c5c] rounded-lg focus:outline-none focus:border-backgroundColor"
               />
             </div>
@@ -38,8 +50,20 @@ export const TurnoverCompoment: React.FC = () => {
               <h3 className="text-black">Đến ngày</h3>
               <input
                 type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
                 className="w-full px-3 py-2 border text-white bg-[#615c5c] rounded-lg focus:outline-none focus:border-backgroundColor"
               />
+            </div>
+            <div className="w-[30%]">
+              <h3 className="text-black">Tìm kiếm</h3>
+              <div>
+                <CustomButton
+                  title="Xác nhận"
+                  bgColor="#FFAA02"
+                  onClick={handleSearch}
+                />
+              </div>
             </div>
           </div>
           <div className="mt-8">

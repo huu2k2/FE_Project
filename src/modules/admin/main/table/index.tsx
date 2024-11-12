@@ -5,15 +5,9 @@ import { CreateButton } from "../../../../components/buttons/createButton";
 import { SearchInput } from "../../../../components/inputs/search";
 import { TableItem } from "../../../../components/TableItem";
 import { Form } from "./form";
+import { TableModel } from "../../../../models/table";
 
-type Table = {
-  id: string;
-  name: string;
-  status: string;
-  area: string;
-};
-
-const tables: Table[] = Array(8).fill({
+const tables: TableModel[] = Array(8).fill({
   id: "tb5143541243534",
   name: "Bàn 12",
   status: "empty",
@@ -42,7 +36,7 @@ export const TableCompoment: React.FC = () => {
     setTextSearch(value);
     debounceSearch(value);
   };
-  // handle call api search text
+
   console.log(debouncedText);
 
   const [isUpdate, setIsUpdate] = useState(false);
@@ -86,9 +80,8 @@ export const TableCompoment: React.FC = () => {
                 status: table.status,
                 area: table.area,
               }}
-              handleEdit={() =>
-                handleEdit(table.id, table.name, table.area)
-              }></TableItem>
+              handleEdit={() => handleEdit(table.id, table.name, table.area)}
+            ></TableItem>
           ))}
         </div>
       </div>
