@@ -45,15 +45,15 @@ export const StaffCompoment: React.FC = () => {
     }
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+  // const handleModalClose = () => {
+  //   setIsModalOpen(false);
+  // };
 
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
+  // const handleModalOpen = () => {
+  //   setIsModalOpen(true);
+  // };
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleOpenForm = () => setIsFormOpen(true);
@@ -74,6 +74,59 @@ export const StaffCompoment: React.FC = () => {
     debounceSearch(value); // Update `debouncedText` after delay
   };
   // handle call api search text
+
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const [data, setData] = useState({
+    ho: "",
+    ten: "",
+    username: "",
+    password: "",
+    address: "",
+    phone: "",
+    role: "",
+    CCCD: "",
+  });
+
+  const handleCreate = () => {
+    handleOpenForm();
+    setIsUpdate(false);
+    setData({
+      ho: "",
+      ten: "",
+      username: "",
+      password: "",
+      address: "",
+      phone: "",
+      role: "",
+      CCCD: "",
+    });
+  };
+
+  const handleEdit = (
+    ho: string,
+    ten: string,
+    username: string,
+    password: string,
+    addres: string,
+    phone: string,
+    role: string,
+    CCCD: string
+  ) => {
+    handleOpenForm();
+    setIsUpdate(true);
+    setData({
+      ho: ho,
+      ten: ten,
+      username: username,
+      password: password,
+      address: addres,
+      phone: phone,
+      role: role,
+      CCCD: CCCD,
+    });
+  };
+
   console.log(debouncedText);
   return (
     <>
@@ -83,10 +136,8 @@ export const StaffCompoment: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <CreateButton
               name={"Tạo nhân viên"}
-              handleOpenForm={handleOpenForm}
+              handleOpenForm={handleCreate}
             />
-            {isFormOpen && <Form closeModal={handleCloseForm} />}
-
             <DropDown categories={categories} />
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>
@@ -115,8 +166,7 @@ export const StaffCompoment: React.FC = () => {
               {userData.map((user, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
-                >
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="text-black border-b py-2 px-4">
                     {user.username}
                   </td>
@@ -131,8 +181,18 @@ export const StaffCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={handleModalOpen}
-                      >
+                        onClick={() =>
+                          handleEdit(
+                            "ho",
+                            "ten",
+                            user.username,
+                            "password",
+                            "addres",
+                            "phone",
+                            user.role,
+                            "CCCD"
+                          )
+                        }>
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                     </div>
@@ -146,12 +206,18 @@ export const StaffCompoment: React.FC = () => {
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}
-            ></Pagination>
+              goToPage={handlePageChange}></Pagination>
           </div>
         </div>
       </div>
-      {isModalOpen && <Form closeModal={handleModalClose} />}
+      {isFormOpen && (
+        <Form
+          closeModal={handleCloseForm}
+          formData={data}
+          setData={setData}
+          isUpdate={isUpdate}
+        />
+      )}
     </>
   );
 };
