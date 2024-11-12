@@ -90,7 +90,11 @@ export const ListComponent: React.FC = () => {
 
   return (
     <>
-      <CustomerHeader isBack={true} title="Lịch sử đơn gọi"></CustomerHeader>
+      <CustomerHeader
+        isBack={true}
+        title="Lịch sử đơn gọi"
+        bg="white"
+      ></CustomerHeader>
       <div className="flex flex-col mt-[40px]">
         {data.map((item, index) => (
           <HistoryOrderItem data={item}></HistoryOrderItem>
