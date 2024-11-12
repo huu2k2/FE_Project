@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { AddForm } from "./addForm";
+import { Form } from "./form";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -25,7 +25,6 @@ const products: Product[] = Array(6).fill({
 });
 
 export const ProductCompoment: React.FC = () => {
- 
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleOpenForm = () => setIsFormOpen(true);
@@ -47,6 +46,45 @@ export const ProductCompoment: React.FC = () => {
     setTextSearch(value); // Immediate update for input field
     debounceSearch(value); // Update `debouncedText` after delay
   };
+
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const [data, setData] = useState<{
+    name: string;
+    type: string;
+    price: string;
+    describe: string;
+    image?: string; // Make image optional
+  }>({
+    name: "",
+    type: "",
+    price: "",
+    describe: "",
+    image: "",
+  });
+
+  const handleCreate = () => {
+    handleOpenForm();
+    setIsUpdate(false);
+    setData({ name: "", type: "", price: "", describe: "", image: "" });
+  };
+
+  const handleEdit = (
+    nameProduct: string,
+    priceProduct: string,
+    typeProduct: string
+  ) => {
+    handleOpenForm();
+    setIsUpdate(true);
+    setData({
+      name: nameProduct,
+      price: priceProduct,
+      type: typeProduct,
+      describe: "",
+      image: "",
+    });
+  };
+
   // handle call api search text
   console.log(debouncedText);
   return (
@@ -55,8 +93,7 @@ export const ProductCompoment: React.FC = () => {
       <div className="bg-white p-4 rounded-lg shadow-md">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <CreateButton name={"Tạo món ăn"} handleOpenForm={handleOpenForm} />
-          {isFormOpen && <AddForm onClose={handleCloseForm} />}
+          <CreateButton name={"Tạo món ăn"} handleOpenForm={handleCreate} />
           <span className="text-black font-bold" style={{ fontSize: "20px" }}>
             Tổng các món ăn: {products.length}
           </span>
@@ -64,7 +101,7 @@ export const ProductCompoment: React.FC = () => {
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
 
           {/* Drop down */}
-          <DropDown categories={categories}/>
+          <DropDown categories={categories} />
         </div>
 
         {/* Items */}
@@ -77,10 +114,21 @@ export const ProductCompoment: React.FC = () => {
                 price: product.price,
                 type: product.price,
               }}
-            ></ProductItem>
+              handleEdit={() =>
+                handleEdit(product.name, product.price, product.type)
+              }></ProductItem>
           ))}
         </div>
       </div>
+
+      {isFormOpen && (
+        <Form
+          closeModal={handleCloseForm}
+          formData={data}
+          setData={setData}
+          isUpdate={isUpdate}
+        />
+      )}
     </div>
   );
 };

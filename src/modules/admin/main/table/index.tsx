@@ -43,7 +43,7 @@ export const TableCompoment: React.FC = () => {
     debounceSearch(value);
   };
   // handle call api search text
-  console.log(debouncedText);
+  // console.log(debouncedText);
 
   const [isUpdate, setIsUpdate] = useState(false);
 
