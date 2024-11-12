@@ -64,14 +64,18 @@ const ProductDetail: React.FC = () => {
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {relatedProducts.map((product, index) => (
-              <div key={index} className="w-16 h-16 flex-shrink-0">
+              <a
+                key={index}
+                className="w-16 h-16 flex-shrink-0"
+                href={`/product/${id}`}
+              >
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-lg border"
                 />
                 <p className="text-xs text-center mt-1">{product.name}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>

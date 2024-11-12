@@ -38,7 +38,7 @@ export const TableItem: React.FC<TablePros> = (data: TablePros) => {
     <>
       {isModalOpen && (
         <DeleteModal
-          title="Bạn chắc chắn xoá khu vực này"
+          title="Bạn chắc chắn xoá bàn này"
           closeModel={() => setIsModalOpen(false)}
           handle={() => {
             console.log("Deleted", data.table);

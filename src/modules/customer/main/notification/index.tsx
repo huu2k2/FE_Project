@@ -93,7 +93,7 @@ export const NotificaationComponent: React.FC = () => {
         ></CustomerHeader>
         <div className="flex flex-col mt-4">
           {data.map((item, index) => (
-            <NotificationItem data={item}></NotificationItem>
+            <NotificationItem key={index} data={item}></NotificationItem>
           ))}
         </div>
       </div>
