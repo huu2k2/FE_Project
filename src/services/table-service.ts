@@ -1,14 +1,15 @@
 import axiosInstance from "../api";
+import { API } from "../models/api";
 import { TableModel } from "../models/table";
 import baseUrl from "../utils/baseURL";
 
 const createTable = (data: {
   name: string;
   areaId: string;
-}): Promise<TableModel[]> => {
+}): Promise<API<TableModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<TableModel[]>(
+      let result = await axiosInstance.post<API<TableModel[]>>(
         `${baseUrl}/tables/`,
         data
       );
@@ -19,10 +20,12 @@ const createTable = (data: {
   });
 };
 
-const getAllTable = (): Promise<TableModel[]> => {
+const getAllTable = (): Promise<API<TableModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<TableModel[]>(`${baseUrl}/tables/`);
+      let result = await axiosInstance.get<API<TableModel[]>>(
+        `${baseUrl}/tables/`
+      );
       resolve(result.data);
     } catch (error) {
       reject(error);
@@ -30,10 +33,10 @@ const getAllTable = (): Promise<TableModel[]> => {
   });
 };
 
-const updateTable = (data: TableModel): Promise<TableModel> => {
+const updateTable = (data: TableModel): Promise<API<TableModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.put<TableModel>(
+      let result = await axiosInstance.put<API<TableModel>>(
         `${baseUrl}/tables/${data.tableId}`,
         data
       );
@@ -44,10 +47,10 @@ const updateTable = (data: TableModel): Promise<TableModel> => {
   });
 };
 
-const deleteTable = (id: string): Promise<boolean> => {
+const deleteTable = (id: string): Promise<API<boolean>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.delete<boolean>(
+      let result = await axiosInstance.delete<API<boolean>>(
         `${baseUrl}/tables/${id}`
       );
       resolve(result.data);

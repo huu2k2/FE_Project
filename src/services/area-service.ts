@@ -1,11 +1,12 @@
 import axiosInstance from "../api";
+import { API } from "../models/api";
 import { AreaModel } from "../models/area";
 import baseUrl from "../utils/baseURL";
 
-const createArea = (data: { name: string }): Promise<AreaModel[]> => {
+const createArea = (data: { name: string }): Promise<API<AreaModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<AreaModel[]>(
+      let result = await axiosInstance.post<API<AreaModel[]>>(
         `${baseUrl}/areas/`,
         data
       );
@@ -16,10 +17,12 @@ const createArea = (data: { name: string }): Promise<AreaModel[]> => {
   });
 };
 
-const getAllArea = (): Promise<AreaModel[]> => {
+const getAllArea = (): Promise<API<AreaModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<AreaModel[]>(`${baseUrl}/areas/`);
+      let result = await axiosInstance.get<API<AreaModel[]>>(
+        `${baseUrl}/areas/`
+      );
       resolve(result.data);
     } catch (error) {
       reject(error);
@@ -27,10 +30,10 @@ const getAllArea = (): Promise<AreaModel[]> => {
   });
 };
 
-const updateArea = (data: AreaModel): Promise<AreaModel> => {
+const updateArea = (data: AreaModel): Promise<API<AreaModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.put<AreaModel>(
+      let result = await axiosInstance.put<API<AreaModel>>(
         `${baseUrl}/areas/${data.areaId}`,
         data
       );
@@ -41,10 +44,10 @@ const updateArea = (data: AreaModel): Promise<AreaModel> => {
   });
 };
 
-const deleteArea = (id: string): Promise<boolean> => {
+const deleteArea = (id: string): Promise<API<boolean>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.delete<boolean>(
+      let result = await axiosInstance.delete<API<boolean>>(
         `${baseUrl}/areas/${id}`
       );
       resolve(result.data);
