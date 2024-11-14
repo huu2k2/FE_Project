@@ -6,7 +6,7 @@ const createCategory = (data: { name: string }): Promise<CategoryModel[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.post<CategoryModel[]>(
-        `${baseUrl}/category/`,
+        `${baseUrl}/categories/`,
         data
       );
       resolve(result.data);

@@ -25,7 +25,8 @@ export const Form: React.FC<FormPros> = ({
     if (isState == 1) {
       console.log("update: ", formData);
     } else {
-      console.log("create: ", formData);
+      let result = await createCategory(formData);
+      console.log(result)
     }
   };
 
