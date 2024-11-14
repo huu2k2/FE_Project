@@ -1,6 +1,6 @@
 export interface TableModel {
-  id: string;
+  tableId: string;
   name: string;
   status: string;
-  area: string;
+  areaId: string;
 }
