@@ -1,14 +1,18 @@
 import { CustomButton } from "../../../../../components/CustomButton";
-import { createCategory } from "../../../../../services/category-service";
+import {
+  createCategory,
+  updateCategory,
+} from "../../../../../services/category-service";
 
 interface FormPros {
   closeModal: () => void;
   formData: {
-    id: string;
+    categoryId: string;
     name: string;
   };
-  setData: (value: { id: string; name: string }) => void;
+  setData: (value: { categoryId: string; name: string }) => void;
   isState: number;
+  fetchData: () => void;
 }
 
 export const Form: React.FC<FormPros> = ({
@@ -16,6 +20,7 @@ export const Form: React.FC<FormPros> = ({
   formData,
   setData,
   isState,
+  fetchData,
 }: FormPros) => {
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
@@ -23,11 +28,22 @@ export const Form: React.FC<FormPros> = ({
 
   const handleSubmit = async () => {
     if (isState == 1) {
-      console.log("update: ", formData);
+      try {
+        let result = await updateCategory(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      let result = await createCategory(formData);
-      console.log(result)
+      try {
+        let result = await createCategory(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     }
+    fetchData();
+    closeModal();
   };
 
   return (
@@ -54,11 +70,13 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Xác nhận"
               bgColor="#FFAA02"
-              onClick={() => handleSubmit()}></CustomButton>
+              onClick={() => handleSubmit()}
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}></CustomButton>
+              onClick={closeModal}
+            ></CustomButton>
           </div>
         </div>
       </div>

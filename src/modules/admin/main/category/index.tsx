@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Pagination from "../../../../components/Pagination";
 import { Form } from "./form";
@@ -8,13 +8,25 @@ import debounce from "lodash/debounce";
 import { SearchInput } from "../../../../components/inputs/search";
 import { CategoryModel } from "../../../../models/category";
 import { DeleteModal } from "../../../../components/DeleteModal";
+import {
+  deleteCategory,
+  getAllCategory,
+} from "../../../../services/category-service";
 export const CategoryCompoment: React.FC = () => {
-  const categoryData = [
-    {
-      id: "Trieu123",
-      name: "Bui Quoc Trieu",
-    },
-  ];
+  const [list, setList] = useState<CategoryModel[]>([]);
+
+  const fetchCategories = async () => {
+    try {
+      const result = await getAllCategory();
+      setList(result);
+    } catch (error) {
+      console.error("Error fetching categories: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const totalPageNumber = 10;
@@ -48,7 +60,7 @@ export const CategoryCompoment: React.FC = () => {
     []
   );
 
-  const [data, setData] = useState<CategoryModel>({ id: "", name: "" });
+  const [data, setData] = useState<CategoryModel>({ categoryId: "", name: "" });
 
   const handleEdit = (data: CategoryModel) => {
     handleModalOpen();
@@ -59,7 +71,7 @@ export const CategoryCompoment: React.FC = () => {
   const handleCreate = () => {
     handleModalOpen();
     setIsState(2);
-    setData({ id: "", name: "" });
+    setData({ categoryId: "", name: "" });
   };
 
   const clickDelete = (data: CategoryModel) => {
@@ -68,8 +80,11 @@ export const CategoryCompoment: React.FC = () => {
     setData(data);
   };
 
-  const handleDelete = (data: CategoryModel) => {
-    console.log("delete: ", data);
+  const handleDelete = async (data: CategoryModel) => {
+    let result = await deleteCategory(data.categoryId);
+    console.log(result);
+    fetchCategories();
+    handleModalClose();
   };
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,13 +121,13 @@ export const CategoryCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {categoryData.map((category, index) => (
+              {list.map((category, index) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
                 >
                   <td className="text-black border-b py-2 px-4">
-                    {category.id}
+                    {category.categoryId}
                   </td>
                   <td className="border-b py-2 px-4 text-black">
                     {category.name}
@@ -153,6 +168,7 @@ export const CategoryCompoment: React.FC = () => {
           formData={data}
           setData={setData}
           isState={isState}
+          fetchData={fetchCategories}
         />
       )}
 
