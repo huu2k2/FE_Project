@@ -1,48 +1,65 @@
 import { CustomButton } from "../../../../../components/CustomButton";
 import { TitleText } from "../../../../../components/texts/title";
+import { AccountModel } from "../../../../../models/account";
+import set from "lodash/set";
+import { RoleModel } from "../../../../../models/role";
+import {
+  createAccount,
+  updateAccount,
+} from "../../../../../services/account-service";
 
 interface FormPros {
   closeModal: () => void;
-  formData: {
-    ho: string;
-    ten: string;
-    username: string;
-    password: string;
-    address: string;
-    phone: string;
-    role: string;
-    CCCD: string;
-  };
-
-  setData: (value: {
-    ho: string;
-    ten: string;
-    username: string;
-    password: string;
-    address: string;
-    phone: string;
-    role: string;
-    CCCD: string;
-  }) => void;
-
+  formData: AccountModel;
+  setData: (value: AccountModel) => void;
   isUpdate: boolean;
+  roles: RoleModel[];
+  fetchAccount: () => void;
 }
 export const Form: React.FC<FormPros> = ({
   closeModal,
   formData,
   setData,
   isUpdate,
+  roles,
+  fetchAccount,
 }: FormPros) => {
-  const handleChangeData = (value: string, key: string) => {
-    setData({ ...formData, [key]: value });
+  const handleChangeData = (value: string, path: string) => {
+    const updatedData = { ...formData };
+
+    if (path === "isActive") {
+      if (value === "Hoạt động") {
+        set(updatedData, path, true);
+      } else {
+        set(updatedData, path, false);
+      }
+    } else {
+      set(updatedData, path, value);
+    }
+
+    setData(updatedData);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (isUpdate) {
       console.log("update", formData);
+      try {
+        let result = await updateAccount(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       console.log("create", formData);
+      try {
+        let result = await createAccount(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     }
+    fetchAccount();
+    closeModal();
   };
 
   return (
@@ -56,57 +73,73 @@ export const Form: React.FC<FormPros> = ({
                 <h5 className="text-lg font-bold text-black">Họ :</h5>
                 <input
                   type="text"
-                  id="ho"
-                  value={formData.ho}
-                  onChange={(e) => handleChangeData(e.target.value, "ho")}
+                  id="lastName"
+                  value={formData.profile.lastName}
+                  onChange={(e) =>
+                    handleChangeData(e.target.value, "profile.lastName")
+                  }
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập họ"
                 />
               </div>
 
-              <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
-                <h5 className="text-lg font-bold text-black">Tên đăng nhập:</h5>
-                <input
-                  type="text"
-                  id="username"
-                  value={formData.username}
-                  onChange={(e) => handleChangeData(e.target.value, "username")}
-                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
-                  placeholder="Nhập tên đăng nhập"
-                />
-              </div>
+              {!isUpdate && (
+                <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
+                  <h5 className="text-lg font-bold text-black">
+                    Tên đăng nhập:
+                  </h5>
+                  <input
+                    type="text"
+                    id="username"
+                    value={formData.username}
+                    onChange={(e) =>
+                      handleChangeData(e.target.value, "username")
+                    }
+                    className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
+                    placeholder="Nhập tên đăng nhập"
+                  />
+                </div>
+              )}
 
               <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
                 <h5 className="text-lg font-bold text-black">Tên :</h5>
                 <input
                   type="text"
                   id="ten"
-                  value={formData.ten}
-                  onChange={(e) => handleChangeData(e.target.value, "ten")}
+                  value={formData.profile.firstName}
+                  onChange={(e) =>
+                    handleChangeData(e.target.value, "profile.firstName")
+                  }
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập tên"
                 />
               </div>
 
-              <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
-                <h5 className="text-lg font-bold text-black">Mật khẩu :</h5>
-                <input
-                  type="text"
-                  id="password"
-                  value={formData.password}
-                  onChange={(e) => handleChangeData(e.target.value, "password")}
-                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
-                  placeholder="Nhập mật khẩu"
-                />
-              </div>
+              {!isUpdate && (
+                <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
+                  <h5 className="text-lg font-bold text-black">Mật khẩu :</h5>
+                  <input
+                    type="password"
+                    id="password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      handleChangeData(e.target.value, "password")
+                    }
+                    className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
+                    placeholder="Nhập mật khẩu"
+                  />
+                </div>
+              )}
 
               <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
                 <h5 className="text-lg font-bold text-black">Địa chỉ :</h5>
                 <input
                   type="text"
                   id="address"
-                  value={formData.address}
-                  onChange={(e) => handleChangeData(e.target.value, "address")}
+                  value={formData.profile.address}
+                  onChange={(e) =>
+                    handleChangeData(e.target.value, "profile.address")
+                  }
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập địa chỉ"
                 />
@@ -132,8 +165,10 @@ export const Form: React.FC<FormPros> = ({
                 <input
                   type="text"
                   id="phone"
-                  value={formData.phone}
-                  onChange={(e) => handleChangeData(e.target.value, "phone")}
+                  value={formData.profile.phoneNumber}
+                  onChange={(e) =>
+                    handleChangeData(e.target.value, "profile.phoneNumber")
+                  }
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập số điện thoại"
                 />
@@ -143,16 +178,35 @@ export const Form: React.FC<FormPros> = ({
                 <h5 className="text-lg font-bold text-black">Chức vụ :</h5>
                 <select
                   id="role"
-                  value={formData.role}
-                  onChange={(e) => handleChangeData(e.target.value, "role")}
-                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor">
+                  value={formData.role.roleId}
+                  onChange={(e) =>
+                    handleChangeData(e.target.value, "role.roleId")
+                  }
+                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
+                >
                   <option value="" disabled>
                     Chọn chức vụ
                   </option>
-                  <option value="admin">Admin</option>
-                  <option value="customer">Customer</option>
-                  <option value="staff">Staff</option>
-                  <option value="chef">Chef</option>
+                  {roles.map((role) => (
+                    <option key={role.roleId} value={role.roleId}>
+                      {role.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
+                <h5 className="text-lg font-bold text-black">Trạng thái:</h5>
+                <select
+                  id="role"
+                  value={formData.isActive ? "Hoạt động" : "Nghỉ"}
+                  onChange={(e) => {
+                    handleChangeData(e.target.value, "isActive");
+                  }}
+                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
+                >
+                  <option value="Hoạt động">Hoạt động</option>
+                  <option value="Nghỉ">Nghỉ</option>
                 </select>
               </div>
 
@@ -161,8 +215,10 @@ export const Form: React.FC<FormPros> = ({
                 <input
                   type="text"
                   id="CCCD"
-                  value={formData.CCCD}
-                  onChange={(e) => handleChangeData(e.target.value, "CCCD")}
+                  value={formData.profile.cccd}
+                  onChange={(e) =>
+                    handleChangeData(e.target.value, "profile.cccd")
+                  }
                   className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập CCCD"
                 />
@@ -174,11 +230,13 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Tạo nhân viên"
               bgColor="#FFAA02"
-              onClick={handleSave}></CustomButton>
+              onClick={handleSave}
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}></CustomButton>
+              onClick={closeModal}
+            ></CustomButton>
           </div>
         </div>
       </div>

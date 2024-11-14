@@ -18,7 +18,7 @@ export const CategoryCompoment: React.FC = () => {
   const fetchCategories = async () => {
     try {
       const result = await getAllCategory();
-      setList(result);
+      setList(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
     }
@@ -82,7 +82,7 @@ export const CategoryCompoment: React.FC = () => {
 
   const handleDelete = async (data: CategoryModel) => {
     let result = await deleteCategory(data.categoryId);
-    console.log(result);
+    console.log(result.data);
     fetchCategories();
     handleModalClose();
   };

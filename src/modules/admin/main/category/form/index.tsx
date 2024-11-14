@@ -30,14 +30,14 @@ export const Form: React.FC<FormPros> = ({
     if (isState == 1) {
       try {
         let result = await updateCategory(formData);
-        console.log(result);
+        console.log(result.data);
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
         let result = await createCategory(formData);
-        console.log(result);
+        console.log(result.data);
       } catch (error) {
         console.log(error);
       }

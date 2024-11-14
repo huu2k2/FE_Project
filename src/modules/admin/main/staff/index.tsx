@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Pagination from "../../../../components/Pagination";
 import { Form } from "./form";
@@ -7,34 +7,39 @@ import { CreateButton } from "../../../../components/buttons/createButton";
 import debounce from "lodash/debounce";
 import { SearchInput } from "../../../../components/inputs/search";
 import { DropDown } from "../../../../components/dropdowns/dropdows";
+import { AccountModel } from "../../../../models/account";
+import { RoleModel } from "../../../../models/role";
+import { getAllRole } from "../../../../services/role-service";
+import { getAllAccount } from "../../../../services/account-service";
 export const StaffCompoment: React.FC = () => {
-  const userData = [
-    {
-      username: "Trieu123",
-      type: "Bui Quoc Trieu",
-      role: "Nhan vien",
-      status: "Active",
-    },
-    {
-      username: "Trieu123",
-      type: "Bui Quoc Trieu",
-      role: "Nhan vien",
-      status: "Active",
-    },
-    {
-      username: "Trieu123",
-      type: "Bui Quoc Trieu",
-      role: "Nhan vien",
-      status: "Active",
-    },
-    {
-      username: "Trieu123",
-      type: "Bui Quoc Trieu",
-      role: "Nhan vien",
-      status: "Active",
-    },
-  ];
-  const categories = ["Tất cả", "Quản lý", "Nhân viên", "Bếp"];
+  const [list, setList] = useState<AccountModel[]>([]);
+
+  const [roles, setRoles] = useState<RoleModel[]>([]);
+
+  const fetchRoles = async () => {
+    try {
+      const result = await getAllRole();
+      setRoles(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchAccount = async () => {
+    try {
+      const result = await getAllAccount();
+      setList(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRoles();
+    fetchAccount();
+  }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const totalPageNumber = 10;
   const offset = 2;
@@ -45,19 +50,6 @@ export const StaffCompoment: React.FC = () => {
     }
   };
 
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const handleModalClose = () => {
-  //   setIsModalOpen(false);
-  // };
-
-  // const handleModalOpen = () => {
-  //   setIsModalOpen(true);
-  // };
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
-  const handleOpenForm = () => setIsFormOpen(true);
-  const handleCloseForm = () => setIsFormOpen(false);
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
 
@@ -70,75 +62,83 @@ export const StaffCompoment: React.FC = () => {
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setTextSearch(value); // Immediate update for input field
-    debounceSearch(value); // Update `debouncedText` after delay
+    setTextSearch(value);
+    debounceSearch(value);
   };
-  // handle call api search text
 
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const [data, setData] = useState({
-    ho: "",
-    ten: "",
+  const [data, setData] = useState<AccountModel>({
+    accountId: "",
     username: "",
     password: "",
-    address: "",
-    phone: "",
-    role: "",
-    CCCD: "",
+    role: {
+      roleId: "",
+      name: "",
+    },
+    isActive: false,
+    profile: {
+      profileId: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      phoneNumber: "",
+      cccd: "",
+    },
   });
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
   const handleCreate = () => {
-    handleOpenForm();
     setIsUpdate(false);
+    setIsModalOpen(true);
     setData({
-      ho: "",
-      ten: "",
+      accountId: "",
       username: "",
       password: "",
-      address: "",
-      phone: "",
-      role: "",
-      CCCD: "",
+      role: {
+        roleId: "",
+        name: "",
+      },
+      isActive: true,
+      profile: {
+        profileId: "",
+        firstName: "",
+        lastName: "",
+        address: "",
+        phoneNumber: "",
+        cccd: "",
+      },
     });
   };
 
-  const handleEdit = (
-    ho: string,
-    ten: string,
-    username: string,
-    password: string,
-    addres: string,
-    phone: string,
-    role: string,
-    CCCD: string
-  ) => {
-    handleOpenForm();
+  const handleEdit = (account: AccountModel) => {
     setIsUpdate(true);
-    setData({
-      ho: ho,
-      ten: ten,
-      username: username,
-      password: password,
-      address: addres,
-      phone: phone,
-      role: role,
-      CCCD: CCCD,
-    });
+    setIsModalOpen(true);
+    setData(account);
   };
 
-  console.log(debouncedText);
   return (
     <>
       <div className="p-4 bg-gray-100 min-h-screen">
-        <TitleText name="Quản lý món ăn" />
+        <TitleText name="Quản lý nhân viên" />
         <div className="bg-white p-4 rounded-lg shadow-md">
           <div className="flex items-center justify-between mb-4">
             <CreateButton
               name={"Tạo nhân viên"}
               handleOpenForm={handleCreate}
             />
-            <DropDown categories={categories} />
+            <DropDown
+              categories={
+                Array.isArray(roles) ? roles.map((item) => item.name) : []
+              }
+            />
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>
 
@@ -163,36 +163,29 @@ export const StaffCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {userData.map((user, index) => (
+              {list.map((account, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                >
                   <td className="text-black border-b py-2 px-4">
-                    {user.username}
+                    {account.username}
                   </td>
-                  <td className="text-black border-b py-2 px-4">{user.type}</td>
                   <td className="text-black border-b py-2 px-4">
-                    {user.role === "Quan li" ? "Phục vụ" : user.role}
+                    {account.profile.lastName} {account.profile.firstName}
+                  </td>
+                  <td className="text-black border-b py-2 px-4">
+                    {account.role.name}
                   </td>
                   <td className="border-b py-2 px-4 text-black">
-                    {user.status}
+                    {account.isActive ? "Hoạt dộng" : "Nghỉ"}
                   </td>
                   <td className="border-b py-2 px-4">
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() =>
-                          handleEdit(
-                            "ho",
-                            "ten",
-                            user.username,
-                            "password",
-                            "addres",
-                            "phone",
-                            user.role,
-                            "CCCD"
-                          )
-                        }>
+                        onClick={() => handleEdit(account)}
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                     </div>
@@ -206,16 +199,19 @@ export const StaffCompoment: React.FC = () => {
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}></Pagination>
+              goToPage={handlePageChange}
+            ></Pagination>
           </div>
         </div>
       </div>
-      {isFormOpen && (
+      {isModalOpen && (
         <Form
-          closeModal={handleCloseForm}
+          roles={roles}
+          closeModal={handleModalClose}
           formData={data}
           setData={setData}
           isUpdate={isUpdate}
+          fetchAccount={fetchAccount}
         />
       )}
     </>

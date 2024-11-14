@@ -1,11 +1,14 @@
 import axiosInstance from "../api";
+import { API } from "../models/api";
 import { CategoryModel } from "../models/category";
 import baseUrl from "../utils/baseURL";
 
-const createCategory = (data: { name: string }): Promise<CategoryModel> => {
+const createCategory = (data: {
+  name: string;
+}): Promise<API<CategoryModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<CategoryModel>(
+      let result = await axiosInstance.post<API<CategoryModel>>(
         `${baseUrl}/categories/`,
         data
       );
@@ -16,10 +19,10 @@ const createCategory = (data: { name: string }): Promise<CategoryModel> => {
   });
 };
 
-const getAllCategory = (): Promise<CategoryModel[]> => {
+const getAllCategory = (): Promise<API<CategoryModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<CategoryModel[]>(
+      let result = await axiosInstance.get<API<CategoryModel[]>>(
         `${baseUrl}/categories/`
       );
       resolve(result.data);
@@ -29,10 +32,10 @@ const getAllCategory = (): Promise<CategoryModel[]> => {
   });
 };
 
-const updateCategory = (data: CategoryModel): Promise<CategoryModel> => {
+const updateCategory = (data: CategoryModel): Promise<API<CategoryModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.put<CategoryModel>(
+      let result = await axiosInstance.put<API<CategoryModel>>(
         `${baseUrl}/categories/${data.categoryId}`,
         data
       );
@@ -43,10 +46,10 @@ const updateCategory = (data: CategoryModel): Promise<CategoryModel> => {
   });
 };
 
-const deleteCategory = (id: string): Promise<boolean> => {
+const deleteCategory = (id: string): Promise<API<boolean>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.delete<boolean>(
+      let result = await axiosInstance.delete<API<boolean>>(
         `${baseUrl}/categories/${id}`
       );
       resolve(result.data);
