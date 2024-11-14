@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useCallback, useState } from "react";
 import { Form } from "./form/index";
 
@@ -8,22 +8,28 @@ import { AreaItem } from "../../../../components/AreaItem";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
 import { SearchInput } from "../../../../components/inputs/search";
+import { getAllArea } from "../../../../services/area-service";
 
 import debounce from "lodash/debounce";
-
-type Area = {
-  id: string;
-  name: string;
-};
-
-const areas: Area[] = Array(6).fill({
-  id: "01",
-  name: "A",
-});
+import { AreaModel } from "../../../../models/area";
 
 export const AreaCompoment: React.FC = () => {
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
+  const [areaList, setAreaList] = useState<AreaModel[]>([]);
+
+  const fetchAreas = async () => {
+    try {
+      const result = await getAllArea();
+      setAreaList(result);
+    } catch (error) {
+      console.error("Error fetching areas: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAreas();
+  }, []);
 
   const debounceSearch = useCallback(
     debounce((value: string) => {
@@ -42,7 +48,7 @@ export const AreaCompoment: React.FC = () => {
 
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const [data, setData] = useState({ id: "", name: "" });
+  const [data, setData] = useState({ areaId: "", name: "" });
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -56,13 +62,13 @@ export const AreaCompoment: React.FC = () => {
   const handleCreate = () => {
     handleModalOpen();
     setIsUpdate(false);
-    setData({ id: "", name: "" });
+    setData({ areaId: "", name: "" });
   };
 
   const handleEdit = (idArea: string, nameArea: string) => {
     handleModalOpen();
     setIsUpdate(true);
-    setData({ id: idArea, name: nameArea });
+    setData({ areaId: idArea, name: nameArea });
   };
 
   return (
@@ -76,7 +82,7 @@ export const AreaCompoment: React.FC = () => {
             handleOpenForm={() => handleCreate()}
           />
           <span className="text-black font-bold" style={{ fontSize: "20px" }}>
-            Tổng số khu vực: {areas.length}
+            Tổng số khu vực: {areaList.length}
           </span>
 
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
@@ -84,15 +90,15 @@ export const AreaCompoment: React.FC = () => {
 
         {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {areas.map((area, index) => (
+          {areaList.map((area, index) => (
             <AreaItem
               key={index}
               area={{
-                id: area.id,
+                id: area.areaId,
                 name: area.name,
               }}
-              handleEdit={() => handleEdit(area.id, area.name)}
-            ></AreaItem>
+              handleEdit={() => handleEdit(area.areaId, area.name)}
+              fetchData={() => fetchAreas()}></AreaItem>
           ))}
         </div>
       </div>
@@ -103,6 +109,7 @@ export const AreaCompoment: React.FC = () => {
           formData={data}
           setData={setData}
           isUpdate={isUpdate}
+          fetchData={fetchAreas}
         />
       )}
     </div>

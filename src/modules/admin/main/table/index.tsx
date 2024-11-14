@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
@@ -6,16 +6,24 @@ import { SearchInput } from "../../../../components/inputs/search";
 import { TableItem } from "../../../../components/TableItem";
 import { Form } from "./form";
 import { TableModel } from "../../../../models/table";
-
-const tables: TableModel[] = Array(8).fill({
-  id: "tb5143541243534",
-  name: "Bàn 12",
-  status: "empty",
-  area: "Khu vực A",
-});
+import { getAllTable } from "../../../../services/table-service";
 
 export const TableCompoment: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const [tableList, setTableList] = useState<TableModel[]>([]);
+  const fetchTables = async () => {
+    try {
+      const result = await getAllTable();
+      setTableList(result);
+    } catch (error) {
+      console.error("Error fetching areas: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTables();
+  }, []);
 
   const handleOpenForm = () => setIsFormOpen(true);
   const handleCloseForm = () => setIsFormOpen(false);
@@ -42,22 +50,33 @@ export const TableCompoment: React.FC = () => {
 
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const [data, setData] = useState({ id: "", name: "", area: "" });
+  const [data, setData] = useState({
+    tableId: "",
+    name: "",
+    status: "",
+    areaId: "",
+  });
 
   const handleCreate = () => {
     handleOpenForm();
     setIsUpdate(false);
-    setData({ id: "", name: "", area: "" });
+    setData({ tableId: "", name: "", status: "", areaId: "" });
   };
 
   const handleEdit = (
     idTable: string,
     nameTable: string,
+    status: string,
     tableArea: string
   ) => {
     handleOpenForm();
     setIsUpdate(true);
-    setData({ id: idTable, name: nameTable, area: tableArea });
+    setData({
+      tableId: idTable,
+      name: nameTable,
+      status: status,
+      areaId: tableArea,
+    });
   };
 
   return (
@@ -72,17 +91,24 @@ export const TableCompoment: React.FC = () => {
 
         {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {tables.map((table, index) => (
+          {tableList.map((table, index) => (
             <TableItem
               key={index}
               table={{
-                id: table.id,
+                tableId: table.tableId,
                 name: table.name,
                 status: table.status,
-                area: table.area,
+                areaId: table.areaId,
               }}
-              handleEdit={() => handleEdit(table.id, table.name, table.area)}
-            ></TableItem>
+              handleEdit={() =>
+                handleEdit(
+                  table.tableId,
+                  table.name,
+                  table.status,
+                  table.areaId
+                )
+              }
+              fetchData={() => fetchTables()}></TableItem>
           ))}
         </div>
       </div>
@@ -93,6 +119,7 @@ export const TableCompoment: React.FC = () => {
           formData={data}
           setData={setData}
           isUpdate={isUpdate}
+          fetchData={fetchTables}
         />
       )}
     </div>

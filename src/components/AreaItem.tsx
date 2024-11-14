@@ -1,10 +1,12 @@
 import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
 import { DeleteModal } from "./DeleteModal";
+import { deleteArea } from "../services/area-service";
 
 interface AreaPros {
   area: { id: string; name: string };
   handleEdit: (value: { idArea: string; nameArea: string }) => void;
+  fetchData: () => void;
 }
 
 export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
@@ -18,8 +20,20 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
     data.handleEdit({ idArea: data.area.id, nameArea: data.area.name });
   };
 
-  const handleDelete = () => {
+  const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const handleDeleteArea = async () => {
+    try {
+      let result = await deleteArea(data.area.id);
+      // reload items
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+    data.fetchData();
+    setIsModalOpen(false);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,10 +44,7 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
         <DeleteModal
           title="Bạn chắc chắn xoá khu vực này"
           closeModel={() => setIsModalOpen(false)}
-          handle={() => {
-            console.log("Deleted", data.area);
-          }}
-        ></DeleteModal>
+          handle={() => handleDeleteArea()}></DeleteModal>
       )}
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -45,17 +56,15 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 setMenuPosition({ top: rect.bottom, left: rect.right - 100 });
                 setShowMenu((prev) => !prev);
-              }}
-            >
+              }}>
               <i
                 className="fa-solid fa-ellipsis fa-2xl"
-                style={{ color: "#000000" }}
-              ></i>
+                style={{ color: "#000000" }}></i>
             </button>
             {showMenu && (
               <MenuEditDelete
                 onEdit={handleShowEditForm}
-                onDelete={handleDelete}
+                onDelete={openModal}
                 onClose={() => setShowMenu(false)}
                 position={menuPosition}
               />
@@ -70,8 +79,7 @@ export const AreaItem: React.FC<AreaPros> = (data: AreaPros) => {
         <div className="p-4 bg-backgroundColor text-white">
           <h2
             className="text-md font-bold text-black"
-            style={{ textAlign: "center" }}
-          >
+            style={{ textAlign: "center" }}>
             {data.area.name}
           </h2>
         </div>

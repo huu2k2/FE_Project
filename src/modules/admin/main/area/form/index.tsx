@@ -1,15 +1,17 @@
 import { CustomButton } from "../../../../../components/CustomButton";
+import { createArea, updateArea } from "../../../../../services/area-service";
 
 interface FormPros {
   closeModal: () => void;
 
   formData: {
-    id: string;
+    areaId: string;
     name: string;
   };
 
-  setData: (value: { id: string; name: string }) => void;
+  setData: (value: { areaId: string; name: string }) => void;
   isUpdate: boolean;
+  fetchData: () => void;
 }
 
 export const Form: React.FC<FormPros> = ({
@@ -17,17 +19,30 @@ export const Form: React.FC<FormPros> = ({
   formData,
   setData,
   isUpdate,
+  fetchData,
 }: FormPros) => {
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isUpdate) {
-      console.log("update", formData);
+      try {
+        let result = await updateArea(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      console.log("create", formData);
+      try {
+        let result = await createArea(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     }
+    fetchData();
+    closeModal();
   };
 
   return (

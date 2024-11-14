@@ -1,17 +1,31 @@
+import { useEffect, useState } from "react";
 import { CustomButton } from "../../../../../components/CustomButton";
 import QRCodeGenerator from "../../../../../components/QRCodeGenerator";
+import { getAllArea } from "../../../../../services/area-service";
+import {
+  createTable,
+  updateTable,
+} from "../../../../../services/table-service";
+import { AreaModel } from "../../../../../models/area";
 
 interface FormPros {
   closeModal: () => void;
 
   formData: {
-    id: string;
+    tableId: string;
     name: string;
-    area: string;
+    status: string;
+    areaId: string;
   };
 
-  setData: (value: { id: string; name: string; area: string }) => void;
+  setData: (value: {
+    tableId: string;
+    name: string;
+    status: string;
+    areaId: string;
+  }) => void;
   isUpdate: boolean;
+  fetchData: () => void;
 }
 
 export const Form: React.FC<FormPros> = ({
@@ -19,17 +33,46 @@ export const Form: React.FC<FormPros> = ({
   formData,
   setData,
   isUpdate,
+  fetchData,
 }: FormPros) => {
+  const [areaList, setAreaList] = useState<AreaModel[]>([]);
+
+  const fetchAreas = async () => {
+    try {
+      const result = await getAllArea();
+      setAreaList(result);
+    } catch (error) {
+      console.error("Error fetching areas: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAreas();
+  }, []);
+
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isUpdate) {
-      console.log("update", formData);
+      try {
+        let result = await updateTable(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      console.log("create", formData);
+      try {
+        let result = await createTable(formData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    fetchData();
+    closeModal();
   };
 
   return (
@@ -45,7 +88,7 @@ export const Form: React.FC<FormPros> = ({
               {/* Hiển thị QR code nếu isUpdate là true */}
               {isUpdate && (
                 <div className="mr-4 flex-shrink-0">
-                  <QRCodeGenerator value={formData.id} size={128} />
+                  <QRCodeGenerator value={formData.tableId} size={128} />
                 </div>
               )}
               <div className="flex flex-col flex-grow">
@@ -53,8 +96,7 @@ export const Form: React.FC<FormPros> = ({
                 <div className="flex items-center mb-4">
                   <label
                     htmlFor="name"
-                    className="font-semibold text-black mr-2 min-w-[70px]"
-                  >
+                    className="font-semibold text-black mr-2 min-w-[70px]">
                     Tên bàn
                   </label>
                   <input
@@ -71,23 +113,21 @@ export const Form: React.FC<FormPros> = ({
                 <div className="flex items-center">
                   <label
                     htmlFor="area"
-                    className="font-semibold text-black mr-2 min-w-[70px]"
-                  >
+                    className="font-semibold text-black mr-2 min-w-[70px]">
                     Khu vực
                   </label>
 
                   <select
-                    value={formData.area}
-                    onChange={(e) => handleChangeData(e.target.value, "area")}
-                    className="select w-full text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
-                  >
-                    <option disabled selected>
-                      Chọn khu vực
-                    </option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
+                    value={formData.areaId}
+                    onChange={(e) => handleChangeData(e.target.value, "areaId")}
+                    className="select w-full text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor">
+                    <option selected>Chọn khu vực</option>
+                    {/* Duyệt danh sách areas và tạo option */}
+                    {areaList.map((area) => (
+                      <option key={area.areaId} value={area.areaId}>
+                        {area.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -98,13 +138,11 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Xác nhận"
               bgColor="#FFAA02"
-              onClick={() => handleSubmit()}
-            ></CustomButton>
+              onClick={() => handleSubmit()}></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}
-            ></CustomButton>
+              onClick={closeModal}></CustomButton>
           </div>
         </div>
       </div>
