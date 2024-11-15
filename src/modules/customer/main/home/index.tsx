@@ -1,110 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../../../../assets/logo.png";
 import { ProductItem } from "../../../../components/customer/productItem";
 import CategoryItem from "../../../../components/customer/categoryItem";
-
-const categories = [
-  { name: "Tất cả", image: "https://via.placeholder.com/150" },
-  { name: "Bánh mì", image: "https://via.placeholder.com/150" },
-  { name: "Hủ tiếu", image: "https://via.placeholder.com/150" },
-  { name: "Phở", image: "https://via.placeholder.com/150" },
-];
-
-const products = [
-  {
-    id: "1231",
-    image: "https://via.placeholder.com/150",
-    title: "Hủ tiếu kho",
-    price: "45.000đ",
-  },
-  {
-    id: "123425231",
-    image: "https://via.placeholder.com/150",
-    title: "Bò kho",
-    price: "45.000đ",
-  },
-  {
-    id: "127944331",
-    image: "https://via.placeholder.com/150",
-    title: "Cá lóc nướng",
-    price: "45.000đ",
-  },
-  {
-    id: "122223431",
-    image: "https://via.placeholder.com/150",
-    title: "Mỳ ý sốt bò",
-    price: "45.000đ",
-  },
-  {
-    id: "23423424",
-    image: "https://via.placeholder.com/150",
-    title: "Cơm sườn bò",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-  {
-    id: "23028374924",
-    image: "https://via.placeholder.com/150",
-    title: "Beefsteak",
-    price: "45.000đ",
-  },
-];
+import { getAllCategory } from "../../../../services/category-service";
+import { CategoryModel } from "../../../../models/category";
+import { ProductModel } from "../../../../models/product";
+import { getProductByCategoryId } from "../../../../services/product-service";
 
 export const HomeComponent: React.FC = () => {
+  const [categories, setCategories] = useState<CategoryModel[]>([]);
+  const [products, setProduct] = useState<ProductModel[]>([]);
+  const [category, setCategory] = useState<CategoryModel>({
+    categoryId: "all",
+    name: "Tất cả",
+  });
+
+  const fetchCategories = async () => {
+    try {
+      const result = await getAllCategory();
+      setCategories(result.data);
+    } catch (error) {
+      console.error("Error fetching categories: ", error);
+    }
+  };
+
+  const fetchProducts = async (categoryId: string) => {
+    try {
+      const result = await getProductByCategoryId(categoryId);
+      setProduct(result.data);
+      console.log(result);
+    } catch (error) {
+      console.error("Error fetching products: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    fetchProducts(category.categoryId);
+    console.log(category);
+  }, [category]);
+
   return (
     <div className="px-4 pt-4 min-h-screen overscroll-none">
       <div className="flex items-center">
@@ -131,18 +69,25 @@ export const HomeComponent: React.FC = () => {
           className="flex  overflow-x-auto  scrollbar-hide"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
+          <CategoryItem
+            key={0}
+            data={{ categoryId: "all", name: "Tất cả" }}
+            handleSelected={setCategory}
+          />
           {categories.map((category, index) => (
             <CategoryItem
               key={index}
-              name={category.name}
-              image={category.image}
+              data={category}
+              handleSelected={setCategory}
             />
           ))}
         </div>
       </div>
 
       <div className="h-full mb-20">
-        <h2 className="text-[30px] text-black font-bold mb-4">Tất cả</h2>
+        <h2 className="text-[30px] text-black font-bold mb-4">
+          {category.name}
+        </h2>
         <div
           className="overflow-y-auto w-full h-[528px]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -150,13 +95,7 @@ export const HomeComponent: React.FC = () => {
           {" "}
           <div className="grid grid-cols-2 gap-4">
             {products.map((product, index) => (
-              <ProductItem
-                key={index}
-                id={product.id}
-                image={product.image}
-                title={product.title}
-                price={product.price}
-              />
+              <ProductItem key={index} data={product} />
             ))}
           </div>
         </div>

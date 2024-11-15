@@ -1,17 +1,27 @@
 import React from "react";
+import { CategoryModel } from "../../models/category";
 
 interface CategoryItemProps {
-  image: string;
-  name: string;
+  data: CategoryModel;
+  handleSelected: (data: CategoryModel) => void;
 }
 
-const CategoryItem: React.FC<CategoryItemProps> = ({ image, name }) => {
+const CategoryItem: React.FC<CategoryItemProps> = ({
+  data,
+  handleSelected,
+}) => {
   return (
-    <div className="flex flex-col items-center text-center text-gray-600 min-w-[100px] rounded-[20px] h-full">
-      <div className="w-16 h-16 bg-gray-100  rounded-[20px] flex items-center justify-center ">
-        <img src={image} alt={name} className="w-full h-full rounded-[20px]" />
-      </div>
-      <span className="text-[20px]">{name}</span>
+    <div className="flex flex-col items-center text-center text-gray-600  rounded-[20px] h-full mx-2">
+      <button
+        className="w-20 h-20 bg-gray-100  rounded-[20px] flex items-center justify-center "
+        onClick={() => handleSelected(data)}
+      >
+        <img
+          src="https://via.placeholder.com/150"
+          className="w-full h-full rounded-[20px]"
+        />
+      </button>
+      <span className="text-[20px]">{data.name}</span>
     </div>
   );
 };

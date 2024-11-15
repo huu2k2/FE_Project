@@ -25,22 +25,20 @@ export const ProductCompoment: React.FC = () => {
 
   const handleOpenForm = () => setIsFormOpen(true);
   const handleCloseForm = () => setIsFormOpen(false);
-  // ====================
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
 
-  // Define a debounced function
   const debounceSearch = useCallback(
     debounce((value: string) => {
-      setDebouncedText(value); // Update only after debounce delay
-    }, 500), // Adjust delay as needed (500ms here)
+      setDebouncedText(value);
+    }, 500),
     []
   );
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setTextSearch(value); // Immediate update for input field
-    debounceSearch(value); // Update `debouncedText` after delay
+    setTextSearch(value);
+    debounceSearch(value);
   };
 
   const [isUpdate, setIsUpdate] = useState(false);
@@ -50,7 +48,7 @@ export const ProductCompoment: React.FC = () => {
     type: string;
     price: string;
     describe: string;
-    image?: string; // Make image optional
+    image?: string;
   }>({
     name: "",
     type: "",

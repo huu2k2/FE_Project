@@ -1,34 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { OrderItem } from "../../../../components/customer/orderItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
+import { getCart } from "../../../../services/cart-service";
 
 export const Cart: React.FC = () => {
-  const items = [
-    {
-      id: 1,
-      name: "Hủ tiếu kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "Bò kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-    {
-      id: 3,
-      name: "Cá kho",
-      price: 45000,
-      imageSrc: "https://via.placeholder.com/150",
-    },
-  ];
+  const items = getCart() || []; // Đảm bảo items luôn là mảng
 
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [quantities, setQuantities] = useState<number[]>(
     Array(items.length).fill(1)
   );
+
+  // Tính toán tổng tiền với useMemo
+  const totalAmount = useMemo(() => {
+    return items.reduce((acc, item, index) => {
+      if (selectedItems.includes(item.id)) {
+        return acc + item.price * quantities[index];
+      }
+      return acc;
+    }, 0);
+  }, [selectedItems, quantities, items]);
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -39,7 +31,7 @@ export const Cart: React.FC = () => {
     setSelectAll(!selectAll);
   };
 
-  const handleItemSelect = (id: number) => {
+  const handleItemSelect = (id: string) => {
     setSelectedItems((prevSelectedItems) =>
       prevSelectedItems.includes(id)
         ? prevSelectedItems.filter((itemId) => itemId !== id)
@@ -55,35 +47,20 @@ export const Cart: React.FC = () => {
     );
   };
 
-  const totalAmount = items.reduce((acc, item, index) => {
-    if (selectedItems.includes(item.id)) {
-      return acc + item.price * quantities[index];
-    }
-    return acc;
-  }, 0);
-
-  useEffect(() => {
-    function handleSelectAll() {
-      const isFullCheck = selectedItems.length === items.length;
-      setSelectAll(isFullCheck);
-    }
-    handleSelectAll();
-  }, [selectedItems]);
-
   const submit = () => {
     const filteredItems = items.filter((item) =>
       selectedItems.includes(item.id)
     );
-    console.log(filteredItems);
+    console.log("Đơn hàng:", filteredItems);
   };
 
+  useEffect(() => {
+    setSelectAll(selectedItems.length === items.length);
+  }, [selectedItems, items]);
+
   return (
-    <div className="p-4  min-h-screen mt-[40px] mb-[136px]">
-      <CustomerHeader
-        isBack={false}
-        title="Đơn gọi"
-        bg={"white"}
-      ></CustomerHeader>
+    <div className="p-4 min-h-screen mt-[40px] mb-[136px]">
+      <CustomerHeader isBack={false} title="Đơn gọi" bg={"white"} />
 
       <div className="flex flex-col ">
         {items.map((item, index) => (
