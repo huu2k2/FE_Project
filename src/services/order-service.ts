@@ -2,6 +2,7 @@ import axiosInstance from "../api";
 import { OrderStatus } from "../enum/enum";
 import { API } from "../models/api";
 import { OrderModel } from "../models/order";
+import { OrderDetailModel } from "../models/orderdetail";
 import baseUrl from "../utils/baseURL";
 
 const createOrder = (data: {
@@ -67,4 +68,25 @@ const updateOrder = (
   });
 };
 
-export { createOrder, getAllOrders, getOrderById, updateOrder };
+const getOrderDetailByOrderId = (
+  orderId: String
+): Promise<API<OrderDetailModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderDetailModel[]>>(
+        `${baseUrl}/orders/${orderId}/detail`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export {
+  createOrder,
+  getAllOrders,
+  getOrderById,
+  updateOrder,
+  getOrderDetailByOrderId,
+};

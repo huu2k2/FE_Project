@@ -10,7 +10,7 @@ export const Payment: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const orderId = "123";
+      const orderId = "18e10579-a324-11ef-8e57-0242ac130002";
       const result = await getOrderDetailByOrderId(orderId);
       setOrderDetails(result.data);
     } catch (error) {
