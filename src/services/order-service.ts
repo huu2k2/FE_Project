@@ -1,15 +1,17 @@
 import axiosInstance from "../api";
+import { OrderStatus } from "../enum/enum";
 import { API } from "../models/api";
-import { OrderDetailModel } from "../models/orderdetail";
+import { OrderModel } from "../models/order";
 import baseUrl from "../utils/baseURL";
 
-const getOrderDetailByOrderId = (
-  orderId: string
-): Promise<API<OrderDetailModel[]>> => {
+const createOrder = (data: {
+  customerId: string;
+}): Promise<API<OrderModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<API<OrderDetailModel[]>>(
-        `${baseUrl}/orders/${orderId}/detail`
+      let result = await axiosInstance.post<API<OrderModel>>(
+        `${baseUrl}/orders/`,
+        data
       );
       resolve(result.data);
     } catch (error) {
@@ -18,4 +20,51 @@ const getOrderDetailByOrderId = (
   });
 };
 
-export { getOrderDetailByOrderId };
+const getAllOrders = (): Promise<API<OrderModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderModel[]>>(
+        `${baseUrl}/orders/`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const getOrderById = (orderId: string): Promise<API<OrderModel>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderModel>>(
+        `${baseUrl}/orders/${orderId}`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const updateOrder = (
+  orderId: string,
+  data: {
+    totalAmount: number;
+    status: OrderStatus;
+    orderMergeId?: string | null;
+  }
+): Promise<API<OrderModel>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.put<API<OrderModel>>(
+        `${baseUrl}/customers/${orderId}`,
+        data
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export { createOrder, getAllOrders, getOrderById, updateOrder };

@@ -51,6 +51,7 @@ export const Cart: React.FC = () => {
     const filteredItems = items.filter((item) =>
       selectedItems.includes(item.id)
     );
+    // call api
     console.log("Đơn hàng:", filteredItems);
   };
 
