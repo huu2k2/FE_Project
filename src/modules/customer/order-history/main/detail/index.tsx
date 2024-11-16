@@ -1,104 +1,44 @@
+import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../../components/CustomerHeader";
 import { FinishOrderItem } from "../../../../../components/FinishOrderItem";
+import { OrderDetailModel } from "../../../../../models/orderDetail";
+import { getOrderDetailByOrderId } from "../../../../../services/order-detail-service";
+import { useParams } from "react-router-dom";
 
 export const DetailComponent: React.FC = () => {
-  const data = [
-    {
-      id: "asd",
-      name: "Món đã xác nhận",
-      price: 2,
-      quantity: 2,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
+  const [detailOrders, setDetailOrders] = useState<OrderDetailModel[]>([]);
+  const { orderId } = useParams<{ orderId: string }>();
 
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
+  const fetchData = async () => {
+    if (!orderId) {
+      console.error("Order ID is undefined!");
+      return;
+    }
 
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-    {
-      id: "asdasd",
-      name: "Món đã xác nhận",
-      price: 3,
-      quantity: 3,
-    },
-  ];
+    try {
+      const result = await getOrderDetailByOrderId(orderId);
+      if (Array.isArray(result.data)) {
+        setDetailOrders(result.data); // Gán dữ liệu vào state
+        console.log("Order details: ", result.data);
+      } else {
+        console.error("Unexpected response format. Expected an array.");
+      }
+    } catch (error) {
+      console.error("Error fetching order details: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
       <CustomerHeader
         isBack={true}
-        title="Bàn A02 - 27/10/2024"
-      ></CustomerHeader>
+        title="Bàn A02 - 27/10/2024"></CustomerHeader>
       <div className="flex flex-col mt-[40px]">
-        {data.map((item, index) => (
+        {detailOrders.map((item) => (
           <FinishOrderItem data={item}></FinishOrderItem>
         ))}
       </div>

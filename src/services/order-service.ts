@@ -2,7 +2,7 @@ import axiosInstance from "../api";
 import { OrderStatus } from "../enum/enum";
 import { API } from "../models/api";
 import { OrderModel } from "../models/order";
-import { OrderDetailModel } from "../models/orderdetail";
+import { OrderDetailModel } from "../models/orderDetail";
 import baseUrl from "../utils/baseURL";
 
 const createOrder = (data: {
