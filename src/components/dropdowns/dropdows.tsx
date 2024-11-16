@@ -2,9 +2,10 @@ import { useState } from "react";
 import { CategoryModel } from "../../models/category";
 interface DropDownProps<T> {
   categories: T[];
-  setIdCategory:React.Dispatch<React.SetStateAction<string>>
+  setIdCategory:React.Dispatch<React.SetStateAction<string>>,
+  W:string,
 }
-export const DropDown=  <T extends CategoryModel> ({ categories,setIdCategory }: DropDownProps<T>): React.ReactElement => {
+export const DropDown=  <T extends CategoryModel> ({ categories,setIdCategory,W }: DropDownProps<T>): React.ReactElement => {
   const selectedCategoryDefault:CategoryModel = {name: "Tất cả" , categoryId: ""}
   const [selectedCategory, setSelectedCategory] = useState<CategoryModel>(selectedCategoryDefault);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -20,7 +21,7 @@ export const DropDown=  <T extends CategoryModel> ({ categories,setIdCategory }:
   }
   return (
     <>
-      <div className="relative z-10 w-[296px] h-[50px] gap-4">
+      <div className={`relative z-10  w-[${W}]  h-[50px] gap-4`}>
         <button
           onClick={toggleDropdown}
           className="bg-gray-300 text-black w-full px-4 py-2 rounded-lg font-bold"
@@ -29,7 +30,7 @@ export const DropDown=  <T extends CategoryModel> ({ categories,setIdCategory }:
           {selectedCategory.name}
         </button>
         {isDropdownOpen && (
-          <div className="absolute w-[calc(100%-16px)] h-[200px]  no-scrollbar overflow-scroll left-2 right-2 top-full mt-2 bg-gray-300 border rounded-lg shadow-lg p-2">
+          <div className="absolute w-[calc(100%-16px)] h-[150px]  no-scrollbar overflow-scroll left-2 right-2 top-full mt-2 bg-gray-300 border rounded-lg shadow-lg p-2">
             <button
                 
                 onClick={()=>handleOnClick(selectedCategoryDefault)}

@@ -73,20 +73,20 @@ export const ProductCompoment: React.FC = () => {
     name: string;
     type: string;
     price: string;
-    describe: string;
+    description: string;
     image?: string;
   }>({
     name: "",
     type: "",
     price: "",
-    describe: "",
+    description: "",
     image: "",
   });
 
   const handleCreate = () => {
     handleOpenForm();
     setIsUpdate(false);
-    setData({ name: "", type: "", price: "", describe: "", image: "" });
+    setData({ name: "", type: "", price: "", description: "", image: "" });
   };
 
   const handleEdit = (
@@ -100,7 +100,7 @@ export const ProductCompoment: React.FC = () => {
       name: nameProduct,
       price: priceProduct,
       type,
-      describe: "",
+      description: "",
       image: "",
     });
   };
@@ -119,7 +119,7 @@ export const ProductCompoment: React.FC = () => {
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
 
           {/* Drop down */}
-          <DropDown categories={list} setIdCategory={setIdCategory} />
+          <DropDown categories={list} setIdCategory={setIdCategory} W={'200px'}/>
         </div>
 
         {/* Items */}
@@ -155,6 +155,7 @@ export const ProductCompoment: React.FC = () => {
           formData={data}
           setData={setData}
           isUpdate={isUpdate}
+          list={list}
         />
       )}
     </div>
