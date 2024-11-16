@@ -1,29 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DropDown } from "../../../../../components/dropdowns/dropdows";
 import {
   CategoryModel,
   CreateProductDto,
 } from "../../../../../models/category";
-import { createProduct } from "../../../../../services/product-service";
-import {toast } from 'react-toastify';
+import { createProduct, updateProduct } from "../../../../../services/product-service";
+import { toast } from "react-toastify";
+import { ProductModel } from "../../../../../models/product";
 interface IFormData {
   closeModal: () => void;
-
-  formData: {
-    name: string;
-    price: string;
-    description: string;
-    type: string;
-    image?: string;
-  };
-
-  setData: (value: {
-    name: string;
-    price: string;
-    description: string;
-    type: string;
-    image?: string;
-  }) => void;
+  formData: ProductModel;
+  setData: (value: ProductModel) => void;
   isUpdate: boolean;
   list: CategoryModel[];
 }
@@ -34,6 +21,7 @@ export const Form: React.FC<IFormData> = ({
   isUpdate,
   list,
 }: IFormData) => {
+
   const [getIdCategory, setIdCategory] = useState<string>("");
   const handleOpenImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -49,29 +37,47 @@ export const Form: React.FC<IFormData> = ({
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
   };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
+    if (isLoading) return; // Ngăn chặn việc nhấn nhiều lần
+
+    setIsLoading(true); // Đặt trạng thái đang tải
     const data: CreateProductDto = {
-      name:formData.name,
-      description:formData.description,
+      name: formData.name,
+      description: formData.description,
       image: formData.image as string,
       categoryId: getIdCategory,
       price: Number(formData.price),
-      isActive:true
+      isActive: true,
     };
-    if (isUpdate) {
-    } else {
-      console.log("created", data);
-      const rs = await createProduct(data);
-      if(rs){
-        toast.success("Tao sản phẩm mới thành công!")
-        closeModal()
+
+    try {
+      if (isUpdate) {
+        const rs = await updateProduct(formData.productId,data);
+        if (rs) {
+          toast.success("Cập nhật sản phẩm thành công!");
+          closeModal();
+        } else {
+          toast.error("Cập nhật sản phẩm thất bại!");
+        }
+      } else {
+        const rs = await createProduct(data);
+        if (rs) {
+          toast.success("Tạo sản phẩm mới thành công!");
+          closeModal();
+        } else {
+          toast.error("Tạo sản phẩm mới thất bại!");
+        }
       }
-      else{
-        toast.error("Tao sản phẩm mới thất bại!")
-      }
+    } catch (error) {
+ 
+      toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+    } finally {
+      setIsLoading(false); // Kết thúc tải
     }
   };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
       <div className="bg-white p-6 rounded-lg w-1/2">
@@ -106,6 +112,7 @@ export const Form: React.FC<IFormData> = ({
 
             <label className="block mb-2">Loại:</label>
             <DropDown
+              defaultValue={formData.category}
               categories={list}
               setIdCategory={setIdCategory}
               W={"100%"}

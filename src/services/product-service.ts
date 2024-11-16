@@ -69,10 +69,33 @@ const createProduct = async (data: CreateProductDto) => {
   return result.data;
 };
 
+const updateProduct = async (id:string ,data: CreateProductDto) => {
+  const result = await axiosInstance.put<ProductModel>(
+    `${baseUrl}/products/${id}`,
+    data
+  );
+  return result.data;
+};
+
+const deleteProduct =async (id: string): Promise<any>=> {
+ 
+    try {
+      let result = await axiosInstance.delete<API<boolean>>(
+        `${baseUrl}/products/${id}`
+      );
+       return result.data
+    } catch (error) {
+       
+    }
+ 
+};
+
 export {
   getAllProduct,
   getProductByCategoryId,
   getProductById,
   getRandProduct,
   createProduct,
+  deleteProduct,
+  updateProduct
 };
