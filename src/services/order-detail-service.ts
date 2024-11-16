@@ -4,11 +4,9 @@ import { API } from "../models/api";
 import { OrderDetailModel } from "../models/orderDetail";
 import baseUrl from "../utils/baseURL";
 
-const createOrderDetail = (data: {
-  orderId: string;
-  productId: string;
-  quantity: number;
-}): Promise<API<OrderDetailModel>> => {
+const createOrderDetail = (
+  data: OrderDetailModel[]
+): Promise<API<OrderDetailModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.post<API<OrderDetailModel>>(

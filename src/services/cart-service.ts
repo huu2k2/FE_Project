@@ -46,4 +46,4 @@ const clearCart = (): void => {
   localStorage.removeItem("cart");
 };
 
-export { getCart, addToCart, updateQuantity, clearCart };
+export { getCart, addToCart, updateQuantity, clearCart, removeFromCart };

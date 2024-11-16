@@ -35,8 +35,12 @@ export const Payment: React.FC = () => {
     setPaymentMethod(e.target.value);
   };
 
-  const handleSubmit = () => {
-    createPayment("123", { method: paymentMethod, total: totalAmount });
+  const handleSubmit = async () => {
+    let result = await createPayment("18e10579-a324-11ef-8e57-0242ac130002", {
+      method: paymentMethod,
+      total: totalAmount,
+    });
+    console.log(result);
   };
 
   return (

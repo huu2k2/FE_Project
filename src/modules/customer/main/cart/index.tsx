@@ -1,26 +1,25 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { OrderItem } from "../../../../components/customer/orderItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
-import { getCart } from "../../../../services/cart-service";
+import { getCart, removeFromCart } from "../../../../services/cart-service";
+import { CartModel } from "../../../../models/cart";
+import { createOrderDetail } from "../../../../services/order-detail-service";
+import { OrderDetailModel } from "../../../../models/orderDetail";
+import { OrderDetailStatus } from "../../../../enum/enum";
 
 export const Cart: React.FC = () => {
-  const items = getCart() || []; // Đảm bảo items luôn là mảng
-
+  const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [quantities, setQuantities] = useState<number[]>(
-    Array(items.length).fill(1)
-  );
 
-  // Tính toán tổng tiền với useMemo
   const totalAmount = useMemo(() => {
-    return items.reduce((acc, item, index) => {
+    return items.reduce((acc, item) => {
       if (selectedItems.includes(item.id)) {
-        return acc + item.price * quantities[index];
+        return acc + item.price * item.quantity;
       }
       return acc;
     }, 0);
-  }, [selectedItems, quantities, items]);
+  }, [selectedItems, items]);
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -39,20 +38,43 @@ export const Cart: React.FC = () => {
     );
   };
 
-  const handleQuantityChange = (index: number, amount: number) => {
-    setQuantities((prevQuantities) =>
-      prevQuantities.map((quantity, i) =>
-        i === index ? Math.max(0, quantity + amount) : quantity
+  const handleQuantityChange = (id: string, amount: number) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(0, item.quantity + amount) }
+          : item
       )
     );
   };
 
-  const submit = () => {
+  useEffect(() => {
+    setItems(getCart());
+  }, []);
+
+  const submit = async () => {
+    let details: OrderDetailModel[] = [];
     const filteredItems = items.filter((item) =>
       selectedItems.includes(item.id)
     );
-    // call api
-    console.log("Đơn hàng:", filteredItems);
+
+    filteredItems.forEach((item) => {
+      details.push({
+        productId: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        status: OrderDetailStatus.PENDING,
+        orderId: "18e10579-a324-11ef-8e57-0242ac130002",
+      });
+    });
+    let reulst = await createOrderDetail(details);
+    console.log(reulst.data);
+    filteredItems.forEach((item) => {
+      removeFromCart(item.id);
+    });
+    setItems(getCart());
+    setSelectedItems([]);
+    setSelectAll(false);
   };
 
   useEffect(() => {
@@ -64,7 +86,7 @@ export const Cart: React.FC = () => {
       <CustomerHeader isBack={false} title="Đơn gọi" bg={"white"} />
 
       <div className="flex flex-col ">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <OrderItem
             key={item.id}
             name={item.name}
@@ -72,8 +94,8 @@ export const Cart: React.FC = () => {
             imageSrc={item.imageSrc}
             selected={selectedItems.includes(item.id)}
             onSelect={() => handleItemSelect(item.id)}
-            quantity={quantities[index]}
-            onQuantityChange={(amount) => handleQuantityChange(index, amount)}
+            quantity={item.quantity}
+            onQuantityChange={(amount) => handleQuantityChange(item.id, amount)}
           />
         ))}
       </div>

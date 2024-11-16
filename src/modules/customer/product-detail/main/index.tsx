@@ -7,7 +7,7 @@ import {
   getProductById,
   getRandProduct,
 } from "../../../../services/product-service";
-import { addToCart } from "../../../../services/cart-service";
+import { addToCart, getCart } from "../../../../services/cart-service";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +21,7 @@ const ProductDetail: React.FC = () => {
       imageSrc: product!.image,
     });
     navigate("/home");
+    console.log(getCart());
   };
 
   const navigate = useNavigate();
