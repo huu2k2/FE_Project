@@ -2,6 +2,8 @@ import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
 import { DeleteModal } from "./DeleteModal";
 import { ProductModel } from "../models/product";
+import { deleteProduct } from "../services/product-service";
+import { toast } from "react-toastify";
 
 interface ProductPros {
   product: ProductModel;
@@ -19,12 +21,7 @@ export const ProductItem: React.FC<ProductPros> = ({
   }>({ top: 0, left: 0 });
 
   const handleShowEditForm = () => {
-    handleEdit({
-      image: product.image,
-      name: product.name,
-      price: product.price,
-      type: product.type,
-    });
+    handleEdit(product);
   };
 
   const handleDelete = () => {
@@ -32,16 +29,35 @@ export const ProductItem: React.FC<ProductPros> = ({
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const fetchDeteleProduct = async (id: string) => {
+    if (isLoading) return;  
+  
+    setIsLoading(true);  
+    try {
+      const rs = await deleteProduct(id);
+      if (rs) {
+        toast.success("Xóa sản phẩm thành công");
+        setShowMenu(false);
+      } else {
+        toast.error("Xóa sản phẩm thất bại");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+    } finally {
+      setIsLoading(false);  
+    }
+  };
+  
   return (
     <>
       {isModalOpen && (
         <DeleteModal
           title="Bạn chắc chắn sản phẩm này"
           closeModel={() => setIsModalOpen(false)}
-          handle={() => {
-            console.log("Deleted", product);
-          }}
+          handle={async () => fetchDeteleProduct(product.productId)}
         ></DeleteModal>
       )}
 
@@ -77,13 +93,12 @@ export const ProductItem: React.FC<ProductPros> = ({
             className="w-full h-40 object-cover"
           />
         </div>
-        <div className="p-4 bg-backgroundColor text-white">
+        <div className="p-4 bg-backgroundColor text-white h-full">
           <h2 className="text-md font-bold text-black">{product.name}</h2>
           <div className="flex space-x-2">
             <p className="font-bold text-black">Giá:</p>
             <p>{product.price} VNĐ</p>
           </div>
- 
         </div>
       </div>
     </>
