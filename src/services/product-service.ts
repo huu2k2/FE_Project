@@ -1,15 +1,16 @@
 import axiosInstance from "../api";
 import { API } from "../models/api";
+import { CreateProductDto } from "../models/category";
 import { ProductModel, ProductQuery } from "../models/product";
 import baseUrl from "../utils/baseURL";
 
-const getAllProduct = (query:ProductQuery): Promise<ProductModel[]> => {
+const getAllProduct = (query: ProductQuery): Promise<ProductModel[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.get<ProductModel[]>(
-        `${baseUrl}/products/`
-        , {
-          params: query, 
+        `${baseUrl}/products/`,
+        {
+          params: query,
         }
       );
       resolve(result.data);
@@ -60,9 +61,18 @@ const getProductById = (productId: string): Promise<API<ProductModel>> => {
   });
 };
 
+const createProduct = async (data: CreateProductDto) => {
+  const result = await axiosInstance.post<ProductModel>(
+    `${baseUrl}/products`,
+    data
+  );
+  return result.data;
+};
+
 export {
   getAllProduct,
   getProductByCategoryId,
   getProductById,
   getRandProduct,
+  createProduct,
 };

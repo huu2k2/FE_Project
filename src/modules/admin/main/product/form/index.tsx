@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-
+import { DropDown } from "../../../../../components/dropdowns/dropdows";
+import {
+  CategoryModel,
+  CreateProductDto,
+} from "../../../../../models/category";
+import { createProduct } from "../../../../../services/product-service";
+import {toast } from 'react-toastify';
 interface IFormData {
   closeModal: () => void;
 
   formData: {
     name: string;
     price: string;
-    describe: string;
+    description: string;
     type: string;
     image?: string;
   };
@@ -14,18 +20,21 @@ interface IFormData {
   setData: (value: {
     name: string;
     price: string;
-    describe: string;
+    description: string;
     type: string;
     image?: string;
   }) => void;
   isUpdate: boolean;
+  list: CategoryModel[];
 }
 export const Form: React.FC<IFormData> = ({
   closeModal,
   formData,
   setData,
   isUpdate,
+  list,
 }: IFormData) => {
+  const [getIdCategory, setIdCategory] = useState<string>("");
   const handleOpenImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -41,11 +50,26 @@ export const Form: React.FC<IFormData> = ({
     setData({ ...formData, [key]: value });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    const data: CreateProductDto = {
+      name:formData.name,
+      description:formData.description,
+      image: formData.image as string,
+      categoryId: getIdCategory,
+      price: Number(formData.price),
+      isActive:true
+    };
     if (isUpdate) {
-      console.log("update", formData);
     } else {
-      console.log("create", formData);
+      console.log("created", data);
+      const rs = await createProduct(data);
+      if(rs){
+        toast.success("Tao sản phẩm mới thành công!")
+        closeModal()
+      }
+      else{
+        toast.error("Tao sản phẩm mới thất bại!")
+      }
     }
   };
   return (
@@ -66,6 +90,7 @@ export const Form: React.FC<IFormData> = ({
             <input
               className="w-full p-2 mb-4 border rounded bg-gray-200 text-black placeholder:text-gray-500"
               placeholder="Giá"
+              type="number"
               value={formData.price}
               onChange={(e) => handleChangeData(e.target.value, "price")}
             />
@@ -75,27 +100,24 @@ export const Form: React.FC<IFormData> = ({
               className="w-full p-2 mb-4 border rounded bg-gray-200 text-black placeholder:text-gray-500"
               placeholder="Mô tả"
               rows={3}
-              value={formData.describe}
-              onChange={(e) => handleChangeData(e.target.value, "describe")}
+              value={formData.description}
+              onChange={(e) => handleChangeData(e.target.value, "description")}
             />
 
             <label className="block mb-2">Loại:</label>
-            <select
-              className="w-full p-2 mb-2 border rounded bg-gray-200 text-black placeholder:text-gray-500"
-              value={formData.type}
-              onChange={(e) => handleChangeData(e.target.value, "type")}>
-              <option>Phở</option>
-              <option>Mì</option>
-              <option>Cơm</option>
-              <option>Hủ Tiếu</option>
-            </select>
+            <DropDown
+              categories={list}
+              setIdCategory={setIdCategory}
+              W={"100%"}
+            />
           </div>
 
           <div className="flex flex-col items-center ">
             <label className="block mb-2">Thêm ảnh</label>
             <label
               htmlFor="openImage"
-              className="w-full h-full bg-gray-300 flex items-center justify-center rounded mb-4 cursor-pointer relative">
+              className="w-full h-full bg-gray-300 flex items-center justify-center rounded mb-4 cursor-pointer relative"
+            >
               {formData.image ? (
                 <img
                   src={formData.image}
@@ -124,12 +146,14 @@ export const Form: React.FC<IFormData> = ({
         <div className="flex justify-end">
           <button
             onClick={closeModal}
-            className="px-4 py-2 bg-red-500 text-white rounded mr-2">
+            className="px-4 py-2 bg-red-500 text-white rounded mr-2"
+          >
             Huỷ
           </button>
           <button
             className="px-4 py-2 bg-yellow-500 text-white rounded"
-            onClick={handleSave}>
+            onClick={handleSave}
+          >
             Lưu món
           </button>
         </div>
