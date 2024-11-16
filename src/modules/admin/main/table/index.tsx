@@ -15,7 +15,7 @@ export const TableCompoment: React.FC = () => {
   const fetchTables = async () => {
     try {
       const result = await getAllTable();
-      setTableList(result);
+      setTableList(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
     }
@@ -27,15 +27,14 @@ export const TableCompoment: React.FC = () => {
 
   const handleOpenForm = () => setIsFormOpen(true);
   const handleCloseForm = () => setIsFormOpen(false);
-  // ====================
+
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
 
-  // Define a debounced function
   const debounceSearch = useCallback(
     debounce((value: string) => {
-      setDebouncedText(value); // Update only after debounce delay
-    }, 500), // Adjust delay as needed (500ms here)
+      setDebouncedText(value);
+    }, 500),
     []
   );
 
@@ -44,9 +43,6 @@ export const TableCompoment: React.FC = () => {
     setTextSearch(value);
     debounceSearch(value);
   };
-
-  // handle call api search text
-  // console.log(debouncedText);
 
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -108,7 +104,8 @@ export const TableCompoment: React.FC = () => {
                   table.areaId
                 )
               }
-              fetchData={() => fetchTables()}></TableItem>
+              fetchData={() => fetchTables()}
+            ></TableItem>
           ))}
         </div>
       </div>

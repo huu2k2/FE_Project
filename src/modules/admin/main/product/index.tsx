@@ -40,7 +40,7 @@ export const ProductCompoment: React.FC = () => {
   const fetchCategories = useCallback(async () => {
     try {
       const result = await getAllCategory();
-      setList(result);
+      setList(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
     }
@@ -139,7 +139,11 @@ export const ProductCompoment: React.FC = () => {
             ></ProductItem>
           ))}
           {products.length === 0 && (
-            <div className={"sm:col-span-4 lg:col-span-4 w-full flex justify-center items-center"}>
+            <div
+              className={
+                "sm:col-span-4 lg:col-span-4 w-full flex justify-center items-center"
+              }
+            >
               <img
                 src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
                 className={""}

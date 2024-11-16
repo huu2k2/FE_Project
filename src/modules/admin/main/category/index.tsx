@@ -18,7 +18,7 @@ export const CategoryCompoment: React.FC = () => {
   const fetchCategories = async () => {
     try {
       const result = await getAllCategory();
-      setList(result);
+      setList(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
     }
@@ -120,7 +120,7 @@ export const CategoryCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {list?.map((category, index) => (
+              {list.map((category, index) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
