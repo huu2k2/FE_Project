@@ -11,7 +11,7 @@ const RouterHome: RouteObject = {
       element: <ListComponent />,
     },
     {
-      path: "history/:id",
+      path: "history/:orderId",
       element: <DetailComponent />,
     },
   ],

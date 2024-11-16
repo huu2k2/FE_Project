@@ -1,103 +1,35 @@
 import { CustomerHeader } from "../../../../../components/CustomerHeader";
 import { HistoryOrderItem } from "../../../../../components/HistoryOrderItem";
+import { useEffect, useState } from "react";
+import { OrderModel } from "../../../../../models/order";
+import { getAllOrders } from "../../../../../services/order-service";
 
 export const ListComponent: React.FC = () => {
-  const data = [
-    {
-      id: "asd",
-      title: "Bàn A02",
-      description: "Món ăn “Hủ tiếu của bạn đang được nấu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
+  const [orders, setOrders] = useState<OrderModel[]>([]);
 
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
+  const fetchData = async () => {
+    try {
+      const result = await getAllOrders();
+      console.log(result.data);
+      setOrders(result.data);
+    } catch (error) {
+      console.error("Error fetching categories: ", error);
+    }
+  };
 
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-    {
-      id: "asdd",
-      title: "Bàn A03",
-      description: "Bếp không đủ nguyên liệu. 27/10/2024 16:40pm",
-    },
-  ];
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
       <CustomerHeader
         isBack={true}
         title="Lịch sử đơn gọi"
-        bg="white"
-      ></CustomerHeader>
+        bg="white"></CustomerHeader>
       <div className="flex flex-col mt-[40px]">
-        {data.map((item, index) => (
-          <HistoryOrderItem data={item}></HistoryOrderItem>
+        {orders.map((item) => (
+          <HistoryOrderItem key={item.orderId} data={item}></HistoryOrderItem>
         ))}
       </div>
     </>

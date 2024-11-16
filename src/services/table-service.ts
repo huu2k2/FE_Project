@@ -1,6 +1,7 @@
 import axiosInstance from "../api";
 import { API } from "../models/api";
 import { TableModel } from "../models/table";
+import { TableDetailModel } from "../models/tableDetail";
 import baseUrl from "../utils/baseURL";
 
 const createTable = (data: {
@@ -60,4 +61,23 @@ const deleteTable = (id: string): Promise<API<boolean>> => {
   });
 };
 
-export { createTable, getAllTable, updateTable, deleteTable };
+const createTableDetail = (id: string): Promise<API<TableDetailModel>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.post<API<TableDetailModel>>(
+        `${baseUrl}/tables/${id}/detail`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export {
+  createTable,
+  getAllTable,
+  updateTable,
+  deleteTable,
+  createTableDetail,
+};
