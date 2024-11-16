@@ -1,5 +1,5 @@
 import imageUrl from "../assets/product.webp";
-import { OrderDetailModel } from "../models/orderdetail";
+import { OrderDetailModel } from "../models/orderDetail";
 
 interface FinishOrderItemPros {
   data: OrderDetailModel;

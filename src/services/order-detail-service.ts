@@ -43,7 +43,7 @@ const getOrderDetailByOrderId = (
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.get<API<OrderDetailModel>>(
-        `${baseUrl}/orders/:orderId/detail/${orderId}`
+        `${baseUrl}/orders/${orderId}/detail`
       );
       resolve(result.data);
     } catch (error) {
