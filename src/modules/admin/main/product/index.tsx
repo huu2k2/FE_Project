@@ -1,0 +1,162 @@
+import { useCallback, useState, useEffect } from "react";
+import { Form } from "./form";
+
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import { ProductItem } from "../../../../components/ProductItem";
+import { TitleText } from "../../../../components/texts/title";
+import { CreateButton } from "../../../../components/buttons/createButton";
+import { SearchInput } from "../../../../components/inputs/search";
+
+import debounce from "lodash/debounce";
+import { DropDown } from "../../../../components/dropdowns/dropdows";
+import { ProductModel, ProductQuery } from "../../../../models/product";
+import { getAllProduct } from "../../../../services/product-service";
+import { getAllCategory } from "../../../../services/category-service";
+import { CategoryModel } from "../../../../models/category";
+
+const categories = ["Tất cả", "Mì", "Cơm", "Hải sản"];
+
+export const ProductCompoment: React.FC = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const handleOpenForm = () => setIsFormOpen(true);
+  const handleCloseForm = () => setIsFormOpen(false);
+  const [textSearch, setTextSearch] = useState<string>("");
+  const [debouncedText, setDebouncedText] = useState<string>("");
+  const [getIdCategory, setIdCategory] = useState<string>("");
+  const [products, setProducts] = useState<ProductModel[]>([]);
+  const [list, setList] = useState<CategoryModel[]>([]);
+
+  const fetchProducts = async () => {
+    const query: ProductQuery = {
+      categoryId: getIdCategory,
+      isActive: "true",
+      search: debouncedText,
+    };
+    const result: ProductModel[] = await getAllProduct(query);
+    setProducts(result);
+  };
+  const fetchCategories = useCallback(async () => {
+    try {
+      const result = await getAllCategory();
+      setList(result);
+    } catch (error) {
+      console.error("Error fetching categories: ", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const debounceSearch = useCallback(
+    debounce((value: string) => {
+      setDebouncedText(value);
+    }, 500),
+    []
+  );
+
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setTextSearch(value);
+    debounceSearch(value);
+  };
+
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const [data, setData] = useState<{
+    name: string;
+    type: string;
+    price: string;
+    describe: string;
+    image?: string;
+  }>({
+    name: "",
+    type: "",
+    price: "",
+    describe: "",
+    image: "",
+  });
+
+  const handleCreate = () => {
+    handleOpenForm();
+    setIsUpdate(false);
+    setData({ name: "", type: "", price: "", describe: "", image: "" });
+  };
+
+  const handleEdit = (
+    nameProduct: string,
+    priceProduct: string,
+    type: string
+  ) => {
+    handleOpenForm();
+    setIsUpdate(true);
+    setData({
+      name: nameProduct,
+      price: priceProduct,
+      type,
+      describe: "",
+      image: "",
+    });
+  };
+
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <TitleText name="Quản lý món ăn" />
+      <div className="bg-white p-4 rounded-lg shadow-md">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <CreateButton name={"Tạo món ăn"} handleOpenForm={handleCreate} />
+          <span className="text-black font-bold" style={{ fontSize: "20px" }}>
+            Tổng các món ăn: {products.length}
+          </span>
+
+          <SearchInput handleSearch={handleChangeText} value={textSearch} />
+
+          {/* Drop down */}
+          <DropDown categories={list} setIdCategory={setIdCategory} />
+        </div>
+
+        {/* Items */}
+        <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {products.map((product, index) => (
+            <ProductItem
+              key={index}
+              product={{
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                type: product.price,
+              }}
+              handleEdit={() =>
+                handleEdit(product.name, product.price, product.type)
+              }
+            ></ProductItem>
+          ))}
+          {products.length === 0 && (
+            <div className={"sm:col-span-4 lg:col-span-4 w-full flex justify-center items-center"}>
+              <img
+                src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
+                className={""}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {isFormOpen && (
+        <Form
+          closeModal={handleCloseForm}
+          formData={data}
+          setData={setData}
+          isUpdate={isUpdate}
+        />
+      )}
+    </div>
+  );
+};

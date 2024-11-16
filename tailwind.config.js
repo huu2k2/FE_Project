@@ -5,12 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        backgroundColor: '#FFAA02',  
+            
+      },
+    },
   },
   plugins: [require("daisyui")],
-  // Optional: You can configure daisyUI options here
+
   daisyui: {
-    themes: ["light", "dark"], // You can add more themes or customize them
+    themes: ["light", "dark"], 
     darkTheme: "dark",
     base: true,
     styled: true,
