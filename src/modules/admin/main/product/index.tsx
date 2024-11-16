@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Form } from "./form";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -10,15 +10,12 @@ import { SearchInput } from "../../../../components/inputs/search";
 
 import debounce from "lodash/debounce";
 import { DropDown } from "../../../../components/dropdowns/dropdows";
-import { ProductModel } from "../../../../models/product";
+import { ProductModel, ProductQuery } from "../../../../models/product";
+import { getAllProduct } from "../../../../services/product-service";
+import { getAllCategory } from "../../../../services/category-service";
+import { CategoryModel } from "../../../../models/category";
 
 const categories = ["Tất cả", "Mì", "Cơm", "Hải sản"];
-
-const products: ProductModel[] = Array(6).fill({
-  name: "Phở Gà Hà Nội",
-  price: "30.000 vnđ",
-  type: "Phở",
-});
 
 export const ProductCompoment: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -27,6 +24,35 @@ export const ProductCompoment: React.FC = () => {
   const handleCloseForm = () => setIsFormOpen(false);
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
+  const [getIdCategory, setIdCategory] = useState<string>("");
+  const [products, setProducts] = useState<ProductModel[]>([]);
+  const [list, setList] = useState<CategoryModel[]>([]);
+
+  const fetchProducts = async () => {
+    const query: ProductQuery = {
+      categoryId: getIdCategory,
+      isActive: "true",
+      search: debouncedText,
+    };
+    const result: ProductModel[] = await getAllProduct(query);
+    setProducts(result);
+  };
+  const fetchCategories = useCallback(async () => {
+    try {
+      const result = await getAllCategory();
+      setList(result);
+    } catch (error) {
+      console.error("Error fetching categories: ", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const debounceSearch = useCallback(
     debounce((value: string) => {
@@ -66,21 +92,19 @@ export const ProductCompoment: React.FC = () => {
   const handleEdit = (
     nameProduct: string,
     priceProduct: string,
-    typeProduct: string
+    type: string
   ) => {
     handleOpenForm();
     setIsUpdate(true);
     setData({
       name: nameProduct,
       price: priceProduct,
-      type: typeProduct,
+      type,
       describe: "",
       image: "",
     });
   };
 
-  // handle call api search text
-  console.log(debouncedText);
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <TitleText name="Quản lý món ăn" />
@@ -95,7 +119,7 @@ export const ProductCompoment: React.FC = () => {
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
 
           {/* Drop down */}
-          <DropDown categories={categories} />
+          <DropDown categories={list} setIdCategory={setIdCategory} />
         </div>
 
         {/* Items */}
@@ -104,6 +128,7 @@ export const ProductCompoment: React.FC = () => {
             <ProductItem
               key={index}
               product={{
+                image: product.image,
                 name: product.name,
                 price: product.price,
                 type: product.price,
@@ -113,6 +138,14 @@ export const ProductCompoment: React.FC = () => {
               }
             ></ProductItem>
           ))}
+          {products.length === 0 && (
+            <div className={"sm:col-span-4 lg:col-span-4 w-full flex justify-center items-center"}>
+              <img
+                src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
+                className={""}
+              />
+            </div>
+          )}
         </div>
       </div>
 

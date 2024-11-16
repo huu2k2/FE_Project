@@ -1,8 +1,12 @@
 export interface ProductModel {
-  productId: string;
+  image:string;
   name: string;
-  description: string;
-  image: string;
-  imagePublicId: string;
-  price: number;
+  price: string;
+  type:string;
+}
+
+export interface ProductQuery {
+  categoryId?: string;
+  isActive?: string;
+  search?: string;
 }

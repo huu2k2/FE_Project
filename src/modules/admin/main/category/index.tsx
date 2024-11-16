@@ -18,7 +18,7 @@ export const CategoryCompoment: React.FC = () => {
   const fetchCategories = async () => {
     try {
       const result = await getAllCategory();
-      setList(result.data);
+      setList(result);
     } catch (error) {
       console.error("Error fetching categories: ", error);
     }
@@ -81,8 +81,7 @@ export const CategoryCompoment: React.FC = () => {
   };
 
   const handleDelete = async (data: CategoryModel) => {
-    let result = await deleteCategory(data.categoryId);
-    console.log(result.data);
+    let result = await deleteCategory(data.categoryId as string);
     fetchCategories();
     handleModalClose();
   };
@@ -121,7 +120,7 @@ export const CategoryCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {list.map((category, index) => (
+              {list?.map((category, index) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}

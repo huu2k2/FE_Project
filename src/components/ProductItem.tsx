@@ -8,7 +8,10 @@ interface ProductPros {
   handleEdit: (value: ProductModel) => void;
 }
 
-export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
+export const ProductItem: React.FC<ProductPros> = ({
+  product,
+  handleEdit,
+}: ProductPros) => {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{
     top: number;
@@ -16,10 +19,11 @@ export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
   }>({ top: 0, left: 0 });
 
   const handleShowEditForm = () => {
-    data.handleEdit({
-      name: data.product.name,
-      price: data.product.price,
-      type: data.product.type,
+    handleEdit({
+      image: product.image,
+      name: product.name,
+      price: product.price,
+      type: product.type,
     });
   };
 
@@ -36,7 +40,7 @@ export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
           title="Bạn chắc chắn sản phẩm này"
           closeModel={() => setIsModalOpen(false)}
           handle={() => {
-            console.log("Deleted", data.product);
+            console.log("Deleted", product);
           }}
         ></DeleteModal>
       )}
@@ -68,21 +72,18 @@ export const ProductItem: React.FC<ProductPros> = (data: ProductPros) => {
             )}
           </div>
           <img
-            src="https://via.placeholder.com/150"
-            alt={data.product.name}
+            src={product.image || "https://via.placeholder.com/150"}
+            alt={product.name}
             className="w-full h-40 object-cover"
           />
         </div>
         <div className="p-4 bg-backgroundColor text-white">
-          <h2 className="text-md font-bold text-black">{data.product.name}</h2>
+          <h2 className="text-md font-bold text-black">{product.name}</h2>
           <div className="flex space-x-2">
             <p className="font-bold text-black">Giá:</p>
-            <p>{data.product.price}</p>
+            <p>{product.price} VNĐ</p>
           </div>
-          <div className="flex space-x-2">
-            <p className="font-bold text-black">Loại:</p>
-            <p>{data.product.type}</p>
-          </div>
+ 
         </div>
       </div>
     </>

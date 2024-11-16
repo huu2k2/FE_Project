@@ -19,10 +19,10 @@ const createCategory = (data: {
   });
 };
 
-const getAllCategory = (): Promise<API<CategoryModel[]>> => {
+const getAllCategory = (): Promise<CategoryModel[]> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<API<CategoryModel[]>>(
+      let result = await axiosInstance.get<CategoryModel[]>(
         `${baseUrl}/categories/`
       );
       resolve(result.data);

@@ -1,13 +1,16 @@
 import axiosInstance from "../api";
 import { API } from "../models/api";
-import { ProductModel } from "../models/product";
+import { ProductModel, ProductQuery } from "../models/product";
 import baseUrl from "../utils/baseURL";
 
-const getAllProduct = (): Promise<API<ProductModel[]>> => {
+const getAllProduct = (query:ProductQuery): Promise<ProductModel[]> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<API<ProductModel[]>>(
+      let result = await axiosInstance.get<ProductModel[]>(
         `${baseUrl}/products/`
+        , {
+          params: query, 
+        }
       );
       resolve(result.data);
     } catch (error) {
