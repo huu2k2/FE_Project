@@ -10,30 +10,27 @@ import { useNavigate } from "react-router-dom";
 export const LoginPage: React.FC = () => {
   const [data, setDate] = useState<LocginModel>({ username: "", password: "" });
   const navigate = useNavigate();
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("advadv");
     const ks = await loginStaff(data);
     if (ks?.data) {
-      toast.success("Login thành công!");
-
-      // Giải mã token và kiểm tra vai trò
       const token = await decodeToken(ks?.data.token);
+      localStorage.setItem("token", ks?.data.token); // Lưu token vào localStorage
 
       if (token) {
-        console.log("Role:", token); // Kiểm tra role
         if (token?.role?.name === "ADMIN") {
-          // Nếu vai trò là Admin, chuyển hướng tới trang Admin
-          toast.success("Chào mừng Admin!");
-          // Điều hướng tới trang admin, ví dụ:
-          navigate('/management');
-        } else if (token?.role?.name === "User") {
-          // Nếu vai trò là User, điều hướng tới trang User
-          toast.success("Chào mừng người dùng!");
-          navigate('/user');
+          toast.success("Login thành công! Chào mừng ADMIN!");
+          navigate("/management");
+        } else if (token?.role?.name === "KITCHEN") {
+          toast.success("Login thành công! Chào mừng KITCHEN!");
+          navigate("/kitchen");
         } else {
-          // Thông báo nếu không phải Admin hay User
           toast.error("Vai trò không hợp lệ");
         }
       }
+    } else {
+      toast.error("Đăng nhập thất bại! Vui lòng kiểm tra thông tin.");
     }
   };
 
@@ -58,10 +55,7 @@ export const LoginPage: React.FC = () => {
             </h2>
             <form
               className="w-full flex flex-col items-center justify-center gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleLogin();
-              }}
+              onSubmit={(e) => handleLogin(e)}
             >
               <input
                 type="text"
@@ -85,7 +79,7 @@ export const LoginPage: React.FC = () => {
                 <CustomButton
                   bgColor="#FFAA02"
                   title="Đăng nhập"
-                  onClick={handleLogin}
+                  onClick={(e: any) => handleLogin(e)}
                 ></CustomButton>
               </div>
             </form>

@@ -32,9 +32,9 @@ export const ProductItem: React.FC<ProductPros> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchDeteleProduct = async (id: string) => {
-    if (isLoading) return;  
-  
-    setIsLoading(true);  
+    if (isLoading) return;
+
+    setIsLoading(true);
     try {
       const rs = await deleteProduct(id);
       if (rs) {
@@ -47,17 +47,20 @@ export const ProductItem: React.FC<ProductPros> = ({
       console.error("Error deleting product:", error);
       toast.error("Có lỗi xảy ra, vui lòng thử lại!");
     } finally {
-      setIsLoading(false);  
+      setIsLoading(false);
     }
   };
-  
+
   return (
     <>
       {isModalOpen && (
         <DeleteModal
           title="Bạn chắc chắn sản phẩm này"
           closeModel={() => setIsModalOpen(false)}
-          handle={async () => fetchDeteleProduct(product.productId)}
+          handle={async () => {
+            fetchDeteleProduct(product.productId);
+            setIsModalOpen(false);
+          }}
         ></DeleteModal>
       )}
 

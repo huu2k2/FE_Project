@@ -7,6 +7,7 @@ import {
 import { createProduct, updateProduct } from "../../../../../services/product-service";
 import { toast } from "react-toastify";
 import { ProductModel } from "../../../../../models/product";
+import { useLoading } from "../../../../../hooks/loading";
 interface IFormData {
   closeModal: () => void;
   formData: ProductModel;
@@ -37,17 +38,16 @@ export const Form: React.FC<IFormData> = ({
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
   };
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useLoading();
 
   const handleSave = async () => {
-    if (isLoading) return; // Ngăn chặn việc nhấn nhiều lần
-
-    setIsLoading(true); // Đặt trạng thái đang tải
+    if (isLoading) return;
+    setIsLoading(true); 
     const data: CreateProductDto = {
       name: formData.name,
       description: formData.description,
       image: formData.image as string,
-      categoryId: getIdCategory,
+      categoryId: getIdCategory || formData.categoryId,
       price: Number(formData.price),
       isActive: true,
     };
@@ -112,7 +112,7 @@ export const Form: React.FC<IFormData> = ({
 
             <label className="block mb-2">Loại:</label>
             <DropDown
-              defaultValue={formData.category}
+              defaultValue={formData.category || list[0]}
               categories={list}
               setIdCategory={setIdCategory}
               W={"100%"}

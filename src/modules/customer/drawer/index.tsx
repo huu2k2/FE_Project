@@ -1,3 +1,5 @@
+import { LogoutButton } from "../../../components/buttons/logoutButton";
+
 export const Drawer: React.FC = () => {
   return (
     <>
@@ -49,11 +51,7 @@ export const Drawer: React.FC = () => {
           </div>
 
           {/* Logout Button */}
-          <div className="p-4 bg-backgroundColor text-center rounded-r-[30px]">
-            <button className="bg-white px-4 py-2 text-[#ffaa02] rounded-full font-bold w-full">
-              Đăng xuất
-            </button>
-          </div>
+          <LogoutButton/>
         </div>
       </div>
     </>

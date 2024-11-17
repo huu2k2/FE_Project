@@ -1,4 +1,5 @@
 import logo from "../../../assets/logo.png";
+import { LogoutButton } from "../../../components/buttons/logoutButton";
 export const NavBar: React.FC = () => {
   return (
     <>
@@ -6,14 +7,7 @@ export const NavBar: React.FC = () => {
         <div className="w-fix h-[40px]">
           <img src={logo} alt="Logo" className="h-[100%]" />
         </div>
-        <div>
-          <button
-            type="submit"
-            className={` w-[200px] py-2 text-white text-sm font-bold px-4 rounded-lg hover:bg-[#FFAA02]/80 bg-[#FFAA02]`}
-          >
-            Đăng xuất
-          </button>
-        </div>
+        <LogoutButton/>
       </nav>
     </>
   );

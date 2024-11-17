@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import { CategoryModel } from "../../models/category";
 
-interface DropDownProps<T> {
-  categories: T[];
+interface DropDownProps<CategoryModel> {
+  categories: CategoryModel[];
   setIdCategory: React.Dispatch<React.SetStateAction<string>>;
   W: string;
-  defaultValue?: T;
+  defaultValue?: CategoryModel;
 }
 
-export const DropDown = <T extends CategoryModel>({
+export const DropDown = ({
   categories,
   setIdCategory,
   W,
   defaultValue,
-}: DropDownProps<T>): React.ReactElement => {
+}: DropDownProps<CategoryModel>): React.ReactElement => {
   const def = {
     name: "Tất cả",
     categoryId: "",

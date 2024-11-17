@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from './useAuth';
+import { useAuth } from './use-auth';
 
 interface AuthGuardProps {
   children: ReactNode;

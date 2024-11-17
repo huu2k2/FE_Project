@@ -2,6 +2,9 @@ import { jwtDecode } from "jwt-decode";
 
 // Định nghĩa kiểu dữ liệu cho payload của JWT (tùy thuộc vào cấu trúc của bạn)
 interface JwtPayload {
+  role: {
+    name: string;
+  };
   userId: string;
   username: string;
   exp: number;  // thời gian hết hạn của token
