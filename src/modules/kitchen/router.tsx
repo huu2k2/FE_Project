@@ -10,7 +10,7 @@ const RouterHome: RouteObject = {
       path: "order_id/:id",
       element: (
         // <AuthGuard allowedRoles={["kitchen"]}>
-          <ListItemProductPage />
+        <ListItemProductPage />
         // </AuthGuard>
       ),
     },
