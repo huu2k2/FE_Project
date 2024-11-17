@@ -169,16 +169,16 @@ export const StaffCompoment: React.FC = () => {
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
                 >
                   <td className="text-black border-b py-2 px-4">
-                    {account.username}
+                    {account?.username}
                   </td>
                   <td className="text-black border-b py-2 px-4">
-                    {account.profile.lastName} {account.profile.firstName}
+                    {account?.profile?.lastName} {account?.profile?.firstName}
                   </td>
                   <td className="text-black border-b py-2 px-4">
-                    {account.role.name}
+                    {account?.role?.name}
                   </td>
                   <td className="border-b py-2 px-4 text-black">
-                    {account.isActive ? "Hoạt dộng" : "Nghỉ"}
+                    {account?.isActive ? "Hoạt dộng" : "Nghỉ"}
                   </td>
                   <td className="border-b py-2 px-4">
                     <div className="flex space-x-2">
