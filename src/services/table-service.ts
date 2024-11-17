@@ -1,5 +1,6 @@
 import axiosInstance from "../api";
 import { API } from "../models/api";
+import { OrderModel } from "../models/order";
 import { TableModel } from "../models/table";
 import { TableDetailModel } from "../models/tableDetail";
 import baseUrl from "../utils/baseURL";
@@ -61,12 +62,14 @@ const deleteTable = (id: string): Promise<API<boolean>> => {
   });
 };
 
-const createTableDetail = (id: string): Promise<API<TableDetailModel>> => {
+const createTableDetail = (
+  id: string
+): Promise<API<{ order: OrderModel; tableDetail: TableDetailModel }>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<API<TableDetailModel>>(
-        `${baseUrl}/tables/${id}/detail`
-      );
+      let result = await axiosInstance.post<
+        API<{ order: OrderModel; tableDetail: TableDetailModel }>
+      >(`${baseUrl}/tables/${id}/detail`);
       resolve(result.data);
     } catch (error) {
       reject(error);
