@@ -2,12 +2,36 @@ import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { LocginModel } from "../../models/login";
+import { loginStaff } from "../../services/login-service";
+import { toast } from "react-toastify";
+import { decodeToken } from "../../utils/decode-token";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage: React.FC = () => {
   const [data, setDate] = useState<LocginModel>({ username: "", password: "" });
+  const navigate = useNavigate();
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("advadv");
+    const ks = await loginStaff(data);
+    if (ks?.data) {
+      const token = await decodeToken(ks?.data.token);
+      localStorage.setItem("token", ks?.data.token); // Lưu token vào localStorage
 
-  const handleLogin = () => {
-    console.log("login:", data);
+      if (token) {
+        if (token?.role?.name === "ADMIN") {
+          toast.success("Login thành công! Chào mừng ADMIN!");
+          navigate("/management");
+        } else if (token?.role?.name === "KITCHEN") {
+          toast.success("Login thành công! Chào mừng KITCHEN!");
+          navigate("/kitchen");
+        } else {
+          toast.error("Vai trò không hợp lệ");
+        }
+      }
+    } else {
+      toast.error("Đăng nhập thất bại! Vui lòng kiểm tra thông tin.");
+    }
   };
 
   const handleChangeText = (key: keyof LocginModel, value: string) => {
@@ -31,10 +55,7 @@ export const LoginPage: React.FC = () => {
             </h2>
             <form
               className="w-full flex flex-col items-center justify-center gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleLogin();
-              }}
+              onSubmit={(e) => handleLogin(e)}
             >
               <input
                 type="text"
@@ -58,7 +79,7 @@ export const LoginPage: React.FC = () => {
                 <CustomButton
                   bgColor="#FFAA02"
                   title="Đăng nhập"
-                  onClick={handleLogin}
+                  onClick={(e: any) => handleLogin(e)}
                 ></CustomButton>
               </div>
             </form>
