@@ -40,7 +40,7 @@ export const Form: React.FC<FormPros> = ({
   const fetchAreas = async () => {
     try {
       const result = await getAllArea();
-      setAreaList(result);
+      setAreaList(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
     }
@@ -96,7 +96,8 @@ export const Form: React.FC<FormPros> = ({
                 <div className="flex items-center mb-4">
                   <label
                     htmlFor="name"
-                    className="font-semibold text-black mr-2 min-w-[70px]">
+                    className="font-semibold text-black mr-2 min-w-[70px]"
+                  >
                     Tên bàn
                   </label>
                   <input
@@ -113,14 +114,16 @@ export const Form: React.FC<FormPros> = ({
                 <div className="flex items-center">
                   <label
                     htmlFor="area"
-                    className="font-semibold text-black mr-2 min-w-[70px]">
+                    className="font-semibold text-black mr-2 min-w-[70px]"
+                  >
                     Khu vực
                   </label>
 
                   <select
                     value={formData.areaId}
                     onChange={(e) => handleChangeData(e.target.value, "areaId")}
-                    className="select w-full text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor">
+                    className="select w-full text-black px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
+                  >
                     <option selected>Chọn khu vực</option>
                     {/* Duyệt danh sách areas và tạo option */}
                     {areaList.map((area) => (
@@ -138,11 +141,13 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Xác nhận"
               bgColor="#FFAA02"
-              onClick={() => handleSubmit()}></CustomButton>
+              onClick={() => handleSubmit()}
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}></CustomButton>
+              onClick={closeModal}
+            ></CustomButton>
           </div>
         </div>
       </div>

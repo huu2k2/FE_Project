@@ -21,7 +21,7 @@ export const AreaCompoment: React.FC = () => {
   const fetchAreas = async () => {
     try {
       const result = await getAllArea();
-      setAreaList(result);
+      setAreaList(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
     }
@@ -98,7 +98,8 @@ export const AreaCompoment: React.FC = () => {
                 name: area.name,
               }}
               handleEdit={() => handleEdit(area.areaId, area.name)}
-              fetchData={() => fetchAreas()}></AreaItem>
+              fetchData={() => fetchAreas()}
+            ></AreaItem>
           ))}
         </div>
       </div>

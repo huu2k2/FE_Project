@@ -15,7 +15,7 @@ export const TableCompoment: React.FC = () => {
   const fetchTables = async () => {
     try {
       const result = await getAllTable();
-      setTableList(result);
+      setTableList(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
     }
