@@ -15,8 +15,6 @@ import { getAllProduct } from "../../../../services/product-service";
 import { getAllCategory } from "../../../../services/category-service";
 import { CategoryModel } from "../../../../models/category";
 
-const categories = ["Tất cả", "Mì", "Cơm", "Hải sản"];
-
 export const ProductCompoment: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -40,7 +38,7 @@ export const ProductCompoment: React.FC = () => {
   const fetchCategories = useCallback(async () => {
     try {
       const result = await getAllCategory();
-      setList(result);
+      setList(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
     }
@@ -69,39 +67,52 @@ export const ProductCompoment: React.FC = () => {
 
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const [data, setData] = useState<{
-    name: string;
-    type: string;
-    price: string;
-    describe: string;
-    image?: string;
-  }>({
+  const [data, setData] = useState<ProductModel>({
+    productId: "",
     name: "",
-    type: "",
+    categoryId: "",
     price: "",
-    describe: "",
+    description: "",
     image: "",
+    category:{
+      categoryId:"",
+      name:"",
+    }
   });
 
   const handleCreate = () => {
     handleOpenForm();
     setIsUpdate(false);
-    setData({ name: "", type: "", price: "", describe: "", image: "" });
+    setData({
+      productId: "",
+      name: "",
+      categoryId: "",
+      price: "",
+      description: "",
+      image: "",
+      category:{
+        categoryId:"",
+        name:"",
+      }
+    });
   };
 
   const handleEdit = (
-    nameProduct: string,
-    priceProduct: string,
-    type: string
+data:ProductModel
   ) => {
     handleOpenForm();
     setIsUpdate(true);
     setData({
-      name: nameProduct,
-      price: priceProduct,
-      type,
-      describe: "",
-      image: "",
+      productId:data.productId,
+      name:data.name,
+      price:data.price,
+      categoryId:data.categoryId,
+      description:data.description,
+      image:data.image,
+      category:{
+        categoryId:data.category.categoryId,
+        name:data.category.name,
+      }
     });
   };
 
@@ -119,7 +130,11 @@ export const ProductCompoment: React.FC = () => {
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
 
           {/* Drop down */}
-          <DropDown categories={list} setIdCategory={setIdCategory} />
+          <DropDown
+            categories={list}
+            setIdCategory={setIdCategory}
+            W={"200px"}
+          />
         </div>
 
         {/* Items */}
@@ -127,19 +142,18 @@ export const ProductCompoment: React.FC = () => {
           {products.map((product, index) => (
             <ProductItem
               key={index}
-              product={{
-                image: product.image,
-                name: product.name,
-                price: product.price,
-                type: product.price,
-              }}
+              product={product}
               handleEdit={() =>
-                handleEdit(product.name, product.price, product.type)
+                handleEdit(product)
               }
             ></ProductItem>
           ))}
           {products.length === 0 && (
-            <div className={"sm:col-span-4 lg:col-span-4 w-full flex justify-center items-center"}>
+            <div
+              className={
+                "sm:col-span-4 lg:col-span-4 w-full flex justify-center items-center"
+              }
+            >
               <img
                 src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
                 className={""}
@@ -155,6 +169,7 @@ export const ProductCompoment: React.FC = () => {
           formData={data}
           setData={setData}
           isUpdate={isUpdate}
+          list={list}
         />
       )}
     </div>

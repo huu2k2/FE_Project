@@ -120,7 +120,7 @@ export const CategoryCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {list?.map((category, index) => (
+              {list.map((category, index) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
