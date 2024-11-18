@@ -2,15 +2,17 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { ItemDrawer } from "./item";
 import { useNavigate } from "react-router-dom";
 import useCheffSocket from "../../../hooks/useCheffSocket";
-import { handleReceiveMess } from "../../../hooks/fc.socket";
+import { handleReceiveMess, handleSendMess } from "../../../hooks/fc.socket";
 export const DrawerBar: React.FC = () => {
   const cheffSocke = useCheffSocket();
 
   useEffect(() => {
     if (!cheffSocke) return;
 
-    handleReceiveMess(cheffSocke, "sendOrders", (mess: any) => {
+    handleReceiveMess(cheffSocke, "newOrder", (mess: any) => {
       console.log(mess);
+
+      handleSendMess(cheffSocke, "getNewOrder", mess);
     });
 
     // Cleanup

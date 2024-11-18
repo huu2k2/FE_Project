@@ -15,10 +15,6 @@ const useCustomerSocket = (): Socket | null => {
       console.log("Connected to customer server ");
     });
 
-    socketInstance.on("disconnect", () => {
-      console.log("Disconnected from customer server");
-    });
-
     return () => {
       socketInstance.disconnect();
       console.log("Socket customer disconnected");
@@ -29,4 +25,3 @@ const useCustomerSocket = (): Socket | null => {
 };
 
 export default useCustomerSocket;
-

@@ -14,10 +14,6 @@ const useCheffSocket = (): Socket | null => {
       console.log("Connected to cheff server ");
     });
 
-    socketInstance.on("disconnect", () => {
-      console.log("Disconnected from cheff server");
-    });
-
     return () => {
       socketInstance.disconnect();
       console.log("Socket cheff disconnected");
@@ -27,7 +23,4 @@ const useCheffSocket = (): Socket | null => {
   return socket;
 };
 
-
-
 export default useCheffSocket;
-
