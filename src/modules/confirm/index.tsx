@@ -16,7 +16,6 @@ export const LoginPage: React.FC = () => {
 
   const customerSocke = useCustomerSocket();
 
-
   const handleLogin = async () => {
     try {
       // const resultCustomer = await createCustomer({
@@ -37,8 +36,8 @@ export const LoginPage: React.FC = () => {
 
       // localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       // console.log(resultDetailTable.data.order.orderId);
-      // navigate("/home");
-      handleSendMess(customerSocke!, "sendOrder", "Đặt hàng");
+      handleSendMess(customerSocke!, "sendOrder", "orderId");
+      navigate("/home");
     } catch (error) {
       console.error("Error creating customer: ", error);
     }

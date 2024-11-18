@@ -6,11 +6,16 @@ import { CartModel } from "../../../../models/cart";
 import { createOrderDetail } from "../../../../services/order-detail-service";
 import { OrderDetailModel } from "../../../../models/orderDetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
+import { handleSendMess } from "../../../../hooks/fc.socket";
+import useCheffSocket from "../../../../hooks/useCheffSocket";
 
 export const Cart: React.FC = () => {
   const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
+  const customerSocke = useCustomerSocket();
+  const cheffSocket = useCheffSocket();
 
   const totalAmount = useMemo(() => {
     return items.reduce((acc, item) => {
@@ -65,6 +70,10 @@ export const Cart: React.FC = () => {
         price: item.price,
         status: OrderDetailStatus.PENDING,
         orderId: "18e10579-a324-11ef-8e57-0242ac130002",
+        product: undefined,
+        orderDetailId: "",
+        createdAt: undefined,
+        updatedAt: undefined
       });
     });
     let reulst = await createOrderDetail(details);
@@ -75,6 +84,8 @@ export const Cart: React.FC = () => {
     setItems(getCart());
     setSelectedItems([]);
     setSelectAll(false);
+
+    handleSendMess(customerSocke!,"sendOrderDetail", "add order detail")
   };
 
   useEffect(() => {
