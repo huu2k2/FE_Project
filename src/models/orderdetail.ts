@@ -9,6 +9,6 @@ export interface OrderDetailModel {
   productId: string;
   quantity: number;
   status: OrderDetailStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
