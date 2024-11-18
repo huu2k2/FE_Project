@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
 import { createCustomer } from "../../services/customer-service";
 import { createTableDetail } from "../../services/table-service";
 import { useNavigate } from "react-router-dom";
+import useCustomerSocket from "../../hooks/useCustomerSocket";
+import { handleSendMess } from "../../hooks/fc.socket";
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate(); // Khởi tạo hook điều hướng
   const [data, setDate] = useState<ConfirmModel>({
     phoneNumber: "",
     fullName: "",
   });
+
+  const customerSocke = useCustomerSocket();
+
 
   const handleLogin = async () => {
     try {
@@ -26,13 +31,14 @@ export const LoginPage: React.FC = () => {
       // }
       // Save to token
 
-      const resultDetailTable = await createTableDetail(
-        "37c58542-a4be-11ef-88c5-0242ac130002"
-      );
+      // const resultDetailTable = await createTableDetail(
+      //   "37c58542-a4be-11ef-88c5-0242ac130002"
+      // );
 
-      localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
-      console.log(resultDetailTable.data.order.orderId);
-      navigate("/home");
+      // localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
+      // console.log(resultDetailTable.data.order.orderId);
+      // navigate("/home");
+      handleSendMess(customerSocke!, "sendOrder", "Đặt hàng");
     } catch (error) {
       console.error("Error creating customer: ", error);
     }
