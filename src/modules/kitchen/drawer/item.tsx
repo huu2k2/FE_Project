@@ -1,9 +1,11 @@
 import React from "react";
 import img from "../../../assets/orderBlack.png";
 import { OrderModelSocket } from "../../../models/order";
+import { formatDate } from "../../../utils/formatDate";
 
 interface ItemDrawerProps {
   index: number;
+  quantity: number;
   isActiveItem: boolean;
   onClick: () => void;
   order: OrderModelSocket;
@@ -11,6 +13,7 @@ interface ItemDrawerProps {
 
 export const ItemDrawer: React.FC<ItemDrawerProps> = ({
   index,
+  quantity,
   isActiveItem,
   onClick,
   order,
@@ -32,9 +35,9 @@ export const ItemDrawer: React.FC<ItemDrawerProps> = ({
           <span className="font-bold text-lg text-black">
             {order.tableDetails[0].table.name}
           </span>
-          <div className="flex justify-between text-sm text-gray-500">
-            <span> món</span>
-            <span>{order.updatedAt.toISOString()}</span>
+          <div className="flex justify-between text-sm text-gray-500 flex-col">
+            <p>{quantity} món</p>
+            <p>{formatDate(order.createdAt)}</p>
           </div>
         </div>
       </div>

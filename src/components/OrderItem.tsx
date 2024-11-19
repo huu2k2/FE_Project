@@ -24,8 +24,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
   return (
     <div
       className="flex items-center bg-white shadow-md rounded-lg p-1 w-full h-24 px-5 border-2 border-gray-300"
-      onClick={onToggle}
-    >
+      onClick={onToggle}>
       <div className="w-10">
         <CustomCheckbox isAllActive={isActive} />
       </div>
@@ -43,9 +42,18 @@ export const OrderItem: React.FC<OrderItemProps> = ({
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-sm text-black">Số lượng: {quantity}</span>
-            <span className="text-sm text-red-500 font-semibold">
-              Trạng thái: {status}
+            <span className="text-sm text-black font-bold">
+              Số lượng: {quantity}
+            </span>
+            <span
+              className={`text-sm font-bold ${
+                status === "PENDING"
+                  ? "text-gray-500" // Grey color for PENDING
+                  : status === "CONFIRMED"
+                  ? "text-green-500" // Green color for CONFIRMED
+                  : "text-red-500" // Default to red color (you can replace this as needed)
+              }`}>
+              {status}
             </span>
           </div>
         </div>

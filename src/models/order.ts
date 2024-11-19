@@ -1,4 +1,5 @@
 import { OrderStatus } from "../enum/enum";
+import { OrderDetailModel } from "./orderdetail";
 import { TableDetailModelSocket } from "./tableDetail";
 
 export interface OrderModel {
@@ -20,4 +21,5 @@ export interface OrderModelSocket {
   createdAt: Date;
   updatedAt: Date;
   tableDetails: TableDetailModelSocket[];
+  orderDetails: OrderDetailModel[];
 }

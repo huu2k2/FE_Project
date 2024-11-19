@@ -7,10 +7,10 @@ const RouterHome: RouteObject = {
   element: <LayoutKitchen />,
   children: [
     {
-      path: "order_id/:id",
+      path: "order_id/:orderId",
       element: (
         // <AuthGuard allowedRoles={["kitchen"]}>
-          <ListItemProductPage />
+        <ListItemProductPage />
         // </AuthGuard>
       ),
     },

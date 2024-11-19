@@ -3,39 +3,25 @@ import { CustomButton } from "../../../../components/CustomButton";
 import { CustomCheckbox } from "../../../../components/CustomCheckbox";
 import { OrderItem } from "../../../../components/OrderItem";
 import { ReasonForm } from "./components/form";
-
-const data = [
-  {
-    id: "1",
-    img: "https://res.cloudinary.com/duoqtvvff/image/upload/v1722355413/upload_image/wtlgef0wdfl5j8zkntjd.jpg",
-    name: "Cá khô kho đồng",
-    price: 45000,
-    quantity: 2,
-    status: "chưa làm",
-  },
-  {
-    id: "2",
-    img: "https://res.cloudinary.com/duoqtvvff/image/upload/v1722355413/upload_image/wtlgef0wdfl5j8zkntjd.jpg",
-    name: "Cá khô kho đồng",
-    price: 45000,
-    quantity: 2,
-    status: "chưa làm",
-  },
-  {
-    id: "3",
-    img: "https://res.cloudinary.com/duoqtvvff/image/upload/v1722355413/upload_image/wtlgef0wdfl5j8zkntjd.jpg",
-    name: "Cá khô kho đồng",
-    price: 45000,
-    quantity: 2,
-    status: "chưa làm",
-  },
-];
+import { useParams } from "react-router-dom";
+import { getOrderDetailByOrderId } from "../../../../services/order-detail-service";
+import { OrderDetailModel } from "../../../../models/orderdetail";
+import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
+import useCheffSocket from "../../../../hooks/useCheffSocket";
 
 export const ListItemProductPage: React.FC = () => {
+  const cheffSocke = useCheffSocket();
+
+  const { orderId } = useParams<{ orderId: string }>();
+
+  const [data, setData] = useState<OrderDetailModel[]>([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [mapIsActive, setMapIsActive] = useState<Map<string, boolean>>(
-    new Map(data.map((item) => [item.id.toString(), false]))
+    new Map()
   );
+
   const [isAllActive, setIsAllActive] = useState(false);
 
   const handleModalClose = () => {
@@ -47,6 +33,70 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   useEffect(() => {
+    setMapIsActive(
+      new Map(data.map((item) => [item.orderDetailId.toString(), false]))
+    );
+  }, [data]);
+
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const result = await getOrderDetailByOrderId(orderId!);
+        setData(result.data);
+      } catch (error) {
+        console.error("Error fetching order details:", error);
+      }
+    };
+
+    if (orderId) {
+      fetchOrderDetails();
+    }
+  }, [orderId]);
+
+  useEffect(() => {
+    if (!cheffSocke) return;
+    handleReceiveMess(
+      cheffSocke!,
+      "getUpdateOrdersDetail",
+      ({
+        mess,
+        result,
+        updateType,
+      }: {
+        mess: string;
+        result: any[];
+        updateType: number;
+      }) => {
+        console.log(mess);
+        if (mess === "error update") {
+          return;
+        }
+        if (updateType === 1) {
+          setData((prevData) =>
+            prevData.map((item) => {
+              const updatedItem = result.find(
+                (res) => res.orderDetailId === item.orderDetailId
+              );
+              return updatedItem ? { ...item, ...updatedItem } : item;
+            })
+          );
+        } else {
+          setData((prevData) =>
+            prevData.filter(
+              (item) =>
+                !result.some((res) => res.orderDetailId === item.orderDetailId)
+            )
+          );
+        }
+      }
+    );
+  }, [cheffSocke]);
+
+  useEffect(() => {
+    if (mapIsActive.size === 0) {
+      setIsAllActive(false);
+      return;
+    }
     const allActive = Array.from(mapIsActive.values()).every((value) => value);
     setIsAllActive(allActive);
   }, [mapIsActive]);
@@ -64,12 +114,30 @@ export const ListItemProductPage: React.FC = () => {
     setMapIsActive(newMap);
   };
 
-  const handleCOnfirm = () => {
-    console.log("Active items:", activeItems());
+  const handleConfirm = () => {
+    handleSendMess(cheffSocke!, "updateOrdersDetail", {
+      orderDetailIds: activeItems(),
+      updateType: 1,
+    });
   };
 
   const handleFinish = () => {
-    console.log("Active items:", activeItems());
+    handleSendMess(cheffSocke!, "updateOrdersDetail", {
+      orderDetailIds: activeItems(),
+      updateType: 2,
+    });
+  };
+
+  const handleCancel = (reason: string) => {
+    handleSendMess(cheffSocke!, "cancelOrders", {
+      orderDetailIds: activeItems(),
+      reason: reason,
+    });
+    handleSendMess(cheffSocke!, "updateOrdersDetail", {
+      orderDetailIds: activeItems(),
+      updateType: 0,
+    });
+    handleModalClose();
   };
 
   const activeItems = (): string[] => {
@@ -99,7 +167,7 @@ export const ListItemProductPage: React.FC = () => {
             <CustomButton
               bgColor="#FFAA02"
               title="Xác nhận nấu"
-              onClick={() => handleCOnfirm()}
+              onClick={() => handleConfirm()}
             />
           </div>
           <div className="w-[32%]">
@@ -114,15 +182,22 @@ export const ListItemProductPage: React.FC = () => {
       <div className="grid grid-cols-3 gap-1 max-h-[500px] overflow-y-auto rounded-lg px-5">
         {data.map((item) => (
           <OrderItem
-            key={item.id}
+            id={item.orderDetailId}
+            img={item.product!.image}
+            name={item.product!.name}
+            key={item.orderDetailId}
             {...item}
-            isActive={mapIsActive.get(item.id.toString()) || false}
-            onToggle={() => handleItemToggle(item.id.toString())}
+            isActive={mapIsActive.get(item.orderDetailId.toString()) || false}
+            onToggle={() => handleItemToggle(item.orderDetailId.toString())}
           />
         ))}
       </div>
       {isModalOpen && (
-        <ReasonForm data={activeItems()} closeModal={handleModalClose} />
+        <ReasonForm
+          data={activeItems()}
+          closeModal={handleModalClose}
+          handleCancel={(message) => handleCancel(message)}
+        />
       )}
     </div>
   );

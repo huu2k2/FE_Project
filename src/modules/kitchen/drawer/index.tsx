@@ -7,19 +7,26 @@ import { OrderModelSocket } from "../../../models/order";
 export const DrawerBar: React.FC = () => {
   const cheffSocke = useCheffSocket();
 
-  const [orders, setOrders] = useState<OrderModelSocket[]>();
+  const [orders, setOrders] = useState<
+    { order: OrderModelSocket; quantity: number }[]
+  >([]);
 
   useEffect(() => {
     if (!cheffSocke) return;
+
     // Get All
     handleSendMess(cheffSocke, "getAllOrders", "Lấy đơn gọi");
 
     handleReceiveMess(
       cheffSocke!,
       "sendAllOrders",
-      (mess: OrderModelSocket[]) => {
-        console.log(mess);
-        setOrders(mess);
+      (orders: OrderModelSocket[]) => {
+        console.log(orders[0].orderDetails.length);
+        const updatedOrders = orders.map((order) => ({
+          order,
+          quantity: order.orderDetails.length || 0,
+        }));
+        setOrders(updatedOrders);
       }
     );
 
@@ -36,18 +43,11 @@ export const DrawerBar: React.FC = () => {
   }, [cheffSocke]);
 
   const navigate = useNavigate();
-  const data = [
-    {
-      nameTable: "A01",
-      numberOfOrder: 3,
-      time: "19:12 pm",
-      orderId: "1234567890",
-    },
-  ];
   const [position, setPosition] = useState<number>(0);
 
   const onClick = (index: number, orderId: string) => {
     setPosition(index);
+    console.log(orderId);
     navigate(`/kitchen/order_id/${orderId}`);
     localStorage.setItem("index", index.toString());
   };
@@ -65,10 +65,11 @@ export const DrawerBar: React.FC = () => {
         {orders?.map((item, index) => (
           <ItemDrawer
             index={index}
+            quantity={item.quantity}
             key={index}
             isActiveItem={position === index}
-            onClick={() => onClick(index, item.orderId)}
-            order={item}
+            onClick={() => onClick(index, item.order.orderId)}
+            order={item.order}
           />
         ))}
       </ul>
