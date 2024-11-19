@@ -19,12 +19,14 @@ export const ItemDrawer: React.FC<ItemDrawerProps> = ({
     <li
       key={index}
       className={`py-3 px-4 bg-white rounded-lg shadow-md mb-2 hover:shadow-lg transition-shadow duration-200  cursor-pointer`}
-      onClick={onClick}>
+      onClick={onClick}
+    >
       <div className="flex relative">
         <div
           className={`w-5 h-5 rounded-full absolute top-0 right-0 ${
             isActiveItem ? "bg-green-500" : "bg-gray-500"
-          }`}></div>
+          }`}
+        ></div>
         <div className="w-[30%] flex justify-center items-center">
           <img src={img} alt={`Bàn ${order.tableDetails[0].table.name}`} />
         </div>
@@ -34,7 +36,7 @@ export const ItemDrawer: React.FC<ItemDrawerProps> = ({
           </span>
           <div className="flex justify-between text-sm text-gray-500">
             <span> món</span>
-            <span>{order.updatedAt.toISOString()}</span>
+            <span>{order.updatedAt.toString()}</span>
           </div>
         </div>
       </div>

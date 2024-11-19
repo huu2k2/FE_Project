@@ -36,7 +36,8 @@ export const LoginPage: React.FC = () => {
 
       // localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       // console.log(resultDetailTable.data.order.orderId);
-      handleSendMess(customerSocke!, "sendOrder", "orderId");
+      const orderId = localStorage.getItem("orderId")
+      handleSendMess(customerSocke!, "sendOrder", orderId);
       navigate("/home");
     } catch (error) {
       console.error("Error creating customer: ", error);
