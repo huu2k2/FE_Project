@@ -18,25 +18,25 @@ export const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      // const resultCustomer = await createCustomer({
-      //   name: data.fullName, // mapping fullName to name
-      //   phoneNumber: data.phoneNumber,
-      // });
-      // if (resultCustomer.message) {
-      //   console.log(resultCustomer.message);
-      //   console.log("Existing customer data:", resultCustomer.data);
-      // } else {
-      //   console.log("Customer created successfully:", resultCustomer.data);
-      // }
+      const resultCustomer = await createCustomer({
+        name: data.fullName, // mapping fullName to name
+        phoneNumber: data.phoneNumber,
+      });
+      if (resultCustomer.message) {
+        console.log(resultCustomer.message);
+        console.log("Existing customer data:", resultCustomer.data);
+      } else {
+        console.log("Customer created successfully:", resultCustomer.data);
+      }
       // Save to token
 
-      // const resultDetailTable = await createTableDetail(
-      //   "37c58542-a4be-11ef-88c5-0242ac130002"
-      // );
+      const resultDetailTable = await createTableDetail(
+        "c71b4e27-a3d0-11ef-a569-0242ac120002"
+      );
 
-      // localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
-      // console.log(resultDetailTable.data.order.orderId);
-      const orderId = localStorage.getItem("orderId")
+      localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
+      console.log(resultDetailTable.data.order.orderId);
+      const orderId = localStorage.getItem("orderId");
       handleSendMess(customerSocke!, "sendOrder", orderId);
       navigate("/home");
     } catch (error) {
@@ -68,8 +68,7 @@ export const LoginPage: React.FC = () => {
               className="w-full flex flex-col items-center justify-center gap-4"
               onSubmit={(e) => {
                 e.preventDefault();
-              }}
-            >
+              }}>
               <input
                 type="text"
                 id="phoneNumber"
@@ -93,8 +92,7 @@ export const LoginPage: React.FC = () => {
               <CustomButton
                 bgColor="#FFAA02"
                 title="Xác nhận"
-                onClick={handleLogin}
-              ></CustomButton>
+                onClick={handleLogin}></CustomButton>
             </form>
           </div>
         </div>

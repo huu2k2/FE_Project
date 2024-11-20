@@ -6,10 +6,11 @@ import baseUrl from "../utils/baseURL";
 
 const createOrderDetail = (
   data: OrderDetailModel[]
-): Promise<API<OrderDetailModel>> => {
+): Promise<API<OrderDetailModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<API<OrderDetailModel>>(
+      console.log(data);
+      let result = await axiosInstance.post<API<OrderDetailModel[]>>(
         `${baseUrl}/orders/detail`,
         data
       );
@@ -50,6 +51,21 @@ const getOrderDetailByOrderId = (
   });
 };
 
+const getOrderDetailByOrderIdKitchen = (
+  orderId: string
+): Promise<API<OrderDetailModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderDetailModel[]>>(
+        `${baseUrl}/orders/${orderId}/detail/kitchen`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 const updateOrderDetail = (
   orderDetailId: string,
   data: {
@@ -75,4 +91,5 @@ export {
   getOrderDetailById,
   getOrderDetailByOrderId,
   updateOrderDetail,
+  getOrderDetailByOrderIdKitchen,
 };

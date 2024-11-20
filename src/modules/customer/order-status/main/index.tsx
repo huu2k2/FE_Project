@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { OrderStatusItem } from "../../../../components/customer/orderStatusItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
-import { OrderDetailModel } from "../../../../models/orderDetail";
+import { OrderDetailModel } from "../../../../models/orderdetail";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 
@@ -38,7 +38,6 @@ const OrderStatus: React.FC = () => {
       customerSocket!,
       "sendNotification",
       (vals: { mess: string; data: any; status: boolean }) => {
-        console.log(vals.status);
         if (vals.status) {
           const orderId = localStorage.getItem("orderId");
           handleSendMess(customerSocket!, "requestGetOrderDetails", orderId);
@@ -61,7 +60,7 @@ const OrderStatus: React.FC = () => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.orderDetailId === id
-          ? { ...item, quantity: Math.max(0, item.quantity + amount) }
+          ? { ...item, quantity: Math.max(0, item.quantity! + amount) }
           : item
       )
     );
@@ -82,22 +81,21 @@ const OrderStatus: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Trạng thái đơn gọi"
-        bg="white"
-      ></CustomerHeader>
+        bg="white"></CustomerHeader>
       <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
         {items.map((item, index) => (
           <OrderStatusItem
-            id={item.orderDetailId}
+            id={item.orderDetailId!}
             key={index}
             name={item.product!.name}
-            status={item.status}
-            price={item.price}
-            quantity={item.quantity}
+            status={item.status!}
+            price={item.price!}
+            quantity={item.quantity!}
             imageSrc={item.product!.image}
-            selected={selectedItems.includes(item.orderDetailId)}
-            onSelect={() => handleItemSelect(item.orderDetailId)}
+            selected={selectedItems.includes(item.orderDetailId!)}
+            onSelect={() => handleItemSelect(item.orderDetailId!)}
             onQuantityChange={(amount) =>
-              handleQuantityChange(item.orderDetailId, amount)
+              handleQuantityChange(item.orderDetailId!, amount)
             }
           />
         ))}
@@ -107,16 +105,14 @@ const OrderStatus: React.FC = () => {
         {status && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[green] text-white font-bold rounded-[20px]"
-            onClick={handleAjustQuantity}
-          >
+            onClick={handleAjustQuantity}>
             Xác nhận
           </button>
         )}
         {selectedItems.length > 0 && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-[20px]"
-            onClick={handleCancel}
-          >
+            onClick={handleCancel}>
             Huỷ món
           </button>
         )}

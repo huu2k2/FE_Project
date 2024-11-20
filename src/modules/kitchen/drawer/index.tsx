@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useCheffSocket from "../../../hooks/useCheffSocket";
 import { handleReceiveMess, handleSendMess } from "../../../hooks/fc.socket";
 import { OrderModelSocket } from "../../../models/order";
+import { OrderDetailModel } from "../../../models/orderdetail";
 export const DrawerBar: React.FC = () => {
   const cheffSocke = useCheffSocket();
 
@@ -15,11 +16,11 @@ export const DrawerBar: React.FC = () => {
     if (!cheffSocke) return;
 
     // Get All
-    handleSendMess(cheffSocke, "getAllOrders", "Lấy đơn gọi");
+    handleSendMess(cheffSocke, "getAllOrdersFromCheff", "Lấy đơn gọi");
 
     handleReceiveMess(
       cheffSocke!,
-      "sendAllOrders",
+      "sendAllOrdersFromCheff",
       (orders: OrderModelSocket[]) => {
         console.log(orders[0].orderDetails.length);
         const updatedOrders = orders.map((order) => ({
@@ -31,15 +32,33 @@ export const DrawerBar: React.FC = () => {
     );
 
     handleReceiveMess(cheffSocke, "newOrder", (mess: any) => {
-      console.log(mess);
-
       handleSendMess(cheffSocke, "getNewOrder", mess);
     });
 
+    handleReceiveMess(cheffSocke, "showNewOrder", (result: any) => {
+      setOrders((prevOrders) => [
+        ...prevOrders,
+        { order: result, quantity: result.orderDetails.length || 0 },
+      ]);
+    });
+
+    handleReceiveMess(
+      cheffSocke,
+      "sendUpdateOrderQuantityForCheff",
+      ({ orderId, quantity }: { orderId: string; quantity: number }) => {
+        setOrders((prevOrders) =>
+          prevOrders.map(
+            (item) =>
+              item.order.orderId === orderId
+                ? { ...item, quantity: item.quantity + quantity } // Cập nhật quantity nếu orderId khớp
+                : item // Giữ nguyên nếu không khớp
+          )
+        );
+      }
+    );
+
     // Cleanup
-    return () => {
-      cheffSocke.off("getOrders");
-    };
+    return () => {};
   }, [cheffSocke]);
 
   const navigate = useNavigate();

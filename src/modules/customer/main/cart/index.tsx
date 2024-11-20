@@ -4,7 +4,7 @@ import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { getCart, removeFromCart } from "../../../../services/cart-service";
 import { CartModel } from "../../../../models/cart";
 import { createOrderDetail } from "../../../../services/order-detail-service";
-import { OrderDetailModel } from "../../../../models/orderDetail";
+import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
@@ -63,21 +63,18 @@ export const Cart: React.FC = () => {
       selectedItems.includes(item.id)
     );
 
+    let orderId = localStorage.getItem("orderId")!;
     filteredItems.forEach((item) => {
       details.push({
         productId: item.id,
         quantity: item.quantity,
         price: item.price,
         status: OrderDetailStatus.PENDING,
-        orderId: "18e10579-a324-11ef-8e57-0242ac130002",
-        product: undefined,
-        orderDetailId: "",
-        createdAt: undefined,
-        updatedAt: undefined
+        orderId: orderId,
       });
     });
     let reulst = await createOrderDetail(details);
-    console.log(reulst.data);
+    console.log(reulst);
     filteredItems.forEach((item) => {
       removeFromCart(item.id);
     });
@@ -85,7 +82,12 @@ export const Cart: React.FC = () => {
     setSelectedItems([]);
     setSelectAll(false);
 
-    handleSendMess(customerSocke!,"sendOrderDetail", "add order detail")
+    console.log(reulst.data);
+
+    handleSendMess(customerSocke!, "sendOrderDetail", {
+      data: reulst.data,
+      orderId: orderId,
+    });
   };
 
   useEffect(() => {
@@ -118,8 +120,7 @@ export const Cart: React.FC = () => {
               onClick={handleSelectAll}
               className={`w-6 h-6 text-white rounded-full flex items-center mr-3 justify-center ${
                 selectAll ? "bg-[#ffaa02]" : "bg-gray-300"
-              }`}
-            >
+              }`}>
               <i className="fas fa-check"></i>
             </button>
             <span className="text-[#ffaa02] font-semibold">Tất cả</span>
@@ -133,8 +134,7 @@ export const Cart: React.FC = () => {
         </div>
         <button
           className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5"
-          onClick={submit}
-        >
+          onClick={submit}>
           Gửi đơn
         </button>
       </div>
