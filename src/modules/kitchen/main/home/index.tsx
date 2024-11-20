@@ -135,7 +135,6 @@ export const ListItemProductPage: React.FC = () => {
           (item) =>
             !val.some((cancelItemId) => cancelItemId === item.orderDetailId)
         );
-
         return updatedData;
       });
     });
@@ -174,6 +173,7 @@ export const ListItemProductPage: React.FC = () => {
 
   const handleConfirm = () => {
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
+      orderId: orderId,
       orderDetailIds: activeItems(),
       updateType: 1,
     });
@@ -181,19 +181,22 @@ export const ListItemProductPage: React.FC = () => {
 
   const handleFinish = () => {
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
+      orderId: orderId,
       orderDetailIds: activeItems(),
       updateType: 2,
     });
   };
 
   const handleCancel = (reason: string) => {
-    handleSendMess(cheffSocke!, "cancelOrders", {
-      orderDetailIds: activeItems(),
-      reason: reason,
-    });
-    handleSendMess(cheffSocke!, "updateOrdersDetail", {
+    handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
+      orderId: orderId,
       orderDetailIds: activeItems(),
       updateType: 0,
+    });
+    handleSendMess(cheffSocke!, "cancelOrders", {
+      orderId: orderId,
+      orderDetailIds: activeItems(),
+      reason: reason,
     });
     handleModalClose();
   };

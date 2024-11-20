@@ -4,6 +4,7 @@ import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
+import { OrderDetailStatus } from "../../../../enum/enum";
 
 const OrderStatus: React.FC = () => {
   const [items, setItems] = useState<OrderDetailModel[]>([]);
@@ -39,9 +40,36 @@ const OrderStatus: React.FC = () => {
       "sendNotification",
       (vals: { mess: string; data: any; status: boolean }) => {
         if (vals.status) {
-          const orderId = localStorage.getItem("orderId");
           handleSendMess(customerSocket!, "requestGetOrderDetails", orderId);
           isStatus(false);
+        }
+      }
+    );
+
+    handleReceiveMess(
+      customerSocket!,
+      "updateOrderDetailStatusForCustomer",
+      (vals: {
+        orderId: string;
+        orderDetailIds: string[];
+        updateType: number;
+      }) => {
+        if (orderId === vals.orderId) {
+          console.log(vals.orderDetailIds, vals.updateType);
+          let newStatus = OrderDetailStatus.CONFIRMED;
+          if (vals.updateType === 0) {
+            newStatus = OrderDetailStatus.CANCELED;
+          }
+          if (vals.updateType === 2) {
+            newStatus = OrderDetailStatus.COMPLETED;
+          }
+          setItems((prevItems) =>
+            prevItems.map((item) =>
+              vals.orderDetailIds.includes(item.orderDetailId!)
+                ? { ...item, status: newStatus }
+                : item
+            )
+          );
         }
       }
     );
@@ -69,7 +97,11 @@ const OrderStatus: React.FC = () => {
   };
 
   const handleCancel = () => {
-    handleSendMess(customerSocket!, "requestCanleOrderDetail", selectedItems);
+    const orderId = localStorage.getItem("orderId");
+    handleSendMess(customerSocket!, "requestCanleOrderDetail", {
+      orderDetails: selectedItems,
+      orderId: orderId,
+    });
   };
 
   const handleAjustQuantity = () => {

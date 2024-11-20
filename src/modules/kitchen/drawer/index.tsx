@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import useCheffSocket from "../../../hooks/useCheffSocket";
 import { handleReceiveMess, handleSendMess } from "../../../hooks/fc.socket";
 import { OrderModelSocket } from "../../../models/order";
-import { OrderDetailModel } from "../../../models/orderdetail";
 export const DrawerBar: React.FC = () => {
   const cheffSocke = useCheffSocket();
 
@@ -31,16 +30,21 @@ export const DrawerBar: React.FC = () => {
       }
     );
 
-    handleReceiveMess(cheffSocke, "newOrder", (mess: any) => {
+    handleReceiveMess(cheffSocke, "newOrder", (mess: string) => {
       handleSendMess(cheffSocke, "getNewOrder", mess);
     });
 
-    handleReceiveMess(cheffSocke, "showNewOrder", (result: any) => {
-      setOrders((prevOrders) => [
-        ...prevOrders,
-        { order: result, quantity: result.orderDetails.length || 0 },
-      ]);
-    });
+    handleReceiveMess(
+      cheffSocke,
+      "showNewOrder",
+      (result: OrderModelSocket) => {
+        console.log(result.tableDetails[0].table);
+        setOrders((prevOrders) => [
+          ...prevOrders,
+          { order: result, quantity: result.orderDetails.length || 0 },
+        ]);
+      }
+    );
 
     handleReceiveMess(
       cheffSocke,
@@ -51,6 +55,21 @@ export const DrawerBar: React.FC = () => {
             (item) =>
               item.order.orderId === orderId
                 ? { ...item, quantity: item.quantity + quantity } // Cập nhật quantity nếu orderId khớp
+                : item // Giữ nguyên nếu không khớp
+          )
+        );
+      }
+    );
+
+    handleReceiveMess(
+      cheffSocke,
+      "updateCancelOrderDetailsQuantity",
+      ({ orderId, quantity }: { orderId: string; quantity: number }) => {
+        setOrders((prevOrders) =>
+          prevOrders.map(
+            (item) =>
+              item.order.orderId === orderId
+                ? { ...item, quantity: item.quantity - quantity } // Cập nhật quantity nếu orderId khớp
                 : item // Giữ nguyên nếu không khớp
           )
         );
