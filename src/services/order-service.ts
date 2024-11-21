@@ -2,7 +2,7 @@ import axiosInstance from "../api";
 import { OrderStatus } from "../enum/enum";
 import { API } from "../models/api";
 import { OrderModel } from "../models/order";
-import { OrderDetailModel } from "../models/orderDetail";
+import { OrderDetailModel } from "../models/orderdetail";
 import baseUrl from "../utils/baseURL";
 
 const createOrder = (data: {
@@ -83,10 +83,26 @@ const getOrderDetailByOrderId = (
   });
 };
 
+const getOrderDetailByOrderIdOfMergeOrder = (
+  orderId: String
+): Promise<API<OrderDetailModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderDetailModel[]>>(
+        `${baseUrl}/orders/${orderId}/detail/payment`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export {
   createOrder,
   getAllOrders,
   getOrderById,
   updateOrder,
   getOrderDetailByOrderId,
+  getOrderDetailByOrderIdOfMergeOrder
 };

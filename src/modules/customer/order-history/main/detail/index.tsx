@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../../components/CustomerHeader";
 import { FinishOrderItem } from "../../../../../components/FinishOrderItem";
-import { OrderDetailModel } from "../../../../../models/orderDetail";
+import { OrderDetailModel } from "../../../../../models/orderdetail";
 import { getOrderDetailByOrderId } from "../../../../../services/order-detail-service";
 import { useParams } from "react-router-dom";
 

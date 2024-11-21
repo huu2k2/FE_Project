@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { FinishOrderItem } from "../../../../components/FinishOrderItem";
 import { createPayment } from "../../../../services/payment-service";
-import { getOrderDetailByOrderId } from "../../../../services/order-service";
-import { OrderDetailModel } from "../../../../models/orderDetail";
+import { getOrderDetailByOrderIdOfMergeOrder } from "../../../../services/order-service";
+import { OrderDetailModel } from "../../../../models/orderdetail";
 
 export const Payment: React.FC = () => {
   const [orderDetails, setOrderDetails] = useState<OrderDetailModel[]>([]);
 
   const fetchData = async () => {
     try {
-      const orderId = "18e10579-a324-11ef-8e57-0242ac130002";
-      const result = await getOrderDetailByOrderId(orderId);
+      const orderId = localStorage.getItem("orderId")!;
+      const result = await getOrderDetailByOrderIdOfMergeOrder(orderId);
       setOrderDetails(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
@@ -23,7 +23,7 @@ export const Payment: React.FC = () => {
   }, []);
 
   const totalAmount = orderDetails.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.price! * item.quantity!,
     0
   );
 
@@ -36,9 +36,10 @@ export const Payment: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    let result = await createPayment("18e10579-a324-11ef-8e57-0242ac130002", {
+    const orderId = localStorage.getItem("orderId")!;
+    let result = await createPayment(orderId, {
       method: paymentMethod,
-      total: totalAmount,
+      amount: totalAmount,
     });
     console.log(result);
   };
@@ -48,7 +49,8 @@ export const Payment: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Bàn A02 - 27/10/2024"
-        bg="white"></CustomerHeader>
+        bg="white"
+      ></CustomerHeader>
       <div className="flex flex-1 flex-col mt-4">
         {orderDetails.map((item, index) => (
           <FinishOrderItem key={index} data={item}></FinishOrderItem>
@@ -63,7 +65,8 @@ export const Payment: React.FC = () => {
           <select
             value={paymentMethod}
             onChange={handlePaymentMethodChange}
-            className="flex-1 ml-4 p-2 rounded-lg bg-backgroundColor text-white">
+            className="flex-1 ml-4 p-2 rounded-lg bg-backgroundColor text-white"
+          >
             <option>Tiền mặt</option>
             <option>Chuyển khoản</option>
           </select>
@@ -76,7 +79,8 @@ export const Payment: React.FC = () => {
           <button
             onClick={handleSubmit}
             className="flex-1 bg-[#FFAA02] opacity-70 text-white text-1xl p-4 rounded-r-md hover:opacity-100 
-          hover:bg-backgroundColor transition">
+          hover:bg-backgroundColor transition"
+          >
             Gửi yêu cầu
           </button>
         </div>
