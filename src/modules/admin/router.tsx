@@ -6,9 +6,14 @@ import { CategoryCompoment } from "./main/category";
 import { AreaCompoment } from "./main/area";
 import { TableCompoment } from "./main/table";
 import { TurnoverCompoment } from "./main/turnover";
+import { AuthGuard } from "../../hooks/auth-guard";
 const RouterHome: RouteObject = {
   path: "/management",
-  element: <LayoutAdmin />,
+  element: (
+    <AuthGuard allowedRoles={["ADMIN"]}>
+      <LayoutAdmin />
+    </AuthGuard>
+  ),
   children: [
     {
       path: "staff",

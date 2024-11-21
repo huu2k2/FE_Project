@@ -13,6 +13,7 @@ const axiosInstance: AxiosInstance = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'Authorization':`Bearer ${localStorage.getItem("token")}`
   },
 })
 
@@ -36,7 +37,7 @@ axiosInstance.interceptors.response.use(
     return response
   },
   async (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
       // Handle unauthorized access
       localStorage.removeItem('token')
       window.location.href = '/login'

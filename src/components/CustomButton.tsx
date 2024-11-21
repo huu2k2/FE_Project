@@ -1,7 +1,7 @@
 interface CustomButtonProps {
   title: string;
   bgColor: string;
-  onClick?: () => void;
+  onClick?: any;
 }
 
 export const CustomButton: React.FC<CustomButtonProps> = ({
