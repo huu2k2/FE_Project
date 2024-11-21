@@ -11,7 +11,7 @@ export const HomeComponent: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [products, setProduct] = useState<ProductModel[]>([]);
   const [category, setCategory] = useState<CategoryModel>({
-    categoryId: "all",
+    categoryId: undefined,
     name: "Tất cả",
   });
 
@@ -28,7 +28,6 @@ export const HomeComponent: React.FC = () => {
     try {
       const result = await getProductByCategoryId(categoryId);
       setProduct(result.data);
-      console.log(result);
     } catch (error) {
       console.error("Error fetching products: ", error);
     }
@@ -39,8 +38,9 @@ export const HomeComponent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchProducts(category.categoryId);
-    console.log(category);
+    if (category.categoryId) {
+      fetchProducts(category.categoryId);
+    }
   }, [category]);
 
   return (
