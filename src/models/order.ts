@@ -20,6 +20,6 @@ export interface OrderModelSocket {
   orderMergeId?: string | null;
   createdAt: Date;
   updatedAt: Date;
-  tableDetails: TableDetailModelSocket[];
+  tableDetail: TableDetailModelSocket;
   orderDetails: OrderDetailModel[];
 }
