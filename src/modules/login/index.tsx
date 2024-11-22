@@ -15,21 +15,17 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     const ks = await loginStaff(data);
     if (ks?.data) {
-      const token =  decodeToken(ks?.data.token);
-      localStorage.setItem("token", ks?.data.token);  
+      const token = decodeToken(ks?.data.token);
+      localStorage.setItem("token", ks?.data.token);
 
       if (token) {
-        console.log("token?.role?.name",token?.role?.name)
+        console.log("token?.role?.name", token?.role?.name);
         if (token?.role?.name === ERole.ADMIN) {
-
           toast.success("Login thành công! Chào mừng ADMIN!");
           navigate("/management");
-
         } else if (token?.role?.name === ERole.CHEFF) {
-
           toast.success("Login thành công! Chào mừng CHEFF!");
           navigate("/kitchen");
-
         } else {
           toast.error("Vai trò không hợp lệ");
         }
@@ -58,10 +54,7 @@ export const LoginPage: React.FC = () => {
             <h2 className="text-6xl font-bold text-center text-gray-800 mb-6">
               Đăng Nhập
             </h2>
-            <div
-              className="w-full flex flex-col items-center justify-center gap-4"
-               
-            >
+            <div className="w-full flex flex-col items-center justify-center gap-4">
               <input
                 type="text"
                 id="username"
@@ -84,8 +77,9 @@ export const LoginPage: React.FC = () => {
                 <CustomButton
                   bgColor="#FFAA02"
                   title="Đăng nhập"
-                  onClick={(e:React.FormEvent<HTMLFormElement>) => handleLogin(e)}
-                ></CustomButton>
+                  onClick={(e: React.FormEvent<HTMLFormElement>) =>
+                    handleLogin(e)
+                  }></CustomButton>
               </div>
             </div>
           </div>

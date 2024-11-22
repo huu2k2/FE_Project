@@ -17,9 +17,9 @@ export const ProfilePage: React.FC = () => {
 
   const fetchCustomerInfor = async () => {
     try {
-      // Change Id customer here
+      //! Change Id customer here
       const result = await getCustomerById(
-        "2c69f714-a325-11ef-bfc1-0242ac120002"
+        "5603739a-a8b5-11ef-b713-0242ac120002"
       );
       setCustomerInfor(result.data);
     } catch (error) {
@@ -34,14 +34,15 @@ export const ProfilePage: React.FC = () => {
   useEffect(() => {
     if (customerInfor) {
       setDate({
-        phoneNumber: customerInfor.phoneNumber || "", // Fallback to empty string
-        name: customerInfor.name || "", // Fallback to empty string
+        phoneNumber: customerInfor.phoneNumber || "",
+        name: customerInfor.name || "",
       });
     }
   }, [customerInfor]);
 
   const handleLogin = () => {
-    updateCustomer("2c69f714-a325-11ef-bfc1-0242ac120002", data);
+    //! Change Id customer here
+    updateCustomer("5603739a-a8b5-11ef-b713-0242ac120002", data);
     console.log(data);
   };
 

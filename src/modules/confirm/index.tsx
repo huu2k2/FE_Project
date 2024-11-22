@@ -25,6 +25,7 @@ export const LoginPage: React.FC = () => {
         phoneNumber: data.phoneNumber,
       });
       if (resultCustomer.data) {
+        //! Add save customer Id here.
         localStorage.setItem("token", resultCustomer.data.token);
         toast.success("Hi! Wellcome to website!");
       } else {
@@ -32,9 +33,9 @@ export const LoginPage: React.FC = () => {
       }
       // Save to token
 
-      console.log(localStorage.getItem("token"));
+      //! Change table id
       const resultDetailTable = await createTableDetail(
-        "c71b4e27-a3d0-11ef-a569-0242ac120002"
+        "87ab9514-a8b0-11ef-b713-0242ac120002"
       );
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       console.log(resultDetailTable.data.order.orderId);
