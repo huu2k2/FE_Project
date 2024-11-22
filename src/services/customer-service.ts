@@ -13,6 +13,7 @@ const createCustomer = (data: {
         `${baseUrl}/customers/`,
         data
       );
+      console.log(result);
       resolve(result.data);
     } catch (error) {
       reject(error);

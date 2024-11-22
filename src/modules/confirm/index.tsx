@@ -7,6 +7,7 @@ import { createTableDetail } from "../../services/table-service";
 import { useNavigate } from "react-router-dom";
 import useCustomerSocket from "../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../hooks/fc.socket";
+import { toast } from "react-toastify";
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate(); // Khởi tạo hook điều hướng
   const [data, setDate] = useState<ConfirmModel>({
@@ -16,24 +17,25 @@ export const LoginPage: React.FC = () => {
 
   const customerSocke = useCustomerSocket();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
     try {
       const resultCustomer = await createCustomer({
         name: data.fullName, // mapping fullName to name
         phoneNumber: data.phoneNumber,
       });
-      if (resultCustomer.message) {
-        console.log(resultCustomer.message);
-        console.log("Existing customer data:", resultCustomer.data);
+      if (resultCustomer.data) {
+        localStorage.setItem("token", resultCustomer.data.token);
+        toast.success("Hi! Wellcome to website!");
       } else {
         console.log("Customer created successfully:", resultCustomer.data);
       }
       // Save to token
 
+      console.log(localStorage.getItem("token"));
       const resultDetailTable = await createTableDetail(
         "c71b4e27-a3d0-11ef-a569-0242ac120002"
       );
-
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       console.log(resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
@@ -64,11 +66,7 @@ export const LoginPage: React.FC = () => {
             <h2 className="text-6xl font-bold text-center text-gray-800 mb-6">
               Xác thực
             </h2>
-            <form
-              className="w-full flex flex-col items-center justify-center gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}>
+            <div className="w-full flex flex-col items-center justify-center gap-4">
               <input
                 type="text"
                 id="phoneNumber"
@@ -92,8 +90,9 @@ export const LoginPage: React.FC = () => {
               <CustomButton
                 bgColor="#FFAA02"
                 title="Xác nhận"
-                onClick={handleLogin}></CustomButton>
-            </form>
+                onClick={handleLogin}
+              />
+            </div>
           </div>
         </div>
       </div>
