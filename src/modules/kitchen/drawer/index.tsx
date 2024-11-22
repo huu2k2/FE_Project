@@ -21,7 +21,7 @@ export const DrawerBar: React.FC = () => {
       cheffSocke!,
       "sendAllOrdersFromCheff",
       (orders: OrderModelSocket[]) => {
-        console.log(orders[0].orderDetails.length);
+        console.log(orders);
         const updatedOrders = orders.map((order) => ({
           order,
           quantity: order.orderDetails.length || 0,

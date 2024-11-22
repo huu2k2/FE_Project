@@ -11,7 +11,7 @@ export const HomeComponent: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [products, setProduct] = useState<ProductModel[]>([]);
   const [category, setCategory] = useState<CategoryModel>({
-    categoryId: undefined,
+    categoryId: "all",
     name: "Tất cả",
   });
 

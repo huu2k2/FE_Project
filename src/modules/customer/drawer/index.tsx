@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { LogoutButton } from "../../../components/buttons/logoutButton";
 import { CustomerModel } from "../../../models/customer";
 import { getCustomerById } from "../../../services/customer-service";
+import { jwtDecode } from "jwt-decode";
 
 export const Drawer: React.FC = () => {
   const [customerInfor, setCustomerInfor] = useState<CustomerModel>();
   const fetchCustomerInfor = async () => {
     try {
-      //! Change Id customer here
-      const result = await getCustomerById(
-        "5603739a-a8b5-11ef-b713-0242ac120002"
+      const token = localStorage.getItem("token")!;
+      const decoded = jwtDecode<{ customerId: string; role: { name: string } }>(
+        token
       );
+      const result = await getCustomerById(decoded.customerId);
       setCustomerInfor(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
@@ -26,7 +28,8 @@ export const Drawer: React.FC = () => {
         <label
           htmlFor="my-drawer"
           aria-label="close sidebar"
-          className="drawer-overlay"></label>
+          className="drawer-overlay"
+        ></label>
         <div className="flex flex-col min-h-full w-80 bg-backgroundColor rounded-r-[30px]">
           {/* Profile Section */}
           <div className="flex flex-col items-center p-4 bg-backgroundColor rounded-r-[30px]">

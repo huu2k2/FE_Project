@@ -6,6 +6,7 @@ import {
   getCustomerById,
   updateCustomer,
 } from "../../../../services/customer-service";
+import { jwtDecode } from "jwt-decode";
 
 export const ProfilePage: React.FC = () => {
   const [data, setDate] = useState<CustomerModel>({
@@ -17,10 +18,11 @@ export const ProfilePage: React.FC = () => {
 
   const fetchCustomerInfor = async () => {
     try {
-      //! Change Id customer here
-      const result = await getCustomerById(
-        "5603739a-a8b5-11ef-b713-0242ac120002"
+      const token = localStorage.getItem("token")!;
+      const decoded = jwtDecode<{ customerId: string; role: { name: string } }>(
+        token
       );
+      const result = await getCustomerById(decoded.customerId);
       setCustomerInfor(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
@@ -41,9 +43,11 @@ export const ProfilePage: React.FC = () => {
   }, [customerInfor]);
 
   const handleLogin = () => {
-    //! Change Id customer here
-    updateCustomer("5603739a-a8b5-11ef-b713-0242ac120002", data);
-    console.log(data);
+    const token = localStorage.getItem("token")!;
+    const decoded = jwtDecode<{ customerId: string; role: { name: string } }>(
+      token
+    );
+    updateCustomer(decoded.customerId, data);
   };
 
   const handleChangeText = (key: keyof CustomerModel, value: string) => {
@@ -69,7 +73,8 @@ export const ProfilePage: React.FC = () => {
             onSubmit={(e) => {
               e.preventDefault();
               handleLogin();
-            }}>
+            }}
+          >
             <input
               type="text"
               value={data.name}
@@ -89,7 +94,8 @@ export const ProfilePage: React.FC = () => {
             <div className="mt-5 w-full">
               <CustomButton
                 bgColor="#FFAA02"
-                title="Cập nhật thông tin"></CustomButton>
+                title="Cập nhật thông tin"
+              ></CustomButton>
             </div>
           </form>
         </div>

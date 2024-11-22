@@ -22,7 +22,6 @@ export const useAuth = () => {
         throw new Error("No token found");
       }
 
-      // Decode token to get role (assuming JWT)
       const decodedToken = JSON.parse(atob(token.split(".")[1]));
       console.log("decodedToken", decodedToken);
       setUserRole({ role: decodedToken.role.name });

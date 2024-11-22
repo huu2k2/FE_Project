@@ -21,6 +21,21 @@ const createOrder = (data: {
   });
 };
 
+const getAllOrdersOfCustomer = (
+  customerId: string
+): Promise<API<OrderModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderModel[]>>(
+        `${baseUrl}/orders/customer/${customerId}`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 const getAllOrders = (): Promise<API<OrderModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -104,5 +119,6 @@ export {
   getOrderById,
   updateOrder,
   getOrderDetailByOrderId,
-  getOrderDetailByOrderIdOfMergeOrder
+  getOrderDetailByOrderIdOfMergeOrder,
+  getAllOrdersOfCustomer
 };

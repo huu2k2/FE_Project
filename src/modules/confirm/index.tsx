@@ -21,24 +21,20 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       const resultCustomer = await createCustomer({
-        name: data.fullName, // mapping fullName to name
+        name: data.fullName,
         phoneNumber: data.phoneNumber,
       });
       if (resultCustomer.data) {
-        //! Add save customer Id here.
         localStorage.setItem("token", resultCustomer.data.token);
         toast.success("Hi! Wellcome to website!");
       } else {
         console.log("Customer created successfully:", resultCustomer.data);
       }
-      // Save to token
 
-      //! Change table id
       const resultDetailTable = await createTableDetail(
-        "87ab9514-a8b0-11ef-b713-0242ac120002"
+        "380de73f-a8e3-11ef-b88f-0242ac130002"
       );
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
-      console.log(resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
       handleSendMess(customerSocke!, "sendOrder", orderId);
       navigate("/home");
