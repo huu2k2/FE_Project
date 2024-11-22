@@ -21,7 +21,7 @@ export const ProfilePage: React.FC = () => {
       const result = await getCustomerById(
         "2c69f714-a325-11ef-bfc1-0242ac120002"
       );
-      setCustomerInfor(result);
+      setCustomerInfor(result.data);
     } catch (error) {
       console.error("Error fetching areas: ", error);
     }

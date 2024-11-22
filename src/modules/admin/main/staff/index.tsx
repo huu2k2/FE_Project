@@ -135,9 +135,13 @@ export const StaffCompoment: React.FC = () => {
               handleOpenForm={handleCreate}
             />
             <DropDown
-              categories={
-                Array.isArray(roles) ? roles.map((item) => item.name) : []
-              }
+              categories={roles}
+              setIdCategory={function (
+                value: React.SetStateAction<string>
+              ): void {
+                throw new Error("Function not implemented.");
+              }}
+              W={""}
             />
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>

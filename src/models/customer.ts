@@ -1,4 +1,4 @@
 export interface CustomerModel {
-  token: string;
-  refreshToken: string;
+  phoneNumber: string;
+  name: string;
 }
