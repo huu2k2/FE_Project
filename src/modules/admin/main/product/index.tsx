@@ -71,7 +71,7 @@ export const ProductCompoment: React.FC = () => {
     productId: "",
     name: "",
     categoryId: "",
-    price: "",
+    price: 0,
     description: "",
     image: "",
     category:{
@@ -87,7 +87,7 @@ export const ProductCompoment: React.FC = () => {
       productId: "",
       name: "",
       categoryId: "",
-      price: "",
+      price: 0,
       description: "",
       image: "",
       category:{
@@ -139,7 +139,7 @@ data:ProductModel
 
         {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products.map((product, index) => (
+          {products?.map((product, index) => (
             <ProductItem
               key={index}
               product={product}

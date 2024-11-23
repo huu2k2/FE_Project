@@ -14,6 +14,7 @@ export const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const ks = await loginStaff(data);
+    console.log("ádfg" ,ks)
     if (ks?.data) {
       const token = decodeToken(ks?.data.token);
       localStorage.setItem("token", ks?.data.token);

@@ -6,8 +6,13 @@ import { ReasonForm } from "./components/form";
 import { useParams } from "react-router-dom";
 import { getOrderDetailByOrderIdKitchen } from "../../../../services/order-detail-service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
-import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
+import {
+  handleReceiveMess,
+  handleSendMess,
+  handleSendNotificationDish,
+} from "../../../../hooks/fc.socket";
 import useCheffSocket from "../../../../hooks/useCheffSocket";
+import { KeyNotification } from "./components/types";
 
 export const ListItemProductPage: React.FC = () => {
   const cheffSocke = useCheffSocket();
@@ -188,17 +193,28 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleCancel = (reason: string) => {
-    handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
-      orderId: orderId,
-      orderDetailIds: activeItems(),
-      updateType: 0,
-    });
-    handleSendMess(cheffSocke!, "cancelOrders", {
-      orderId: orderId,
-      orderDetailIds: activeItems(),
-      reason: reason,
-    });
-    handleModalClose();
+    // todo: add function send notification
+    console.log("mapIsActive" ,Array.from(mapIsActive.keys()))
+    handleSendNotificationDish(
+      cheffSocke!,
+      KeyNotification.CancelledDish,
+      {
+        nameDish:"sdfgh",
+        orderId:Array.from(mapIsActive.keys())
+      }
+ 
+    );
+    // handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
+    //   orderId: orderId,
+    //   orderDetailIds: activeItems(),
+    //   updateType: 0,
+    // });
+    // handleSendMess(cheffSocke!, "cancelOrders", {
+    //   orderId: orderId,
+    //   orderDetailIds: activeItems(),
+    //   reason: reason,
+    // });
+    // handleModalClose();
   };
 
   const activeItems = (): string[] => {

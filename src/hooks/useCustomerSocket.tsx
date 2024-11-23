@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const URL = "http://localhost:8989/";
+const URL = import.meta.env.VITE_API_BASE_URL
 
 const useCustomerSocket = (): Socket | null => {
   const [socket, setSocket] = useState<Socket | null>(null);

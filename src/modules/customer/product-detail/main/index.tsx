@@ -91,7 +91,7 @@ const ProductDetail: React.FC = () => {
             className="flex overflow-x-auto gap-3 h-[100px] scrollbar-hide"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {relatedProducts.map((product, index) => (
+            {relatedProducts?.map((product, index) => (
               <div
                 key={index}
                 className="w-16 h-16 flex-shrink-0"

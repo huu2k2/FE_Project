@@ -14,4 +14,15 @@ const handleSendMess = (socket: Socket, ev: string, val: any): void => {
   socket.emit(ev, val);
 };
 
-export { handleReceiveMess, handleSendMess };
+interface Payload {
+  nameDish: string;
+  orderId: string[];
+}
+const handleSendNotificationDish = (
+  socket: Socket,
+  ev: string,
+  payload: Payload,
+) => {
+  socket.emit(ev , payload);
+};
+export { handleReceiveMess, handleSendMess, handleSendNotificationDish };

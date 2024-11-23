@@ -8,14 +8,12 @@ import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
-import useCheffSocket from "../../../../hooks/useCheffSocket";
 
 export const Cart: React.FC = () => {
   const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const customerSocke = useCustomerSocket();
-  const cheffSocket = useCheffSocket();
 
   const totalAmount = useMemo(() => {
     return items.reduce((acc, item) => {
@@ -73,16 +71,15 @@ export const Cart: React.FC = () => {
         orderId: orderId,
       });
     });
-    let reulst = await createOrderDetail(details);
-    console.log(reulst);
+    const reulst = await createOrderDetail(details);
+
     filteredItems.forEach((item) => {
       removeFromCart(item.id);
     });
+
     setItems(getCart());
     setSelectedItems([]);
     setSelectAll(false);
-
-    console.log(reulst.data);
 
     handleSendMess(customerSocke!, "sendOrderDetail", {
       data: reulst.data,

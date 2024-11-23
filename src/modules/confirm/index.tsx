@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
@@ -32,7 +32,7 @@ export const LoginPage: React.FC = () => {
       }
 
       const resultDetailTable = await createTableDetail(
-        "380de73f-a8e3-11ef-b88f-0242ac130002"
+        "ba155244-a96d-11ef-8fb9-0242ac120002"
       );
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
