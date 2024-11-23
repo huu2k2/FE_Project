@@ -48,6 +48,21 @@ const getCustomerById = (customerId: string): Promise<API<CustomerModel>> => {
   });
 };
 
+const getCustomerByOrder = (
+  orderId: string
+): Promise<API<CustomerModel>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<CustomerModel>>(
+        `${baseUrl}/customers/order/${orderId}`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 const updateCustomer = (
   customerId: string,
   data: {
@@ -68,4 +83,10 @@ const updateCustomer = (
   });
 };
 
-export { createCustomer, getAllCustomer, getCustomerById, updateCustomer };
+export {
+  createCustomer,
+  getAllCustomer,
+  getCustomerById,
+  updateCustomer,
+  getCustomerByOrder,
+};

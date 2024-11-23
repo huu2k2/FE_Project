@@ -16,13 +16,16 @@ const handleSendMess = (socket: Socket, ev: string, val: any): void => {
 
 interface Payload {
   nameDish: string;
-  orderId: string[];
+  orderId: string;
+  receiverId?: string;
+  senderId?: string;
 }
 const handleSendNotificationDish = (
   socket: Socket,
   ev: string,
-  payload: Payload,
+  payload: Payload
 ) => {
-  socket.emit(ev , payload);
+  socket.emit(ev, payload);
 };
+
 export { handleReceiveMess, handleSendMess, handleSendNotificationDish };

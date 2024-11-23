@@ -1,88 +1,49 @@
+import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { NotificationItem } from "../../../../components/NotificationItem";
+import { getAllNotificationById, GetNotficationInput, TypeGet } from "../../../../services/notification-service";
+import { decodeToken } from "../../../../utils/decode-token";
+import { useLoading } from "../../../../hooks/loading";
 
 export const NotificaationComponent: React.FC = () => {
-  const data = [
-    {
-      title: "Món đã xác nhận",
-      description:
-        "Món ăn “Hủ tiếu kho” của bạn đang được nấu.Món ăn “Hủ tiếu kho” của bạn đang được nấu.Món ăn “Hủ tiếu kho” của bạn đang được nấu.",
-      timestamp: "27/10/2024 16:40pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
+ const [data, setData] = useState<any>([])
+ const {isLoading, setIsLoading} = useLoading()
+ useEffect(() => {
+  const fetchApiNotification = async () => {
+    try {
+      // Lấy token từ localStorage và giải mã
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
 
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
+      const user = decodeToken(token);
+      if (!user?.userId) {
+        setIsLoading(false);
+        return;
+      }
 
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ qweqweqweqw",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-  ];
+      // Tạo query và gọi API
+      const query: GetNotficationInput = {
+        type: TypeGet.RECEIVER,
+        senderId: user.userId,
+      };
 
+      const ks = await getAllNotificationById(query);
+      console.log("Notifications:", ks);
+      alert("fvbnm")
+      // Cập nhật dữ liệu và trạng thái loading
+      setData(ks);
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+ 
+    } finally {
+      setIsLoading(false); // Đảm bảo set loading false khi hoàn thành
+    }
+  }
+  fetchApiNotification()
+},[])
   return (
     <>
       <div className="p-4 mt-6 min-h-screen mb-[40px]">
@@ -91,11 +52,11 @@ export const NotificaationComponent: React.FC = () => {
           title="Thông báo"
           bg="white"
         ></CustomerHeader>
-        <div className="flex flex-col mt-4">
+        {/* <div className="flex flex-col mt-4">
           {data.map((item, index) => (
             <NotificationItem key={index} data={item}></NotificationItem>
           ))}
-        </div>
+        </div> */}
       </div>
     </>
   );

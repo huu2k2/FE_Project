@@ -13,6 +13,8 @@ import {
 } from "../../../../hooks/fc.socket";
 import useCheffSocket from "../../../../hooks/useCheffSocket";
 import { KeyNotification } from "./components/types";
+import { decodeToken } from "../../../../utils/decode-token";
+import { getCustomerByOrder } from "../../../../services/customer-service";
 
 export const ListItemProductPage: React.FC = () => {
   const cheffSocke = useCheffSocket();
@@ -163,6 +165,19 @@ export const ListItemProductPage: React.FC = () => {
     setIsAllActive(allActive);
   }, [mapIsActive]);
 
+  const handleSendNoti = async (reason: string, orderId: string) => {
+    const token: string = localStorage?.getItem("token")?.toString() || "";
+    const data = decodeToken(token);
+    const customer = await getCustomerByOrder(orderId as string);
+    const receiverId = (customer.data as unknown as string) || "";
+    // todo: add function send notification
+    handleSendNotificationDish(cheffSocke!, KeyNotification.CancelledDish, {
+      nameDish: reason,
+      orderId: orderId as string,
+      senderId: data?.userId,
+      receiverId,
+    });
+  };
   const handleCheckboxChange = () => {
     const newMap = new Map(mapIsActive);
     const newActiveStatus = !isAllActive;
@@ -182,6 +197,7 @@ export const ListItemProductPage: React.FC = () => {
       orderDetailIds: activeItems(),
       updateType: 1,
     });
+    handleSendNoti("Đã xác nhận nấu",orderId as string)
   };
 
   const handleFinish = () => {
@@ -190,31 +206,22 @@ export const ListItemProductPage: React.FC = () => {
       orderDetailIds: activeItems(),
       updateType: 2,
     });
+    handleSendNoti("Đã hoàn thành món",orderId as string)
   };
 
-  const handleCancel = (reason: string) => {
-    // todo: add function send notification
-    console.log("mapIsActive" ,Array.from(mapIsActive.keys()))
-    handleSendNotificationDish(
-      cheffSocke!,
-      KeyNotification.CancelledDish,
-      {
-        nameDish:"sdfgh",
-        orderId:Array.from(mapIsActive.keys())
-      }
- 
-    );
-    // handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
-    //   orderId: orderId,
-    //   orderDetailIds: activeItems(),
-    //   updateType: 0,
-    // });
-    // handleSendMess(cheffSocke!, "cancelOrders", {
-    //   orderId: orderId,
-    //   orderDetailIds: activeItems(),
-    //   reason: reason,
-    // });
-    // handleModalClose();
+  const handleCancel = async (reason: string) => {
+    handleSendNoti(reason, orderId as string)
+    handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
+      orderId: orderId,
+      orderDetailIds: activeItems(),
+      updateType: 0,
+    });
+    handleSendMess(cheffSocke!, "cancelOrders", {
+      orderId: orderId,
+      orderDetailIds: activeItems(),
+      reason: reason,
+    });
+    handleModalClose();
   };
 
   const activeItems = (): string[] => {
