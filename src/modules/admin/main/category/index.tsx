@@ -108,9 +108,7 @@ export const CategoryCompoment: React.FC = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="text-black border-b py-2 px-4 text-left">
-                  Mã danh mục
-                </th>
+                
                 <th className="text-black  border-b py-2 px-4 text-left">
                   Tên danh mục
                 </th>
@@ -124,9 +122,7 @@ export const CategoryCompoment: React.FC = () => {
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}>
-                  <td className="text-black border-b py-2 px-4">
-                    {category.categoryId}
-                  </td>
+               
                   <td className="border-b py-2 px-4 text-black">
                     {category.name}
                   </td>

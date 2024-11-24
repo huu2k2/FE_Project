@@ -68,7 +68,7 @@ export const TableItem: React.FC<TablePros> = (data: TablePros) => {
         </div>
         <div
           className={`relative p-4 ${
-            data.table.status === "occupied"
+            data.table.status === ("occupied").toUpperCase()
               ? "bg-backgroundColor"
               : "bg-green-800"
           } text-center`}>

@@ -8,7 +8,7 @@ export const NavBar: React.FC = () => {
         <div className="w-[100px] h-[40px]">
           <img src={logo} alt="Logo" className="h-[100%]" />
         </div>
-        <LogoutButton/>
+        <LogoutButton router="/login"/>
       </nav>
     </>
   );

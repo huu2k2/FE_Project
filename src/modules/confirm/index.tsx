@@ -4,7 +4,7 @@ import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
 import { createCustomer } from "../../services/customer-service";
 import { createTableDetail } from "../../services/table-service";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useCustomerSocket from "../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../hooks/fc.socket";
 import { toast } from "react-toastify";
@@ -14,7 +14,7 @@ export const LoginPage: React.FC = () => {
     phoneNumber: "",
     fullName: "",
   });
-
+  const { tableId } = useParams();
   const customerSocke = useCustomerSocket();
 
   const handleLogin = async (e: any) => {
@@ -24,6 +24,7 @@ export const LoginPage: React.FC = () => {
         name: data.fullName,
         phoneNumber: data.phoneNumber,
       });
+      
       if (resultCustomer.data) {
         localStorage.setItem("token", resultCustomer.data.token);
         toast.success("Hi! Wellcome to website!");
@@ -31,9 +32,8 @@ export const LoginPage: React.FC = () => {
         console.log("Customer created successfully:", resultCustomer.data);
       }
 
-      const resultDetailTable = await createTableDetail(
-        "ba155244-a96d-11ef-8fb9-0242ac120002"
-      );
+
+      const resultDetailTable = await createTableDetail(tableId as string);
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
       handleSendMess(customerSocke!, "sendOrder", orderId);

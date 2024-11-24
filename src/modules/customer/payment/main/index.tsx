@@ -74,7 +74,7 @@ export const Payment: React.FC = () => {
 
         <div className="flex items-center justify-between">
           <div className="flex-1 bg-backgroundColor text-white text-1xl p-4 rounded-l-md text-start h-full">
-            Tổng tiền: {totalAmount.toLocaleString()}đ
+            Tổng tiền: {totalAmount?.toLocaleString() || 0}đ
           </div>
           <button
             onClick={handleSubmit}

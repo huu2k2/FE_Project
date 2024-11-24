@@ -56,6 +56,11 @@ export const Cart: React.FC = () => {
   }, []);
 
   const submit = async () => {
+ 
+    if (items.length ===0) {
+      alert("Bạn chưa có sản phẩm nào!");
+      return;
+    }
     let details: OrderDetailModel[] = [];
     const filteredItems = items.filter((item) =>
       selectedItems.includes(item.id)
@@ -117,7 +122,8 @@ export const Cart: React.FC = () => {
               onClick={handleSelectAll}
               className={`w-6 h-6 text-white rounded-full flex items-center mr-3 justify-center ${
                 selectAll ? "bg-[#ffaa02]" : "bg-gray-300"
-              }`}>
+              }`}
+            >
               <i className="fas fa-check"></i>
             </button>
             <span className="text-[#ffaa02] font-semibold">Tất cả</span>
@@ -125,13 +131,14 @@ export const Cart: React.FC = () => {
           <div className="text-lg font-semibold">
             Tổng tiền:{" "}
             <span className="text-[#ffaa02]">
-              {totalAmount.toLocaleString()}đ
+              {totalAmount?.toLocaleString() || 0}đ
             </span>
           </div>
         </div>
         <button
           className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5"
-          onClick={submit}>
+          onClick={submit}
+        >
           Gửi đơn
         </button>
       </div>

@@ -92,9 +92,8 @@ export const HomeComponent: React.FC = () => {
           className="overflow-y-auto w-full h-[528px]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {" "}
           <div className="grid grid-cols-2 gap-4">
-            {products.map((product, index) => (
+            {products?.map((product, index) => (
               <ProductItem key={index} data={product} />
             ))}
           </div>

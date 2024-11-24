@@ -190,7 +190,7 @@ export const ListItemProductPage: React.FC = () => {
     newMap.set(id, !mapIsActive.get(id));
     setMapIsActive(newMap);
   };
-
+console.log(mapIsActive)
   const handleConfirm = () => {
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,

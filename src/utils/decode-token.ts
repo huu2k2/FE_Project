@@ -5,7 +5,8 @@ interface JwtPayload {
   role: {
     name: string;
   };
-  userId: string;
+  userId?: string;
+  customerId?: string;
   username: string;
   exp: number;  // thời gian hết hạn của token
 }

@@ -1,3 +1,4 @@
+import { AccountModel } from './../models/account';
 import axiosInstance from "../api";
 import { API } from "../models/api";
 import { OrderModel } from "../models/order";
@@ -68,6 +69,19 @@ const createTableDetail = (
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.post<
+        API<{ order: OrderModel; tableDetail: TableDetailModel }>
+      >(`${baseUrl}/tables/${id}/detail`);
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const checkTableDetailIsPayment = (id: string): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<
         API<{ order: OrderModel; tableDetail: TableDetailModel }>
       >(`${baseUrl}/tables/${id}/detail`);
       resolve(result.data);

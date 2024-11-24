@@ -38,7 +38,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
           </div>
           <div className="flex-grow">
             <span className="text-sm text-[#FFAA02] font-semibold">
-              {price.toLocaleString()}đ
+              {price?.toLocaleString() || 0}đ
             </span>
           </div>
           <div className="flex justify-between">

@@ -74,7 +74,7 @@ export const Drawer: React.FC = () => {
           </div>
 
           {/* Logout Button */}
-          <LogoutButton />
+          <LogoutButton router="/login/customer"/>
         </div>
       </div>
     </>
