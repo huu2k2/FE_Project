@@ -32,7 +32,7 @@ export const LoginPage: React.FC = () => {
       }
 
       const resultDetailTable = await createTableDetail(
-        "380de73f-a8e3-11ef-b88f-0242ac130002"
+        "87ab9514-a8b0-11ef-b713-0242ac120002"
       );
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
