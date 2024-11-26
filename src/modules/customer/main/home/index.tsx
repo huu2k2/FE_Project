@@ -6,6 +6,9 @@ import { getAllCategory } from "../../../../services/category-service";
 import { CategoryModel } from "../../../../models/category";
 import { ProductModel } from "../../../../models/product";
 import { getProductByCategoryId } from "../../../../services/product-service";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
+import { handleReceiveMess } from "../../../../hooks/fc.socket";
+import { toast } from "react-toastify";
 
 export const HomeComponent: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
@@ -14,6 +17,17 @@ export const HomeComponent: React.FC = () => {
     categoryId: "all",
     name: "Tất cả",
   });
+
+  // const customerSocket = useCustomerSocket();
+
+  // useEffect(() => {
+  //   if (!customerSocket) return;
+  //   console.log("Home1");
+  //   handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
+  //     console.log(val);
+  //     toast.info(val);
+  //   });
+  // }, [customerSocket]);
 
   const fetchCategories = async () => {
     try {

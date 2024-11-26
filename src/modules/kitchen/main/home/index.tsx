@@ -190,11 +190,11 @@ export const ListItemProductPage: React.FC = () => {
 
   const handleCancel = (reason: string) => {
     const cheffSocke = getSocket();
-    handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
-      orderId: orderId,
-      orderDetailIds: activeItems(),
-      updateType: 0,
-    });
+    // handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
+    //   orderId: orderId,
+    //   orderDetailIds: activeItems(),
+    //   updateType: 0,
+    // });
     handleSendMess(cheffSocke!, "cancelOrders", {
       orderId: orderId,
       orderDetailIds: activeItems(),

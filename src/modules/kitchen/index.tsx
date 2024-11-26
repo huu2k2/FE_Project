@@ -6,19 +6,19 @@ import { initializeCheffSocket } from "../../hooks/useCheffSocket";
 // import { handleReceiveMess } from "../../hooks/fc.socket";
 
 export const LayoutKitchen: React.FC = () => {
-  const [isLoading, setLoading] = useState<boolean>(false);
+  // const [isLoading, setLoading] = useState<boolean>(false);
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(true);
-      const socket = initializeCheffSocket();
-      return () => {
-        socket.disconnect();
-      };
-    }, 100);
+    // setTimeout(() => {
+    //   setLoading(true);
+    //   const socket = initializeCheffSocket();
+    //   return () => {
+    //     socket.disconnect();
+    //   };
+    // }, 100);
   }, []);
   return (
     <>
-      {isLoading && (
+      {true && (
         <div className="flex flex-col h-screen">
           <NavBar />
           <div className="flex flex-1 overflow-hidden">

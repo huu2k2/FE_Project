@@ -21,6 +21,6 @@ export const disconnectSocket = (): void => {
   if (socket) {
     socket.disconnect();
     socket = null;
-    // console.log("Socket disconnected!");
+    console.log("Socket disconnected!");
   }
 };
