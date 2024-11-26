@@ -7,11 +7,9 @@ import { useParams } from "react-router-dom";
 import { getOrderDetailByOrderIdKitchen } from "../../../../services/order-detail-service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
-import useCheffSocket from "../../../../hooks/useCheffSocket";
+import { getSocket } from "../../../../hooks/useCheffSocket";
 
 export const ListItemProductPage: React.FC = () => {
-  const cheffSocke = useCheffSocket();
-
   const { orderId } = useParams<{ orderId: string }>();
 
   const [data, setData] = useState<OrderDetailModel[]>([]);
@@ -54,6 +52,7 @@ export const ListItemProductPage: React.FC = () => {
   }, [orderId]);
 
   useEffect(() => {
+    const cheffSocke = getSocket();
     if (!cheffSocke) return;
     handleReceiveMess(
       cheffSocke!,
@@ -147,7 +146,7 @@ export const ListItemProductPage: React.FC = () => {
         setData((prevDatas) => [...prevDatas, ...val]);
       }
     );
-  }, [cheffSocke]);
+  }, []);
 
   useEffect(() => {
     if (mapIsActive.size === 0) {
@@ -172,6 +171,7 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleConfirm = () => {
+    const cheffSocke = getSocket();
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,
       orderDetailIds: activeItems(),
@@ -180,6 +180,7 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleFinish = () => {
+    const cheffSocke = getSocket();
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,
       orderDetailIds: activeItems(),
@@ -188,6 +189,7 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleCancel = (reason: string) => {
+    const cheffSocke = getSocket();
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,
       orderDetailIds: activeItems(),

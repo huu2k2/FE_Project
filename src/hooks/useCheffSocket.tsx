@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-
 const URL = "http://localhost:8989/cheff";
 
-const useCheffSocket = (): Socket | null => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+let socket: Socket | null = null;
 
-  useEffect(() => {
-    const socketInstance = io(URL);
-    setSocket(socketInstance);
-
-    socketInstance.on("connect", () => {
-      console.log("Connected to cheff server ");
+export const initializeCheffSocket = (): Socket => {
+  if (!socket) {
+    socket = io(URL, {
+      transports: ["websocket"],
     });
-
-    return () => {
-      socketInstance.disconnect();
-      console.log("Socket cheff disconnected");
-    };
-  }, []);
-
+    console.log("Socket initialized!");
+  }
   return socket;
 };
 
-export default useCheffSocket;
+export const getSocket = (): Socket | null => {
+  return socket;
+};
+
+export const disconnectSocket = (): void => {
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+    // console.log("Socket disconnected!");
+  }
+};

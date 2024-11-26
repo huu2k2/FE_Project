@@ -6,16 +6,14 @@ import { CartModel } from "../../../../models/cart";
 import { createOrderDetail } from "../../../../services/order-detail-service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
-import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
-import useCheffSocket from "../../../../hooks/useCheffSocket";
+import { getCustomerSocket } from "../../../../hooks/useCustomerSocket";
 
 export const Cart: React.FC = () => {
   const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const customerSocke = useCustomerSocket();
-  const cheffSocket = useCheffSocket();
+  const customerSocke = getCustomerSocket();
 
   const totalAmount = useMemo(() => {
     return items.reduce((acc, item) => {

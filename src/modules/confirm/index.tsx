@@ -5,9 +5,12 @@ import { ConfirmModel } from "../../models/confirm";
 import { createCustomer } from "../../services/customer-service";
 import { createTableDetail } from "../../services/table-service";
 import { useNavigate } from "react-router-dom";
-import useCustomerSocket from "../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../hooks/fc.socket";
 import { toast } from "react-toastify";
+import {
+  getCustomerSocket,
+  initializeCustomerSocket,
+} from "../../hooks/useCustomerSocket";
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate(); // Khởi tạo hook điều hướng
   const [data, setDate] = useState<ConfirmModel>({
@@ -15,7 +18,9 @@ export const LoginPage: React.FC = () => {
     fullName: "",
   });
 
-  const customerSocke = useCustomerSocket();
+  useEffect(() => {
+    initializeCustomerSocket();
+  }, []);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -31,12 +36,14 @@ export const LoginPage: React.FC = () => {
         console.log("Customer created successfully:", resultCustomer.data);
       }
 
+      //! Change table Id here
       const resultDetailTable = await createTableDetail(
-        "380de73f-a8e3-11ef-b88f-0242ac130002"
+        "87ab9514-a8b0-11ef-b713-0242ac120002"
       );
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
-      handleSendMess(customerSocke!, "sendOrder", orderId);
+      const customerSocket = getCustomerSocket();
+      handleSendMess(customerSocket!, "sendOrder", orderId);
       navigate("/home");
     } catch (error) {
       console.error("Error creating customer: ", error);

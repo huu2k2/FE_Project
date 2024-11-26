@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import { OrderStatusItem } from "../../../../components/customer/orderStatusItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { OrderDetailModel } from "../../../../models/orderdetail";
-import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 import { OrderDetailStatus } from "../../../../enum/enum";
+import { getCustomerSocket } from "../../../../hooks/useCustomerSocket";
 
 const OrderStatus: React.FC = () => {
   const [items, setItems] = useState<OrderDetailModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [status, isStatus] = useState<boolean>(false);
-
-  const customerSocket = useCustomerSocket();
+  const customerSocket = getCustomerSocket();
 
   useEffect(() => {
     if (!customerSocket) return;

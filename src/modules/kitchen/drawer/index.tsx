@@ -1,18 +1,19 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { ItemDrawer } from "./item";
 import { useNavigate } from "react-router-dom";
-import useCheffSocket from "../../../hooks/useCheffSocket";
 import { handleReceiveMess, handleSendMess } from "../../../hooks/fc.socket";
 import { OrderModelSocket } from "../../../models/order";
+import { getSocket } from "../../../hooks/useCheffSocket";
 export const DrawerBar: React.FC = () => {
-  const cheffSocke = useCheffSocket();
-
   const [orders, setOrders] = useState<
     { order: OrderModelSocket; quantity: number }[]
   >([]);
 
   useEffect(() => {
+    const cheffSocke = getSocket();
     if (!cheffSocke) return;
+
+    // console.log(cheffSocke);
 
     // Get All
     handleSendMess(cheffSocke, "getAllOrdersFromCheff", "Lấy đơn gọi");
@@ -21,11 +22,18 @@ export const DrawerBar: React.FC = () => {
       cheffSocke!,
       "sendAllOrdersFromCheff",
       (orders: OrderModelSocket[]) => {
-        console.log(orders);
-        const updatedOrders = orders.map((order) => ({
-          order,
-          quantity: order.orderDetails.length || 0,
-        }));
+        // console.log(orders);
+        const updatedOrders = orders.map((order) => {
+          const validDetailsCount = order.orderDetails.filter(
+            (detail) =>
+              detail.status === "PENDING" || detail.status === "CONFIRMED"
+          ).length;
+
+          return {
+            order,
+            quantity: validDetailsCount, // Số lượng chi tiết 'PENDING' hoặc 'CONFIRMED'
+          };
+        });
         setOrders(updatedOrders);
       }
     );
@@ -38,10 +46,15 @@ export const DrawerBar: React.FC = () => {
       cheffSocke,
       "showNewOrder",
       (result: OrderModelSocket) => {
-        console.log(result.tableDetail.table);
+        // Đếm số lượng các chi tiết có trạng thái 'PENDING' hoặc 'CONFIRMED'
+        const validDetailsCount = result.orderDetails.filter(
+          (detail) =>
+            detail.status === "PENDING" || detail.status === "CONFIRMED"
+        ).length;
+
         setOrders((prevOrders) => [
           ...prevOrders,
-          { order: result, quantity: result.orderDetails.length || 0 },
+          { order: result, quantity: validDetailsCount }, // Cập nhật số lượng chi tiết hợp lệ
         ]);
       }
     );
@@ -56,6 +69,27 @@ export const DrawerBar: React.FC = () => {
               item.order.orderId === orderId
                 ? { ...item, quantity: item.quantity + quantity } // Cập nhật quantity nếu orderId khớp
                 : item // Giữ nguyên nếu không khớp
+          )
+        );
+      }
+    );
+
+    handleReceiveMess(
+      cheffSocke,
+      "getUpdateOrdersQuantityFromCheff",
+      (value: { orderId: string; quantity: number; updateType: number }) => {
+        console.log(value);
+        setOrders((prevOrders) =>
+          prevOrders.map((item) =>
+            item.order.orderId === value.orderId
+              ? {
+                  ...item,
+                  quantity:
+                    value.updateType === 2
+                      ? item.quantity - value.quantity
+                      : item.quantity,
+                }
+              : item
           )
         );
       }
@@ -78,7 +112,7 @@ export const DrawerBar: React.FC = () => {
 
     // Cleanup
     return () => {};
-  }, [cheffSocke]);
+  }, []);
 
   const navigate = useNavigate();
   const [position, setPosition] = useState<number>(0);
