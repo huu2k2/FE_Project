@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { OrderStatusItem } from "../../../../components/customer/orderStatusItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { OrderDetailModel } from "../../../../models/orderdetail";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 import { OrderDetailStatus } from "../../../../enum/enum";
-import { getCustomerSocket } from "../../../../hooks/useCustomerSocket";
 
 const OrderStatus: React.FC = () => {
   const [items, setItems] = useState<OrderDetailModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [status, isStatus] = useState<boolean>(false);
-  const customerSocket = getCustomerSocket();
+
+  const customerSocket = useCustomerSocket();
 
   useEffect(() => {
     if (!customerSocket) return;
@@ -53,8 +54,8 @@ const OrderStatus: React.FC = () => {
         orderDetailIds: string[];
         updateType: number;
       }) => {
+        console.log("Order status update", vals);
         if (orderId === vals.orderId) {
-          console.log(vals.orderDetailIds, vals.updateType);
           let newStatus = OrderDetailStatus.CONFIRMED;
           if (vals.updateType === 0) {
             newStatus = OrderDetailStatus.CANCELED;
@@ -104,7 +105,8 @@ const OrderStatus: React.FC = () => {
   };
 
   const handleAjustQuantity = () => {
-    handleSendMess(customerSocket!, "requestUpdateOrderDetail", items);
+    const arr = items.filter((item) => item.status == "PENDING");
+    handleSendMess(customerSocket!, "requestUpdateOrderDetail", arr);
   };
 
   return (
@@ -112,7 +114,8 @@ const OrderStatus: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Trạng thái đơn gọi"
-        bg="white"></CustomerHeader>
+        bg="white"
+      ></CustomerHeader>
       <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
         {items.map((item, index) => (
           <OrderStatusItem
@@ -136,14 +139,16 @@ const OrderStatus: React.FC = () => {
         {status && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[green] text-white font-bold rounded-[20px]"
-            onClick={handleAjustQuantity}>
+            onClick={handleAjustQuantity}
+          >
             Xác nhận
           </button>
         )}
         {selectedItems.length > 0 && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-[20px]"
-            onClick={handleCancel}>
+            onClick={handleCancel}
+          >
             Huỷ món
           </button>
         )}

@@ -11,6 +11,7 @@ const handleReceiveMess = (
 };
 
 const handleSendMess = (socket: Socket, ev: string, val: any): void => {
+  console.log(val);
   socket.emit(ev, val);
 };
 

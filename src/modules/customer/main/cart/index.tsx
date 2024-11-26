@@ -6,14 +6,14 @@ import { CartModel } from "../../../../models/cart";
 import { createOrderDetail } from "../../../../services/order-detail-service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
-import { getCustomerSocket } from "../../../../hooks/useCustomerSocket";
 
 export const Cart: React.FC = () => {
   const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const customerSocke = getCustomerSocket();
+  const customerSocket = useCustomerSocket();
 
   const totalAmount = useMemo(() => {
     return items.reduce((acc, item) => {
@@ -72,17 +72,13 @@ export const Cart: React.FC = () => {
       });
     });
     let reulst = await createOrderDetail(details);
-    console.log(reulst);
     filteredItems.forEach((item) => {
       removeFromCart(item.id);
     });
     setItems(getCart());
     setSelectedItems([]);
     setSelectAll(false);
-
-    console.log(reulst.data);
-
-    handleSendMess(customerSocke!, "sendOrderDetail", {
+    handleSendMess(customerSocket!, "sendOrderDetail", {
       data: reulst.data,
       orderId: orderId,
     });
@@ -118,7 +114,8 @@ export const Cart: React.FC = () => {
               onClick={handleSelectAll}
               className={`w-6 h-6 text-white rounded-full flex items-center mr-3 justify-center ${
                 selectAll ? "bg-[#ffaa02]" : "bg-gray-300"
-              }`}>
+              }`}
+            >
               <i className="fas fa-check"></i>
             </button>
             <span className="text-[#ffaa02] font-semibold">Tất cả</span>
@@ -132,7 +129,8 @@ export const Cart: React.FC = () => {
         </div>
         <button
           className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5"
-          onClick={submit}>
+          onClick={submit}
+        >
           Gửi đơn
         </button>
       </div>
