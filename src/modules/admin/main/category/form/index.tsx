@@ -1,4 +1,5 @@
 import { CustomButton } from "../../../../../components/CustomButton";
+import { useLoading } from "../../../../../hooks/loading";
 import {
   createCategory,
   updateCategory,
@@ -25,25 +26,29 @@ export const Form: React.FC<FormPros> = ({
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
   };
-
-  const handleSubmit = async () => {
-    if (isState == 1) {
-      try {
-        let result = await updateCategory(formData);
-        console.log(result.data);
-      } catch (error) {
-        console.log(error);
+  const { setIsLoading } = useLoading();
+  const handleSubmit = () => {
+    setIsLoading(true);
+    setTimeout(async () => {
+      if (isState == 1) {
+        try {
+          let result = await updateCategory(formData);
+          console.log(result.data);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          let result = await createCategory(formData);
+          console.log(result.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
-    } else {
-      try {
-        let result = await createCategory(formData);
-        console.log(result.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-    closeModal();
+      fetchData();
+      setIsLoading(false);
+      closeModal();
+    }, 2000);
   };
 
   return (
@@ -70,11 +75,13 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Xác nhận"
               bgColor="#FFAA02"
-              onClick={() => handleSubmit()}></CustomButton>
+              onClick={() => handleSubmit()}
+            ></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}></CustomButton>
+              onClick={closeModal}
+            ></CustomButton>
           </div>
         </div>
       </div>
