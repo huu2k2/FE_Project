@@ -18,6 +18,7 @@ export const ItemDrawer: React.FC<ItemDrawerProps> = ({
   onClick,
   order,
 }) => {
+  console.log(order);
   return (
     <li
       key={index}
@@ -29,11 +30,11 @@ export const ItemDrawer: React.FC<ItemDrawerProps> = ({
             isActiveItem ? "bg-green-500" : "bg-gray-500"
           }`}></div>
         <div className="w-[30%] flex justify-center items-center">
-          <img src={img} alt={`Bàn ${order.tableDetail.table.name}`} />
+          <img src={img} alt={`Bàn ${order.tableDetail.table?.name}`} />
         </div>
         <div className="flex flex-col flex-1 pl-4 justify-between">
           <span className="font-bold text-lg text-black">
-            {order.tableDetail.table.name}
+            {order.tableDetail.table?.name}
           </span>
           <div className="flex justify-between text-sm text-gray-500 flex-col">
             <p>{quantity} món</p>

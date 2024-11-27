@@ -6,7 +6,7 @@ const RouterPayment: RouteObject = {
   element: <Layout />,
   children: [
     {
-      path: "order/:id",
+      path: "order",
       element: <Payment />,
     },
   ],

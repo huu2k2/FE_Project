@@ -4,16 +4,19 @@ import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
 import { createCustomer } from "../../services/customer-service";
 import { createTableDetail } from "../../services/table-service";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useCustomerSocket from "../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../hooks/fc.socket";
 import { toast } from "react-toastify";
 export const LoginPage: React.FC = () => {
-  const navigate = useNavigate(); // Khởi tạo hook điều hướng
+  const navigate = useNavigate();
+  const { tableId } = useParams();
   const [data, setDate] = useState<ConfirmModel>({
     phoneNumber: "",
     fullName: "",
   });
+
+  console.log(`tableId: ${tableId}`);
 
   const customerSocke = useCustomerSocket();
 
@@ -31,9 +34,8 @@ export const LoginPage: React.FC = () => {
         console.log("Customer created successfully:", resultCustomer.data);
       }
 
-      const resultDetailTable = await createTableDetail(
-        "87ab9514-a8b0-11ef-b713-0242ac120002"
-      );
+      console.log(tableId);
+      const resultDetailTable = await createTableDetail(tableId as string);
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");
       handleSendMess(customerSocke!, "sendOrder", orderId);

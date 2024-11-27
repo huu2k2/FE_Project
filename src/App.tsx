@@ -21,9 +21,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!customerSocket) return;
-    console.log("Home1");
     handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
-      toast.info(val);
+      toast.info(val.title);
     });
   }, [customerSocket]);
 

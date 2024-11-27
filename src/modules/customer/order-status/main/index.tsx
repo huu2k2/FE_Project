@@ -5,6 +5,7 @@ import { OrderDetailModel } from "../../../../models/orderdetail";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 import { OrderDetailStatus } from "../../../../enum/enum";
+import { toast } from "react-toastify";
 
 const OrderStatus: React.FC = () => {
   const [items, setItems] = useState<OrderDetailModel[]>([]);
@@ -18,6 +19,10 @@ const OrderStatus: React.FC = () => {
     const orderId = localStorage.getItem("orderId");
 
     handleSendMess(customerSocket!, "requestGetOrderDetails", orderId);
+
+    handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
+      toast.info(val.title);
+    });
 
     handleReceiveMess(
       customerSocket!,
@@ -114,8 +119,7 @@ const OrderStatus: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Trạng thái đơn gọi"
-        bg="white"
-      ></CustomerHeader>
+        bg="white"></CustomerHeader>
       <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
         {items.map((item, index) => (
           <OrderStatusItem
@@ -139,16 +143,14 @@ const OrderStatus: React.FC = () => {
         {status && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[green] text-white font-bold rounded-[20px]"
-            onClick={handleAjustQuantity}
-          >
+            onClick={handleAjustQuantity}>
             Xác nhận
           </button>
         )}
         {selectedItems.length > 0 && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-[20px]"
-            onClick={handleCancel}
-          >
+            onClick={handleCancel}>
             Huỷ món
           </button>
         )}
