@@ -4,13 +4,16 @@ import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { getCart, removeFromCart } from "../../../../services/cart-service";
 import { CartModel } from "../../../../models/cart";
 import { createOrderDetail } from "../../../../services/order-detail-service";
-import { OrderDetailModel } from "../../../../models/orderDetail";
+import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
+import { handleSendMess } from "../../../../hooks/fc.socket";
 
 export const Cart: React.FC = () => {
   const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
+  const customerSocket = useCustomerSocket();
 
   const totalAmount = useMemo(() => {
     return items.reduce((acc, item) => {
@@ -58,23 +61,27 @@ export const Cart: React.FC = () => {
       selectedItems.includes(item.id)
     );
 
+    let orderId = localStorage.getItem("orderId")!;
     filteredItems.forEach((item) => {
       details.push({
         productId: item.id,
         quantity: item.quantity,
         price: item.price,
         status: OrderDetailStatus.PENDING,
-        orderId: "18e10579-a324-11ef-8e57-0242ac130002",
+        orderId: orderId,
       });
     });
     let reulst = await createOrderDetail(details);
-    console.log(reulst.data);
     filteredItems.forEach((item) => {
       removeFromCart(item.id);
     });
     setItems(getCart());
     setSelectedItems([]);
     setSelectAll(false);
+    handleSendMess(customerSocket!, "sendOrderDetail", {
+      data: reulst.data,
+      orderId: orderId,
+    });
   };
 
   useEffect(() => {

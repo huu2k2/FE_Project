@@ -135,9 +135,13 @@ export const StaffCompoment: React.FC = () => {
               handleOpenForm={handleCreate}
             />
             <DropDown
-              categories={
-                Array.isArray(roles) ? roles.map((item) => item.name) : []
-              }
+              categories={roles}
+              setIdCategory={function (
+                value: React.SetStateAction<string>
+              ): void {
+                throw new Error("Function not implemented.");
+              }}
+              W={""}
             />
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>
@@ -166,8 +170,7 @@ export const StaffCompoment: React.FC = () => {
               {list.map((account, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
-                >
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="text-black border-b py-2 px-4">
                     {account?.username}
                   </td>
@@ -184,8 +187,7 @@ export const StaffCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(account)}
-                      >
+                        onClick={() => handleEdit(account)}>
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                     </div>
@@ -199,8 +201,7 @@ export const StaffCompoment: React.FC = () => {
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}
-            ></Pagination>
+              goToPage={handlePageChange}></Pagination>
           </div>
         </div>
       </div>

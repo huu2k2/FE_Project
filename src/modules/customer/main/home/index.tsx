@@ -6,6 +6,9 @@ import { getAllCategory } from "../../../../services/category-service";
 import { CategoryModel } from "../../../../models/category";
 import { ProductModel } from "../../../../models/product";
 import { getProductByCategoryId } from "../../../../services/product-service";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
+import { handleReceiveMess } from "../../../../hooks/fc.socket";
+import { toast } from "react-toastify";
 
 export const HomeComponent: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
@@ -14,6 +17,17 @@ export const HomeComponent: React.FC = () => {
     categoryId: "all",
     name: "Tất cả",
   });
+
+  // const customerSocket = useCustomerSocket();
+
+  // useEffect(() => {
+  //   if (!customerSocket) return;
+  //   console.log("Home1");
+  //   handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
+  //     console.log(val);
+  //     toast.info(val);
+  //   });
+  // }, [customerSocket]);
 
   const fetchCategories = async () => {
     try {
@@ -28,7 +42,6 @@ export const HomeComponent: React.FC = () => {
     try {
       const result = await getProductByCategoryId(categoryId);
       setProduct(result.data);
-      console.log(result);
     } catch (error) {
       console.error("Error fetching products: ", error);
     }
@@ -39,8 +52,9 @@ export const HomeComponent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchProducts(category.categoryId);
-    console.log(category);
+    if (category.categoryId) {
+      fetchProducts(category.categoryId);
+    }
   }, [category]);
 
   return (

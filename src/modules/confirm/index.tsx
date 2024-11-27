@@ -1,37 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
 import { createCustomer } from "../../services/customer-service";
 import { createTableDetail } from "../../services/table-service";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useCustomerSocket from "../../hooks/useCustomerSocket";
+import { handleSendMess } from "../../hooks/fc.socket";
+import { toast } from "react-toastify";
 export const LoginPage: React.FC = () => {
-  const navigate = useNavigate(); // Khởi tạo hook điều hướng
+  const navigate = useNavigate();
+  const { tableId } = useParams();
   const [data, setDate] = useState<ConfirmModel>({
     phoneNumber: "",
     fullName: "",
   });
 
-  const handleLogin = async () => {
+  console.log(`tableId: ${tableId}`);
+
+  const customerSocke = useCustomerSocket();
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
     try {
-      // const resultCustomer = await createCustomer({
-      //   name: data.fullName, // mapping fullName to name
-      //   phoneNumber: data.phoneNumber,
-      // });
-      // if (resultCustomer.message) {
-      //   console.log(resultCustomer.message);
-      //   console.log("Existing customer data:", resultCustomer.data);
-      // } else {
-      //   console.log("Customer created successfully:", resultCustomer.data);
-      // }
-      // Save to token
+      const resultCustomer = await createCustomer({
+        name: data.fullName,
+        phoneNumber: data.phoneNumber,
+      });
+      if (resultCustomer.data) {
+        localStorage.setItem("token", resultCustomer.data.token);
+        toast.success("Hi! Wellcome to website!");
+      } else {
+        console.log("Customer created successfully:", resultCustomer.data);
+      }
 
-      const resultDetailTable = await createTableDetail(
-        "37c58542-a4be-11ef-88c5-0242ac130002"
-      );
-
+      console.log(tableId);
+      const resultDetailTable = await createTableDetail(tableId as string);
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
-      console.log(resultDetailTable.data.order.orderId);
+      const orderId = localStorage.getItem("orderId");
+      handleSendMess(customerSocke!, "sendOrder", orderId);
       navigate("/home");
     } catch (error) {
       console.error("Error creating customer: ", error);
@@ -58,12 +65,7 @@ export const LoginPage: React.FC = () => {
             <h2 className="text-6xl font-bold text-center text-gray-800 mb-6">
               Xác thực
             </h2>
-            <form
-              className="w-full flex flex-col items-center justify-center gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
+            <div className="w-full flex flex-col items-center justify-center gap-4">
               <input
                 type="text"
                 id="phoneNumber"
@@ -88,8 +90,8 @@ export const LoginPage: React.FC = () => {
                 bgColor="#FFAA02"
                 title="Xác nhận"
                 onClick={handleLogin}
-              ></CustomButton>
-            </form>
+              />
+            </div>
           </div>
         </div>
       </div>

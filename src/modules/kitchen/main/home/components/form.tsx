@@ -3,11 +3,13 @@ import { CustomButton } from "../../../../../components/CustomButton";
 
 interface ReasonFormPros {
   closeModal: () => void;
+  handleCancel: (reason: string) => void;
   data: string[];
 }
 
 export const ReasonForm: React.FC<ReasonFormPros> = ({
   closeModal,
+  handleCancel,
   data,
 }: ReasonFormPros) => {
   const [reason, setReason] = useState("");
@@ -17,9 +19,8 @@ export const ReasonForm: React.FC<ReasonFormPros> = ({
   };
 
   const handleSubmitReason = () => {
-    console.log(reason, data);
-
-    closeModal();
+    console.log(`Form data response: ${reason}, ${data}`);
+    handleCancel(reason);
   };
 
   return (
@@ -40,13 +41,11 @@ export const ReasonForm: React.FC<ReasonFormPros> = ({
             <CustomButton
               title="Xác nhận"
               bgColor="#FFAA02"
-              onClick={handleSubmitReason}
-            ></CustomButton>
+              onClick={handleSubmitReason}></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}
-            ></CustomButton>
+              onClick={closeModal}></CustomButton>
           </div>
         </div>
       </div>

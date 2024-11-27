@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../../components/CustomerHeader";
 import { FinishOrderItem } from "../../../../../components/FinishOrderItem";
-import { OrderDetailModel } from "../../../../../models/orderDetail";
+import { OrderDetailModel } from "../../../../../models/orderdetail";
 import { getOrderDetailByOrderId } from "../../../../../services/order-detail-service";
 import { useParams } from "react-router-dom";
 
@@ -18,8 +18,7 @@ export const DetailComponent: React.FC = () => {
     try {
       const result = await getOrderDetailByOrderId(orderId);
       if (Array.isArray(result.data)) {
-        setDetailOrders(result.data); // Gán dữ liệu vào state
-        console.log("Order details: ", result.data);
+        setDetailOrders(result.data);
       } else {
         console.error("Unexpected response format. Expected an array.");
       }
@@ -36,10 +35,11 @@ export const DetailComponent: React.FC = () => {
     <>
       <CustomerHeader
         isBack={true}
-        title="Bàn A02 - 27/10/2024"></CustomerHeader>
+        title="Bàn A02 - 27/10/2024"
+      ></CustomerHeader>
       <div className="flex flex-col mt-[40px]">
         {detailOrders.map((item) => (
-          <FinishOrderItem data={item}></FinishOrderItem>
+          <FinishOrderItem data={item} key={item.orderId}></FinishOrderItem>
         ))}
       </div>
     </>

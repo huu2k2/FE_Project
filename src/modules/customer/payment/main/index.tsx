@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { FinishOrderItem } from "../../../../components/FinishOrderItem";
 import { createPayment } from "../../../../services/payment-service";
-import { getOrderDetailByOrderId } from "../../../../services/order-service";
-import { OrderDetailModel } from "../../../../models/orderDetail";
+import { getOrderDetailByOrderIdOfMergeOrder } from "../../../../services/order-service";
+import { OrderDetailModel } from "../../../../models/orderdetail";
+import useCustomerSocket from "../../../../hooks/useCustomerSocket";
+import { handleSendMess } from "../../../../hooks/fc.socket";
 
 export const Payment: React.FC = () => {
+  const customerSocket = useCustomerSocket();
   const [orderDetails, setOrderDetails] = useState<OrderDetailModel[]>([]);
 
   const fetchData = async () => {
     try {
-      const orderId = "18e10579-a324-11ef-8e57-0242ac130002";
-      const result = await getOrderDetailByOrderId(orderId);
+      const orderId = localStorage.getItem("orderId")!;
+      const result = await getOrderDetailByOrderIdOfMergeOrder(orderId);
       setOrderDetails(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
@@ -23,7 +26,7 @@ export const Payment: React.FC = () => {
   }, []);
 
   const totalAmount = orderDetails.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.price! * item.quantity!,
     0
   );
 
@@ -36,11 +39,13 @@ export const Payment: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    let result = await createPayment("18e10579-a324-11ef-8e57-0242ac130002", {
+    const orderId = localStorage.getItem("orderId")!;
+    let result = await createPayment(orderId, {
       method: paymentMethod,
-      total: totalAmount,
+      amount: totalAmount,
     });
-    console.log(result);
+    handleSendMess(customerSocket!, "sendPaymentRequest", result.data);
+    // console.log(result);
   };
 
   return (

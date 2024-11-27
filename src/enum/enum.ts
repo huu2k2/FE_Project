@@ -9,3 +9,10 @@ export enum OrderDetailStatus {
   COMPLETED = "COMPLETED",
   CANCELED = "CANCELED",
 }
+
+export enum ERole {
+  ADMIN = "ADMIN",
+  CHEFF = "CHEFF",
+  CUSTOMER = "CUSTOMER",
+  STAFF = "STAFF",
+}

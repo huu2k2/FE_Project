@@ -1,18 +1,20 @@
 import axiosInstance from "../api";
 import { API } from "../models/api";
 import { CustomerModel } from "../models/customer";
+import { DataToken } from "../models/login";
 import baseUrl from "../utils/baseURL";
 
 const createCustomer = (data: {
   name: string;
   phoneNumber: string;
-}): Promise<API<CustomerModel>> => {
+}): Promise<API<DataToken>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<API<CustomerModel>>(
+      let result = await axiosInstance.post<API<DataToken>>(
         `${baseUrl}/customers/`,
         data
       );
+      console.log(result);
       resolve(result.data);
     } catch (error) {
       reject(error);

@@ -34,7 +34,7 @@ const getRandProduct = (): Promise<API<ProductModel[]>> => {
 };
 
 const getProductByCategoryId = (
-  categoryId: string
+  categoryId: string | undefined
 ): Promise<API<ProductModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -69,7 +69,7 @@ const createProduct = async (data: CreateProductDto) => {
   return result.data;
 };
 
-const updateProduct = async (id:string ,data: CreateProductDto) => {
+const updateProduct = async (id: string, data: CreateProductDto) => {
   const result = await axiosInstance.put<ProductModel>(
     `${baseUrl}/products/${id}`,
     data
@@ -77,17 +77,13 @@ const updateProduct = async (id:string ,data: CreateProductDto) => {
   return result.data;
 };
 
-const deleteProduct =async (id: string): Promise<any>=> {
- 
-    try {
-      let result = await axiosInstance.delete<API<boolean>>(
-        `${baseUrl}/products/${id}`
-      );
-       return result.data
-    } catch (error) {
-       
-    }
- 
+const deleteProduct = async (id: string): Promise<any> => {
+  try {
+    let result = await axiosInstance.delete<API<boolean>>(
+      `${baseUrl}/products/${id}`
+    );
+    return result.data;
+  } catch (error) {}
 };
 
 export {
@@ -97,5 +93,5 @@ export {
   getRandProduct,
   createProduct,
   deleteProduct,
-  updateProduct
+  updateProduct,
 };

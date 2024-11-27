@@ -123,8 +123,7 @@ export const CategoryCompoment: React.FC = () => {
               {list.map((category, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
-                >
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="text-black border-b py-2 px-4">
                     {category.categoryId}
                   </td>
@@ -135,14 +134,12 @@ export const CategoryCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(category)}
-                      >
+                        onClick={() => handleEdit(category)}>
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                       <button
                         className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                        onClick={() => clickDelete(category)}
-                      >
+                        onClick={() => clickDelete(category)}>
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -156,15 +153,17 @@ export const CategoryCompoment: React.FC = () => {
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}
-            ></Pagination>
+              goToPage={handlePageChange}></Pagination>
           </div>
         </div>
       </div>
       {isModalOpen && isState != 0 && isState != 3 && (
         <Form
           closeModal={handleModalClose}
-          formData={data}
+          formData={{
+            name: data.name,
+            categoryId: data.categoryId!,
+          }}
           setData={setData}
           isState={isState}
           fetchData={fetchCategories}
@@ -177,8 +176,7 @@ export const CategoryCompoment: React.FC = () => {
           closeModel={handleModalClose}
           handle={() => {
             handleDelete(data);
-          }}
-        ></DeleteModal>
+          }}></DeleteModal>
       )}
     </>
   );

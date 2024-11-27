@@ -4,7 +4,10 @@ import {
   CategoryModel,
   CreateProductDto,
 } from "../../../../../models/category";
-import { createProduct, updateProduct } from "../../../../../services/product-service";
+import {
+  createProduct,
+  updateProduct,
+} from "../../../../../services/product-service";
 import { toast } from "react-toastify";
 import { ProductModel } from "../../../../../models/product";
 import { useLoading } from "../../../../../hooks/loading";
@@ -22,12 +25,12 @@ export const Form: React.FC<IFormData> = ({
   isUpdate,
   list,
 }: IFormData) => {
-
   const [getIdCategory, setIdCategory] = useState<string>("");
   const handleOpenImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
+
       reader.onload = () => {
         setData({ ...formData, image: reader.result as string });
       };
@@ -42,7 +45,7 @@ export const Form: React.FC<IFormData> = ({
 
   const handleSave = async () => {
     if (isLoading) return;
-    setIsLoading(true); 
+    setIsLoading(true);
     const data: CreateProductDto = {
       name: formData.name,
       description: formData.description,
@@ -54,7 +57,7 @@ export const Form: React.FC<IFormData> = ({
 
     try {
       if (isUpdate) {
-        const rs = await updateProduct(formData.productId,data);
+        const rs = await updateProduct(formData.productId, data);
         if (rs) {
           toast.success("Cập nhật sản phẩm thành công!");
           closeModal();
@@ -71,7 +74,6 @@ export const Form: React.FC<IFormData> = ({
         }
       }
     } catch (error) {
- 
       toast.error("Có lỗi xảy ra, vui lòng thử lại!");
     } finally {
       setIsLoading(false); // Kết thúc tải
@@ -123,8 +125,7 @@ export const Form: React.FC<IFormData> = ({
             <label className="block mb-2">Thêm ảnh</label>
             <label
               htmlFor="openImage"
-              className="w-full h-full bg-gray-300 flex items-center justify-center rounded mb-4 cursor-pointer relative"
-            >
+              className="w-full h-full bg-gray-300 flex items-center justify-center rounded mb-4 cursor-pointer relative">
               {formData.image ? (
                 <img
                   src={formData.image}
@@ -153,14 +154,12 @@ export const Form: React.FC<IFormData> = ({
         <div className="flex justify-end">
           <button
             onClick={closeModal}
-            className="px-4 py-2 bg-red-500 text-white rounded mr-2"
-          >
+            className="px-4 py-2 bg-red-500 text-white rounded mr-2">
             Huỷ
           </button>
           <button
             className="px-4 py-2 bg-yellow-500 text-white rounded"
-            onClick={handleSave}
-          >
+            onClick={handleSave}>
             Lưu món
           </button>
         </div>

@@ -5,12 +5,12 @@ import baseUrl from "../utils/baseURL";
 
 const createPayment = (
   orderId: string,
-  data: { total: number; method: string }
+  data: { amount: number; method: string }
 ): Promise<API<PaymentModel>> => {
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.post<API<PaymentModel>>(
-        `${baseUrl}/payments/${orderId}`,
+        `${baseUrl}/payments/order/${orderId}`,
         data
       );
       resolve(result.data);

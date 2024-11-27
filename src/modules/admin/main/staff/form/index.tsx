@@ -149,7 +149,7 @@ export const Form: React.FC<FormPros> = ({
                 <div className="col-span-1 flex justify-between items-center w-[643px] h-[68px]">
                   <h5 className="text-lg font-bold text-black">Nhập lại :</h5>
                   <input
-                    type="text"
+                    type="password"
                     // value={formData.confirmPassport}
                     // onChange={(e) =>
                     //   handleChangeData("confirmPassport", e.target.value)
@@ -182,8 +182,7 @@ export const Form: React.FC<FormPros> = ({
                   onChange={(e) =>
                     handleChangeData(e.target.value, "role.roleId")
                   }
-                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
-                >
+                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor">
                   <option value="" disabled>
                     Chọn chức vụ
                   </option>
@@ -203,8 +202,7 @@ export const Form: React.FC<FormPros> = ({
                   onChange={(e) => {
                     handleChangeData(e.target.value, "isActive");
                   }}
-                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
-                >
+                  className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor">
                   <option value="Hoạt động">Hoạt động</option>
                   <option value="Nghỉ">Nghỉ</option>
                 </select>
@@ -230,13 +228,11 @@ export const Form: React.FC<FormPros> = ({
             <CustomButton
               title="Tạo nhân viên"
               bgColor="#FFAA02"
-              onClick={handleSave}
-            ></CustomButton>
+              onClick={handleSave}></CustomButton>
             <CustomButton
               title="Huỷ"
               bgColor="#CC0E0E"
-              onClick={closeModal}
-            ></CustomButton>
+              onClick={closeModal}></CustomButton>
           </div>
         </div>
       </div>

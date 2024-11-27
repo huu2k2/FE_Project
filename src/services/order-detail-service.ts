@@ -1,15 +1,16 @@
 import axiosInstance from "../api";
 import { OrderDetailStatus } from "../enum/enum";
 import { API } from "../models/api";
-import { OrderDetailModel } from "../models/orderDetail";
+import { OrderDetailModel } from "../models/orderdetail";
 import baseUrl from "../utils/baseURL";
 
 const createOrderDetail = (
   data: OrderDetailModel[]
-): Promise<API<OrderDetailModel>> => {
+): Promise<API<OrderDetailModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.post<API<OrderDetailModel>>(
+      console.log(data);
+      let result = await axiosInstance.post<API<OrderDetailModel[]>>(
         `${baseUrl}/orders/detail`,
         data
       );
@@ -37,11 +38,26 @@ const getOrderDetailById = (
 
 const getOrderDetailByOrderId = (
   orderId: string
-): Promise<API<OrderDetailModel>> => {
+): Promise<API<OrderDetailModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<API<OrderDetailModel>>(
+      let result = await axiosInstance.get<API<OrderDetailModel[]>>(
         `${baseUrl}/orders/${orderId}/detail`
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const getOrderDetailByOrderIdKitchen = (
+  orderId: string
+): Promise<API<OrderDetailModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderDetailModel[]>>(
+        `${baseUrl}/orders/${orderId}/detail/kitchen`
       );
       resolve(result.data);
     } catch (error) {
@@ -75,4 +91,5 @@ export {
   getOrderDetailById,
   getOrderDetailByOrderId,
   updateOrderDetail,
+  getOrderDetailByOrderIdKitchen,
 };

@@ -1,87 +1,29 @@
+import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { NotificationItem } from "../../../../components/NotificationItem";
+import { NotificationModel } from "../../../../models/notification";
+import { jwtDecode } from "jwt-decode";
+import { getNotifications } from "../../../../services/notification-service";
 
 export const NotificaationComponent: React.FC = () => {
-  const data = [
-    {
-      title: "Món đã xác nhận",
-      description:
-        "Món ăn “Hủ tiếu kho” của bạn đang được nấu.Món ăn “Hủ tiếu kho” của bạn đang được nấu.Món ăn “Hủ tiếu kho” của bạn đang được nấu.",
-      timestamp: "27/10/2024 16:40pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
+  const [datas, setDatas] = useState<NotificationModel[]>([]);
 
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
+  useEffect(() => {
+    fetchNotification();
+  }, []);
 
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-    {
-      title: "Món đã huỷ qweqweqweqw",
-      description: "Bếp không đủ nguyên liệu.",
-      timestamp: "27/10/2024 15:30pm",
-    },
-  ];
+  const fetchNotification = async () => {
+    try {
+      // const token = localStorage.getItem("token")!;
+      // const decoded = jwtDecode<{ customerId: string; role: { name: string } }>(
+      //   token
+      // );
+      const result = await getNotifications();
+      setDatas(result.data);
+    } catch (error) {
+      console.error("Error fetching areas: ", error);
+    }
+  };
 
   return (
     <>
@@ -89,10 +31,9 @@ export const NotificaationComponent: React.FC = () => {
         <CustomerHeader
           isBack={false}
           title="Thông báo"
-          bg="white"
-        ></CustomerHeader>
+          bg="white"></CustomerHeader>
         <div className="flex flex-col mt-4">
-          {data.map((item, index) => (
+          {datas.map((item, index) => (
             <NotificationItem key={index} data={item}></NotificationItem>
           ))}
         </div>

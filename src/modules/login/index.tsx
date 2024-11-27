@@ -6,24 +6,25 @@ import { loginStaff } from "../../services/login-service";
 import { toast } from "react-toastify";
 import { decodeToken } from "../../utils/decode-token";
 import { useNavigate } from "react-router-dom";
+import { ERole } from "../../enum/enum";
 
 export const LoginPage: React.FC = () => {
   const [data, setDate] = useState<LocginModel>({ username: "", password: "" });
   const navigate = useNavigate();
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("advadv");
     const ks = await loginStaff(data);
     if (ks?.data) {
-      const token = await decodeToken(ks?.data.token);
-      localStorage.setItem("token", ks?.data.token); // Lưu token vào localStorage
+      const token = decodeToken(ks?.data.token);
+      localStorage.setItem("token", ks?.data.token);
 
       if (token) {
-        if (token?.role?.name === "ADMIN") {
+        console.log("token?.role?.name", token?.role?.name);
+        if (token?.role?.name === ERole.ADMIN) {
           toast.success("Login thành công! Chào mừng ADMIN!");
           navigate("/management");
-        } else if (token?.role?.name === "KITCHEN") {
-          toast.success("Login thành công! Chào mừng KITCHEN!");
+        } else if (token?.role?.name === ERole.CHEFF) {
+          toast.success("Login thành công! Chào mừng CHEFF!");
           navigate("/kitchen");
         } else {
           toast.error("Vai trò không hợp lệ");
@@ -53,10 +54,7 @@ export const LoginPage: React.FC = () => {
             <h2 className="text-6xl font-bold text-center text-gray-800 mb-6">
               Đăng Nhập
             </h2>
-            <form
-              className="w-full flex flex-col items-center justify-center gap-4"
-              onSubmit={(e) => handleLogin(e)}
-            >
+            <div className="w-full flex flex-col items-center justify-center gap-4">
               <input
                 type="text"
                 id="username"
@@ -79,10 +77,11 @@ export const LoginPage: React.FC = () => {
                 <CustomButton
                   bgColor="#FFAA02"
                   title="Đăng nhập"
-                  onClick={(e: any) => handleLogin(e)}
-                ></CustomButton>
+                  onClick={(e: React.FormEvent<HTMLFormElement>) =>
+                    handleLogin(e)
+                  }></CustomButton>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
