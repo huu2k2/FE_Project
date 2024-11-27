@@ -24,6 +24,9 @@ const App: React.FC = () => {
     handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
       toast.info(val.title);
     });
+    handleReceiveMess(customerSocket!, "confirmPaymentSuccess", (val) => {
+      toast.info(val.title);
+    });
   }, [customerSocket]);
 
   return (

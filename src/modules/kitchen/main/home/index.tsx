@@ -186,6 +186,11 @@ export const ListItemProductPage: React.FC = () => {
       orderDetailIds: activeItems(),
       updateType: 2,
     });
+
+    handleSendMess(cheffSocke!, "dishUp", {
+      orderId: orderId,
+      quantity: activeItems().length,
+    });
   };
 
   const handleCancel = (reason: string) => {
