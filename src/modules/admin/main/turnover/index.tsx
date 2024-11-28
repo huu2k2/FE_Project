@@ -30,12 +30,12 @@ export const TurnoverCompoment: React.FC = () => {
     setLabels(formattedLabels);
     const totalAmountsByDay = formattedLabels.map((label) => {
       const dayStart = new Date(label);
-      const dayEnd = new Date(dayStart);
-      dayEnd.setDate(dayEnd.getDate() + 1);
+      dayStart.setHours(0, 0, 0, 0);
       const totalAmountForDay = result.data
         .filter((order) => {
           const createdAt = new Date(order.createdAt);
-          return createdAt >= dayStart && createdAt < dayEnd;
+          createdAt.setHours(0, 0, 0, 0); 
+          return createdAt.getTime() === dayStart.getTime();
         })
         .reduce((sum, order) => sum + order.totalAmount, 0);
 
