@@ -23,6 +23,7 @@ export const TurnoverCompoment: React.FC = () => {
 
   const handleSearch = async () => {
     const result = await getTurnOver(startDate, endDate);
+    console.log(result.data);
     const formattedLabels = eachDayOfInterval({
       start: new Date(startDate),
       end: new Date(endDate),
@@ -125,8 +126,7 @@ export const TurnoverCompoment: React.FC = () => {
             {dishes.map((dish, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between py-2"
-              >
+                className="flex items-center justify-between py-2">
                 <div className="flex items-center">
                   <img
                     src={img}
