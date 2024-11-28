@@ -3,32 +3,75 @@ import { TitleText } from "../../../../components/texts/title";
 import LineChart from "../../../../components/LineChart";
 import img from "../../../../assets/product.webp";
 import { CustomButton } from "../../../../components/CustomButton";
+import { getTurnOver } from "../../../../services/order-service";
+import { format, eachDayOfInterval } from "date-fns";
 
 export const TurnoverCompoment: React.FC = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  const labels = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"];
-  const dataPoints = [5000000, 7000000, 8000000, 6500000, 9000000];
+  const [labels, setLabels] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<number[]>([]);
 
-  const dishes = [
+  const [dishes, setDishes] = useState<
     {
-      name: "Cơm gà Hà Nội",
-      orders: 200,
-      imgSrc: "../../../../assets/product.webp",
-    },
-    { name: "Mì lạnh", orders: 150, imgSrc: "../../../../assets/product.webp" },
-    {
-      name: "Bún chả cá",
-      orders: 100,
-      imgSrc: "../../../../assets/product.webp",
-    },
-  ];
+      name: string;
+      orders: number;
+      imgSrc: string;
+    }[]
+  >([]);
 
-  const handleSearch = () => {
-    console.log("Từ ngày:", startDate);
-    console.log("Đến ngày:", endDate);
-    // Thực hiện logic tìm kiếm ở đây
+  const handleSearch = async () => {
+    const result = await getTurnOver(startDate, endDate);
+    const formattedLabels = eachDayOfInterval({
+      start: new Date(startDate),
+      end: new Date(endDate),
+    }).map((date) => format(date, "dd/MM/yyyy"));
+    setLabels(formattedLabels);
+    const totalAmountsByDay = formattedLabels.map((label) => {
+      const dayStart = new Date(label);
+      const dayEnd = new Date(dayStart);
+      dayEnd.setDate(dayEnd.getDate() + 1);
+      const totalAmountForDay = result.data
+        .filter((order) => {
+          const createdAt = new Date(order.createdAt);
+          return createdAt >= dayStart && createdAt < dayEnd;
+        })
+        .reduce((sum, order) => sum + order.totalAmount, 0);
+
+      return totalAmountForDay;
+    });
+    setChartData(totalAmountsByDay);
+
+    const dishCount: { [key: string]: number } = {};
+    result.data.forEach((order) => {
+      order.orderDetails.forEach((orderDetail) => {
+        const dishName = orderDetail.product?.name!;
+        const dishQuantity = orderDetail.quantity!;
+        const dishImage = orderDetail.product?.image!;
+        if (dishCount[dishName]) {
+          dishCount[dishName] += dishQuantity;
+        } else {
+          dishCount[dishName] = dishQuantity;
+        }
+      });
+    });
+
+    const dishArray = Object.keys(dishCount).map((dishName) => ({
+      name: dishName,
+      orders: dishCount[dishName],
+      imgSrc:
+        result.data
+          .find((order) =>
+            order.orderDetails.some(
+              (detail) => detail.product?.name === dishName
+            )
+          )
+          ?.orderDetails.find((detail) => detail.product?.name === dishName)
+          ?.product?.image || "../../../../assets/product.webp",
+    }));
+
+    setDishes(dishArray);
   };
 
   return (
@@ -67,7 +110,7 @@ export const TurnoverCompoment: React.FC = () => {
             </div>
           </div>
           <div className="mt-8">
-            <LineChart labels={labels} dataPoints={dataPoints} />
+            <LineChart labels={labels} dataPoints={chartData} />
           </div>
           <div className="p-4 border rounded-lg shadow-md w-full text-black bg-white mt-8">
             <h2 className="text-lg font-semibold mb-4">Top Trending</h2>

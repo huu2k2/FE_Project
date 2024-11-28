@@ -113,6 +113,22 @@ const getOrderDetailByOrderIdOfMergeOrder = (
   });
 };
 
+const getTurnOver = (fromDay: string, toDay: string): Promise<API<OrderModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<any[]>>(
+        `${baseUrl}/orders/turnover`,
+        {
+          params: { fromDay, toDay },
+        }
+      );
+      resolve(result.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export {
   createOrder,
   getAllOrders,
@@ -120,5 +136,6 @@ export {
   updateOrder,
   getOrderDetailByOrderId,
   getOrderDetailByOrderIdOfMergeOrder,
-  getAllOrdersOfCustomer
+  getAllOrdersOfCustomer,
+  getTurnOver,
 };

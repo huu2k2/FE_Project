@@ -10,6 +10,7 @@ export interface OrderModel {
   orderMergeId?: string | null;
   createdAt: Date;
   updatedAt: Date;
+  orderDetails: OrderDetailModel[];
 }
 
 export interface OrderModelSocket {
