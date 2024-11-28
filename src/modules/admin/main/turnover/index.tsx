@@ -4,7 +4,7 @@ import LineChart from "../../../../components/LineChart";
 import img from "../../../../assets/product.webp";
 import { CustomButton } from "../../../../components/CustomButton";
 import { getTurnOver } from "../../../../services/order-service";
-import { format, eachDayOfInterval } from "date-fns";
+import { format, eachDayOfInterval, parse } from "date-fns";
 
 export const TurnoverCompoment: React.FC = () => {
   const [startDate, setStartDate] = useState<string>("");
@@ -28,19 +28,23 @@ export const TurnoverCompoment: React.FC = () => {
       end: new Date(endDate),
     }).map((date) => format(date, "dd/MM/yyyy"));
     setLabels(formattedLabels);
-    const totalAmountsByDay = formattedLabels.map((label) => {
-      const dayStart = new Date(label);
-      dayStart.setHours(0, 0, 0, 0);
-      const totalAmountForDay = result.data
-        .filter((order) => {
-          const createdAt = new Date(order.createdAt);
-          createdAt.setHours(0, 0, 0, 0); 
-          return createdAt.getTime() === dayStart.getTime();
-        })
-        .reduce((sum, order) => sum + order.totalAmount, 0);
 
-      return totalAmountForDay;
+    const totalAmountsByDay = formattedLabels.map((label, index) => {
+      const dayStart = parse(label, "dd/MM/yyyy", new Date());
+      dayStart.setHours(0, 0, 0, 0);
+
+      const totalAmountForDay = result.data.filter((order, index) => {
+        const createdAt = new Date(order.createdAt);
+        createdAt.setHours(0, 0, 0, 0);
+        return createdAt.getTime() === dayStart.getTime();
+      });
+      let total = 0;
+      totalAmountForDay.forEach((item) => {
+        total += item.totalAmount;
+      });
+      return total;
     });
+
     setChartData(totalAmountsByDay);
 
     const dishCount: { [key: string]: number } = {};
