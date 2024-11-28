@@ -52,10 +52,20 @@ export const DrawerBar: React.FC = () => {
             detail.status === "PENDING" || detail.status === "CONFIRMED"
         ).length;
 
-        setOrders((prevOrders) => [
-          ...prevOrders,
-          { order: result, quantity: validDetailsCount }, // Cập nhật số lượng chi tiết hợp lệ
-        ]);
+        setOrders((prevOrders) => {
+          const orderExists = prevOrders.some(
+            (order) => order.order.orderId === result.orderId // assuming `id` is the unique identifier
+          );
+
+          if (orderExists) {
+            return prevOrders; // Không thêm nếu order đã tồn tại
+          }
+
+          return [
+            ...prevOrders,
+            { order: result, quantity: validDetailsCount }, // Cập nhật số lượng chi tiết hợp lệ
+          ];
+        });
       }
     );
 
@@ -85,7 +95,7 @@ export const DrawerBar: React.FC = () => {
               ? {
                   ...item,
                   quantity:
-                    value.updateType === 2
+                    value.updateType === 2 || value.updateType === 0
                       ? item.quantity - value.quantity
                       : item.quantity,
                 }

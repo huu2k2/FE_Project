@@ -59,7 +59,7 @@ const OrderStatus: React.FC = () => {
         orderDetailIds: string[];
         updateType: number;
       }) => {
-        console.log("Order status update", vals);
+        // console.log("Order status update", vals);
         if (orderId === vals.orderId) {
           let newStatus = OrderDetailStatus.CONFIRMED;
           if (vals.updateType === 0) {
