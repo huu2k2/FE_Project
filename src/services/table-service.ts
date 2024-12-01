@@ -78,18 +78,6 @@ const createTableDetail = (
   });
 };
 
-const checkTableDetailIsPayment = (id: string): Promise<any> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let result = await axiosInstance.get<
-        API<{ order: OrderModel; tableDetail: TableDetailModel }>
-      >(`${baseUrl}/tables/${id}/detail`);
-      resolve(result.data);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 
 export {
   createTable,
