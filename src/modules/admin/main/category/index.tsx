@@ -12,8 +12,10 @@ import {
   deleteCategory,
   getAllCategory,
 } from "../../../../services/category-service";
+import { useLoading } from "../../../../hooks/loading";
 export const CategoryCompoment: React.FC = () => {
   const [list, setList] = useState<CategoryModel[]>([]);
+  const { setIsLoading } = useLoading();
 
   const fetchCategories = async () => {
     try {
@@ -71,7 +73,7 @@ export const CategoryCompoment: React.FC = () => {
   const handleCreate = () => {
     handleModalOpen();
     setIsState(2);
-    setData({ categoryId: "", name: "" });
+    setData({ categoryId: "", name: "" })
   };
 
   const clickDelete = (data: CategoryModel) => {
@@ -144,13 +146,6 @@ export const CategoryCompoment: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <div className="flex justify-end mt-4">
-            <Pagination
-              currentPageNumber={currentPageNumber}
-              totalPageNumber={totalPageNumber}
-              offset={offset}
-              goToPage={handlePageChange}></Pagination>
-          </div>
         </div>
       </div>
       {isModalOpen && isState != 0 && isState != 3 && (

@@ -32,7 +32,6 @@ export const LoginPage: React.FC = () => {
         console.log("Customer created successfully:", resultCustomer.data);
       }
 
-
       const resultDetailTable = await createTableDetail(tableId as string);
       localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
       const orderId = localStorage.getItem("orderId");

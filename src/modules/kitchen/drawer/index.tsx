@@ -38,7 +38,6 @@ export const DrawerBar: React.FC = () => {
       cheffSocke,
       "showNewOrder",
       (result: OrderModelSocket) => {
-        console.log(result.tableDetail.table);
         setOrders((prevOrders) => [
           ...prevOrders,
           { order: result, quantity: result.orderDetails.length || 0 },
