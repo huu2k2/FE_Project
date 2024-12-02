@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useCallback, useState } from "react";
 import { Form } from "./form/index";
 
@@ -26,6 +26,13 @@ export const AreaCompoment: React.FC = () => {
       console.error("Error fetching areas: ", error);
     }
   };
+
+  const filteredAreaList = useMemo(() => {
+    if (!debouncedText) return areaList;
+    return areaList.filter((area: { name: string }) =>
+      area.name.toLowerCase().includes(debouncedText.toLowerCase())
+    );
+  }, [areaList, debouncedText]);
 
   useEffect(() => {
     fetchAreas();
@@ -90,7 +97,7 @@ export const AreaCompoment: React.FC = () => {
 
         {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {areaList.map((area, index) => (
+          {filteredAreaList.map((area, index) => (
             <AreaItem
               key={index}
               area={{
@@ -98,8 +105,7 @@ export const AreaCompoment: React.FC = () => {
                 name: area.name,
               }}
               handleEdit={() => handleEdit(area.areaId, area.name)}
-              fetchData={() => fetchAreas()}
-            ></AreaItem>
+              fetchData={() => fetchAreas()}></AreaItem>
           ))}
         </div>
       </div>

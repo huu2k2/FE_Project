@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useMemo, useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
@@ -30,6 +30,13 @@ export const TableCompoment: React.FC = () => {
 
   const [textSearch, setTextSearch] = useState<string>("");
   const [debouncedText, setDebouncedText] = useState<string>("");
+
+  const filteredTableList = useMemo(() => {
+    if (!debouncedText) return tableList;
+    return tableList.filter((table: { name: string }) =>
+      table.name.toLowerCase().includes(debouncedText.toLowerCase())
+    );
+  }, [tableList, debouncedText]);
 
   const debounceSearch = useCallback(
     debounce((value: string) => {
@@ -87,7 +94,7 @@ export const TableCompoment: React.FC = () => {
 
         {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {tableList.map((table, index) => (
+          {filteredTableList.map((table, index) => (
             <TableItem
               key={index}
               table={{
@@ -104,8 +111,7 @@ export const TableCompoment: React.FC = () => {
                   table.areaId
                 )
               }
-              fetchData={() => fetchTables()}
-            ></TableItem>
+              fetchData={() => fetchTables()}></TableItem>
           ))}
         </div>
       </div>
