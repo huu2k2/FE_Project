@@ -7,6 +7,7 @@ import {
   updateCustomer,
 } from "../../../../services/customer-service";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 export const ProfilePage: React.FC = () => {
   const [data, setDate] = useState<CustomerModel>({
@@ -47,6 +48,21 @@ export const ProfilePage: React.FC = () => {
     const decoded = jwtDecode<{ customerId: string; role: { name: string } }>(
       token
     );
+
+    let check = false;
+    if (!data.name.trim()) {
+      toast.error("Vui lòng nhập tên!");
+      check = true;
+    }
+    if (!data.phoneNumber.trim()) {
+      toast.error("Vui lòng nhập số điện thoại!");
+      check = true;
+    }
+
+    if (check) {
+      return;
+    }
+
     updateCustomer(decoded.customerId, data);
   };
 

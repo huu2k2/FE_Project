@@ -8,6 +8,7 @@ import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
+import { toast } from "react-toastify";
 
 export const Cart: React.FC = () => {
   const [items, setItems] = useState<CartModel[]>([]);
@@ -72,6 +73,7 @@ export const Cart: React.FC = () => {
       });
     });
     let reulst = await createOrderDetail(details);
+    toast.success("Giử món thành công");
     filteredItems.forEach((item) => {
       removeFromCart(item.id);
     });
@@ -128,6 +130,7 @@ export const Cart: React.FC = () => {
           </div>
         </div>
         <button
+          disabled={setSelectedItems.length == 0}
           className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5"
           onClick={submit}
         >

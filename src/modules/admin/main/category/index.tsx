@@ -153,14 +153,14 @@ export const CategoryCompoment: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <div className="flex justify-end mt-4">
+          {/* <div className="flex justify-end mt-4">
             <Pagination
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
               goToPage={handlePageChange}
             ></Pagination>
-          </div>
+          </div> */}
         </div>
       </div>
       {isModalOpen && isState != 0 && isState != 3 && (

@@ -13,7 +13,7 @@ import { getAllRole } from "../../../../services/role-service";
 import { getAllAccount } from "../../../../services/account-service";
 export const StaffCompoment: React.FC = () => {
   const [list, setList] = useState<AccountModel[]>([]);
-
+  const [filteredList, setFilteredList] = useState<AccountModel[]>([]);
   const [roles, setRoles] = useState<RoleModel[]>([]);
 
   const fetchRoles = async () => {
@@ -51,19 +51,10 @@ export const StaffCompoment: React.FC = () => {
   };
 
   const [textSearch, setTextSearch] = useState<string>("");
-  const [debouncedText, setDebouncedText] = useState<string>("");
-
-  const debounceSearch = useCallback(
-    debounce((value: string) => {
-      setDebouncedText(value);
-    }, 500),
-    []
-  );
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setTextSearch(value);
-    debounceSearch(value);
   };
 
   const [isUpdate, setIsUpdate] = useState(false);
@@ -94,6 +85,18 @@ export const StaffCompoment: React.FC = () => {
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (textSearch.trim() === "") {
+      setFilteredList(list);
+    } else {
+      const newFilteredList = list.filter((item) => {
+        const fullName = `${item.profile.lastName} ${item.profile.firstName}`;
+        return fullName.toLowerCase().includes(textSearch.toLowerCase());
+      });
+      setFilteredList(newFilteredList);
+    }
+  }, [textSearch, list]);
 
   const handleCreate = () => {
     setIsUpdate(false);
@@ -134,15 +137,6 @@ export const StaffCompoment: React.FC = () => {
               name={"Tạo nhân viên"}
               handleOpenForm={handleCreate}
             />
-            <DropDown
-              categories={roles}
-              setIdCategory={function (
-                value: React.SetStateAction<string>
-              ): void {
-                throw new Error("Function not implemented.");
-              }}
-              W={""}
-            />
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>
 
@@ -167,10 +161,11 @@ export const StaffCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {list.map((account, index) => (
+              {filteredList.map((account, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                >
                   <td className="text-black border-b py-2 px-4">
                     {account?.username}
                   </td>
@@ -187,7 +182,8 @@ export const StaffCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(account)}>
+                        onClick={() => handleEdit(account)}
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                     </div>
@@ -197,11 +193,11 @@ export const StaffCompoment: React.FC = () => {
             </tbody>
           </table>
           <div className="flex justify-end mt-4">
-            <Pagination
+            {/* <Pagination
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}></Pagination>
+              goToPage={handlePageChange}></Pagination> */}
           </div>
         </div>
       </div>

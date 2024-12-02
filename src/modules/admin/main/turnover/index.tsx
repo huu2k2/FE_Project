@@ -5,6 +5,7 @@ import img from "../../../../assets/product.webp";
 import { CustomButton } from "../../../../components/CustomButton";
 import { getTurnOver } from "../../../../services/order-service";
 import { format, eachDayOfInterval, parse } from "date-fns";
+import { toast } from "react-toastify";
 
 export const TurnoverCompoment: React.FC = () => {
   const [startDate, setStartDate] = useState<string>("");
@@ -22,6 +23,20 @@ export const TurnoverCompoment: React.FC = () => {
   >([]);
 
   const handleSearch = async () => {
+    let check = false;
+    if (!startDate.trim()) {
+      toast.error("Vui lòng chọn ngày bắt đầu!");
+      check = true;
+    }
+    if (!endDate.trim()) {
+      toast.error("Vui lòng chọn ngày kết thúc!");
+      check = true;
+    }
+
+    if (check) {
+      return;
+    }
+
     const result = await getTurnOver(startDate, endDate);
     console.log(result.data);
     const formattedLabels = eachDayOfInterval({
@@ -126,7 +141,8 @@ export const TurnoverCompoment: React.FC = () => {
             {dishes.map((dish, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between py-2">
+                className="flex items-center justify-between py-2"
+              >
                 <div className="flex items-center">
                   <img
                     src={img}

@@ -13,11 +13,25 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    let check = false;
+    if (!data.username.trim()) {
+      toast.error("Vui lòng nhập tài khoản!");
+      check = true;
+    }
+    if (!data.password.trim()) {
+      toast.error("Vui lòng nhập mật khẩu!");
+      check = true;
+    }
+
+    if (check) {
+      return;
+    }
+
     const ks = await loginStaff(data);
     if (ks?.data) {
       const token = decodeToken(ks?.data.token);
       localStorage.setItem("token", ks?.data.token);
-
       if (token) {
         console.log("token?.role?.name", token?.role?.name);
         if (token?.role?.name === ERole.ADMIN) {
@@ -79,7 +93,8 @@ export const LoginPage: React.FC = () => {
                   title="Đăng nhập"
                   onClick={(e: React.FormEvent<HTMLFormElement>) =>
                     handleLogin(e)
-                  }></CustomButton>
+                  }
+                ></CustomButton>
               </div>
             </div>
           </div>

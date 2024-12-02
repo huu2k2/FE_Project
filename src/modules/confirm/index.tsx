@@ -22,6 +22,21 @@ export const LoginPage: React.FC = () => {
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+
+    let check = false;
+    if (!data.fullName.trim()) {
+      toast.error("Vui lòng nhập tên!");
+      check = true;
+    }
+    if (!data.phoneNumber.trim()) {
+      toast.error("Vui lòng nhập số điện thoại!");
+      check = true;
+    }
+
+    if (check) {
+      return;
+    }
+
     try {
       const resultCustomer = await createCustomer({
         name: data.fullName,
