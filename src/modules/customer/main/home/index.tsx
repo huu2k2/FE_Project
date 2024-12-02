@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Logo from "../../../../assets/logo.png";
 import { ProductItem } from "../../../../components/customer/productItem";
 import CategoryItem from "../../../../components/customer/categoryItem";
 import { getAllCategory } from "../../../../services/category-service";
 import { CategoryModel } from "../../../../models/category";
 import { ProductModel } from "../../../../models/product";
+import debounce from "lodash/debounce";
 import { getProductByCategoryId } from "../../../../services/product-service";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess } from "../../../../hooks/fc.socket";
@@ -17,6 +18,8 @@ export const HomeComponent: React.FC = () => {
     categoryId: "all",
     name: "Tất cả",
   });
+  const [textSearch, setTextSearch] = useState<string>("");
+  const [debouncedText, setDebouncedText] = useState<string>("");
 
   // const customerSocket = useCustomerSocket();
 
@@ -47,6 +50,25 @@ export const HomeComponent: React.FC = () => {
     }
   };
 
+  const debounceSearch = useCallback(
+    debounce((value: string) => {
+      setDebouncedText(value);
+    }, 500),
+    []
+  );
+  const filteredProductList = useMemo(() => {
+    if (!debouncedText) return products;
+    return products.filter((product: { name: string }) =>
+      product.name.toLowerCase().includes(debouncedText.toLowerCase())
+    );
+  }, [products, debouncedText]);
+
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setTextSearch(value);
+    debounceSearch(value);
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -70,6 +92,9 @@ export const HomeComponent: React.FC = () => {
           <input
             type="text"
             placeholder="Tìm kiếm"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChangeText(e)
+            }
             className="placeholder-gray-600 font-bold bg-transparent focus:outline-none 
             w-full h-full text-gray-600 rounded-[25px] pl-10"
             style={{ backgroundColor: "#D9D9D9", color: "000000" }}
@@ -81,8 +106,7 @@ export const HomeComponent: React.FC = () => {
         <h2 className="text-[30px] text-black font-bold mb-4">Danh mục</h2>
         <div
           className="flex  overflow-x-auto  scrollbar-hide"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           <CategoryItem
             key={0}
             data={{ categoryId: "all", name: "Tất cả" }}
@@ -104,11 +128,10 @@ export const HomeComponent: React.FC = () => {
         </h2>
         <div
           className="overflow-y-auto w-full h-[528px]"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           {" "}
           <div className="grid grid-cols-2 gap-4">
-            {products.map((product, index) => (
+            {filteredProductList.map((product, index) => (
               <ProductItem key={index} data={product} />
             ))}
           </div>
