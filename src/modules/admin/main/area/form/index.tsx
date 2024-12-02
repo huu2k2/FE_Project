@@ -1,5 +1,6 @@
 import { CustomButton } from "../../../../../components/CustomButton";
 import { createArea, updateArea } from "../../../../../services/area-service";
+import { toast } from "react-toastify";
 
 interface FormPros {
   closeModal: () => void;
@@ -26,6 +27,10 @@ export const Form: React.FC<FormPros> = ({
   };
 
   const handleSubmit = async () => {
+    if (!formData.name.trim()) {
+      toast.error("Tên khu vực không được để trống!");
+      return;
+    }
     if (isUpdate) {
       try {
         let result = await updateArea(formData);

@@ -44,6 +44,25 @@ export const Form: React.FC<IFormData> = ({
   const { isLoading, setIsLoading } = useLoading();
 
   const handleSave = async () => {
+    if (!formData.name.trim()) {
+      toast.error("Tên món ăn không được để trống!");
+      return;
+    }
+
+    if (!formData.image.trim()) {
+      toast.error("Hình ảnh món ăn không được để trống!");
+      return;
+    }
+
+    if (!formData.price <= 0) {
+      toast.error("Vui lòng chọn danh mục món ăn!");
+      return;
+    }
+
+    if (!formData.categoryId.trim()) {
+      toast.error("Vui lòng chọn danh mục món ăn!");
+      return;
+    }
     if (isLoading) return;
     setIsLoading(true);
     const data: CreateProductDto = {
