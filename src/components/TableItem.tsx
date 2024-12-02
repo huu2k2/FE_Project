@@ -4,6 +4,7 @@ import QRCodeGenerator from "./QRCodeGenerator";
 import { DeleteModal } from "./DeleteModal";
 import { TableModel } from "../models/table";
 import { deleteTable } from "../services/table-service";
+import { ip } from "../utils/baseURL";
 
 interface TablePros {
   table: TableModel;
@@ -59,7 +60,7 @@ export const TableItem: React.FC<TablePros> = (data: TablePros) => {
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="relative flex items-center justify-center">
           <QRCodeGenerator
-            value={data.table.tableId}
+            value={`http://${ip}:5173/login/customer/${data.table.tableId}`}
             size={270}
             bgColor="#ffffff"
             fgColor="#000000"

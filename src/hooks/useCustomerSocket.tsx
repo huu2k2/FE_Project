@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { handleSendMess } from "./fc.socket";
+import { ip } from "../utils/baseURL";
 
-const URL = "http://localhost:8989/";
+const URL = `http://${ip}:8989/`;
 
 const useCustomerSocket = (): Socket | null => {
   const [socket, setSocket] = useState<Socket | null>(null);

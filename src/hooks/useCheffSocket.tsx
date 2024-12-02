@@ -1,5 +1,6 @@
 import { io, Socket } from "socket.io-client";
-const URL = "http://localhost:8989/cheff";
+import { ip } from "../utils/baseURL";
+const URL = `http://${ip}:8989/cheff`;
 
 let socket: Socket | null = null;
 
