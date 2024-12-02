@@ -4,6 +4,7 @@ import {
   createCategory,
   updateCategory,
 } from "../../../../../services/category-service";
+import { toast } from "react-toastify";
 
 interface FormPros {
   closeModal: () => void;
@@ -23,19 +24,13 @@ export const Form: React.FC<FormPros> = ({
   isState,
   fetchData,
 }: FormPros) => {
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
-
-    if (key === "name" && value.trim() !== "") {
-      setErrorMessage("");
-    }
   };
 
   const handleSubmit = async () => {
     if (formData.name.trim() === "") {
-      setErrorMessage("Vui lòng nhập tên danh mục.");
+      toast.error("Tên danh mục không được để trống!");
       return;
     }
 
@@ -67,14 +62,9 @@ export const Form: React.FC<FormPros> = ({
               id="name"
               value={formData.name}
               onChange={(e) => handleChangeData(e.target.value, "name")}
-              className={`w-full px-3 py-2 border ${
-                errorMessage ? "border-red-500" : "bg-[#E2E2E2]"
-              } rounded-lg focus:outline-none focus:border-backgroundColor`}
+              className={`w-full px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor`}
               placeholder="Tên danh mục"
             />
-            {errorMessage && (
-              <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
-            )}
           </div>
         </div>
 

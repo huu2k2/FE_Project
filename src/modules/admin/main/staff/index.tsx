@@ -134,7 +134,7 @@ export const StaffCompoment: React.FC = () => {
               name={"Tạo nhân viên"}
               handleOpenForm={handleCreate}
             />
-            <DropDown
+            {/* <DropDown
               categories={roles}
               setIdCategory={function (
                 value: React.SetStateAction<string>
@@ -142,7 +142,7 @@ export const StaffCompoment: React.FC = () => {
                 throw new Error("Function not implemented.");
               }}
               W={""}
-            />
+            /> */}
             <SearchInput handleSearch={handleChangeText} value={textSearch} />
           </div>
 
