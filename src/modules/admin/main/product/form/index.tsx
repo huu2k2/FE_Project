@@ -54,8 +54,8 @@ export const Form: React.FC<IFormData> = ({
       return;
     }
 
-    if (!formData.price <= 0) {
-      toast.error("Vui lòng chọn danh mục món ăn!");
+    if (formData.price <= 0) {
+      toast.error("Vui lòng đặt giá món ăn!");
       return;
     }
 
@@ -63,6 +63,7 @@ export const Form: React.FC<IFormData> = ({
       toast.error("Vui lòng chọn danh mục món ăn!");
       return;
     }
+
     if (isLoading) return;
     setIsLoading(true);
     const data: CreateProductDto = {

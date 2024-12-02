@@ -7,6 +7,8 @@ import {
   createAccount,
   updateAccount,
 } from "../../../../../services/account-service";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 interface FormPros {
   closeModal: () => void;
@@ -24,6 +26,7 @@ export const Form: React.FC<FormPros> = ({
   roles,
   fetchAccount,
 }: FormPros) => {
+  const [reapeatPassword, setReapeatPassword] = useState<string>("");
   const handleChangeData = (value: string, path: string) => {
     const updatedData = { ...formData };
 
@@ -41,8 +44,53 @@ export const Form: React.FC<FormPros> = ({
   };
 
   const handleSave = async () => {
+    if (!formData.username.trim()) {
+      toast.error("Username không được để trống!");
+      return;
+    }
+
+    if (!formData.profile.firstName.trim()) {
+      toast.error("Họ không được để trống!");
+      return;
+    }
+
+    if (!formData.profile.lastName.trim()) {
+      toast.error("Tên không được để trống!");
+      return;
+    }
+
+    if (!formData.profile.address.trim()) {
+      toast.error("Địa chỉ không được để trống!");
+      return;
+    }
+
+    if (!formData.profile.cccd.trim()) {
+      toast.error("CCCD không được để trống!");
+      return;
+    }
+
+    if (!formData.profile.phoneNumber.trim()) {
+      toast.error("Số điện thoại không được để trống!");
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      toast.error("Mật khẩu không được để trống!");
+      return;
+    }
+
+    if (!formData.role.roleId.trim()) {
+      toast.error("Vui lòng chọn quyền!");
+      return;
+    }
+
+    if (reapeatPassword !== formData.password) {
+      toast.error("Vui lòng nhập đúng mật khẩu!");
+      return;
+    }
+
     if (isUpdate) {
-      console.log("update", formData);
+      // console.log("update", formData);
       try {
         let result = await updateAccount(formData);
         console.log(result);
@@ -50,7 +98,7 @@ export const Form: React.FC<FormPros> = ({
         console.log(error);
       }
     } else {
-      console.log("create", formData);
+      // console.log("create", formData);
       try {
         let result = await createAccount(formData);
         console.log(result);
@@ -151,9 +199,10 @@ export const Form: React.FC<FormPros> = ({
                   <input
                     type="password"
                     // value={formData.confirmPassport}
-                    // onChange={(e) =>
-                    //   handleChangeData("confirmPassport", e.target.value)
-                    // }
+                    onChange={(e) =>
+                      // handleChangeData("confirmPassport", e.target.value)
+                      setReapeatPassword(e.target.value)
+                    }
                     className="w-[501px] h-full px-3 py-2 border bg-[#E2E2E2] text-black rounded-lg focus:outline-none focus:border-backgroundColor"
                     placeholder="Nhập lại mật khẩu"
                   />

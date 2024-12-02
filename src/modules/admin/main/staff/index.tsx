@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import Pagination from "../../../../components/Pagination";
 import { Form } from "./form";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
-import debounce from "lodash/debounce";
 import { SearchInput } from "../../../../components/inputs/search";
-import { DropDown } from "../../../../components/dropdowns/dropdows";
 import { AccountModel } from "../../../../models/account";
 import { RoleModel } from "../../../../models/role";
 import { getAllRole } from "../../../../services/role-service";
@@ -40,15 +37,7 @@ export const StaffCompoment: React.FC = () => {
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const totalPageNumber = 10;
-  const offset = 2;
 
-  const handlePageChange = (page: number | string) => {
-    if (typeof page == "number") {
-      setCurrentPageNumber(page);
-    }
-  };
 
   const [textSearch, setTextSearch] = useState<string>("");
 
@@ -80,10 +69,6 @@ export const StaffCompoment: React.FC = () => {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-  };
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
   };
 
   useEffect(() => {
