@@ -4,7 +4,6 @@ import Pagination from "../../../../components/Pagination";
 import { Form } from "./form";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
-import debounce from "lodash/debounce";
 import { SearchInput } from "../../../../components/inputs/search";
 import { CategoryModel } from "../../../../models/category";
 import { DeleteModal } from "../../../../components/DeleteModal";
@@ -14,6 +13,7 @@ import {
 } from "../../../../services/category-service";
 export const CategoryCompoment: React.FC = () => {
   const [list, setList] = useState<CategoryModel[]>([]);
+  const [filteredList, setFilteredList] = useState<CategoryModel[]>([]);
 
   const fetchCategories = async () => {
     try {
@@ -51,14 +51,6 @@ export const CategoryCompoment: React.FC = () => {
   };
 
   const [textSearch, setTextSearch] = useState<string>("");
-  const [debouncedText, setDebouncedText] = useState<string>("");
-
-  const debounceSearch = useCallback(
-    debounce((value: string) => {
-      setDebouncedText(value);
-    }, 500),
-    []
-  );
 
   const [data, setData] = useState<CategoryModel>({ categoryId: "", name: "" });
 
@@ -81,7 +73,7 @@ export const CategoryCompoment: React.FC = () => {
   };
 
   const handleDelete = async (data: CategoryModel) => {
-    let result = await deleteCategory(data.categoryId as string);
+    await deleteCategory(data.categoryId as string);
     fetchCategories();
     handleModalClose();
   };
@@ -89,8 +81,18 @@ export const CategoryCompoment: React.FC = () => {
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setTextSearch(value);
-    debounceSearch(value);
   };
+
+  useEffect(() => {
+    if (textSearch.trim() === "") {
+      setFilteredList(list);
+    } else {
+      const newFilteredList = list.filter((item) =>
+        item.name.toLowerCase().includes(textSearch.toLowerCase())
+      );
+      setFilteredList(newFilteredList);
+    }
+  }, [textSearch, list]);
 
   return (
     <>
@@ -120,10 +122,11 @@ export const CategoryCompoment: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {list.map((category, index) => (
+              {filteredList.map((category, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                >
                   <td className="text-black border-b py-2 px-4">
                     {category.categoryId}
                   </td>
@@ -134,12 +137,14 @@ export const CategoryCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(category)}>
+                        onClick={() => handleEdit(category)}
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                       <button
                         className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                        onClick={() => clickDelete(category)}>
+                        onClick={() => clickDelete(category)}
+                      >
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -153,7 +158,8 @@ export const CategoryCompoment: React.FC = () => {
               currentPageNumber={currentPageNumber}
               totalPageNumber={totalPageNumber}
               offset={offset}
-              goToPage={handlePageChange}></Pagination>
+              goToPage={handlePageChange}
+            ></Pagination>
           </div>
         </div>
       </div>
@@ -176,7 +182,8 @@ export const CategoryCompoment: React.FC = () => {
           closeModel={handleModalClose}
           handle={() => {
             handleDelete(data);
-          }}></DeleteModal>
+          }}
+        ></DeleteModal>
       )}
     </>
   );

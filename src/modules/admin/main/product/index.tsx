@@ -71,7 +71,7 @@ export const ProductCompoment: React.FC = () => {
     productId: "",
     name: "",
     categoryId: "",
-    price: "",
+    price: 0,
     description: "",
     image: "",
     category:{
@@ -87,7 +87,7 @@ export const ProductCompoment: React.FC = () => {
       productId: "",
       name: "",
       categoryId: "",
-      price: "",
+      price: 0,
       description: "",
       image: "",
       category:{
@@ -120,24 +120,18 @@ data:ProductModel
     <div className="p-4 bg-gray-100 min-h-screen">
       <TitleText name="Quản lý món ăn" />
       <div className="bg-white p-4 rounded-lg shadow-md">
-        {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <CreateButton name={"Tạo món ăn"} handleOpenForm={handleCreate} />
           <span className="text-black font-bold" style={{ fontSize: "20px" }}>
             Tổng các món ăn: {products.length}
           </span>
-
           <SearchInput handleSearch={handleChangeText} value={textSearch} />
-
-          {/* Drop down */}
           <DropDown
             categories={list}
             setIdCategory={setIdCategory}
             W={"200px"}
           />
         </div>
-
-        {/* Items */}
         <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product, index) => (
             <ProductItem

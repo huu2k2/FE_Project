@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { CustomButton } from "../../../../../components/CustomButton";
 import {
   createCategory,
@@ -22,62 +23,70 @@ export const Form: React.FC<FormPros> = ({
   isState,
   fetchData,
 }: FormPros) => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const handleChangeData = (value: string, key: string) => {
     setData({ ...formData, [key]: value });
+
+    if (key === "name" && value.trim() !== "") {
+      setErrorMessage("");
+    }
   };
 
   const handleSubmit = async () => {
-    if (isState == 1) {
-      try {
+    if (formData.name.trim() === "") {
+      setErrorMessage("Vui lòng nhập tên danh mục.");
+      return;
+    }
+
+    try {
+      if (isState === 1) {
         let result = await updateCategory(formData);
         console.log(result.data);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
+      } else {
         let result = await createCategory(formData);
         console.log(result.data);
-      } catch (error) {
-        console.log(error);
       }
+      fetchData();
+      closeModal();
+    } catch (error) {
+      console.log(error);
     }
-    fetchData();
-    closeModal();
   };
 
   return (
-    <>
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg  shadow-lg w-[30%]">
-          <h2 className="text-center text-3xl font-bold mb-4 text-black">
-            Thông tin tài khoản
-          </h2>
-          <div className="grid gap-4 mb-4">
-            <div className="col-span-1">
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleChangeData(e.target.value, "name")}
-                className="w-full px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
-                placeholder="Tên danh mục"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end space-x-2">
-            <CustomButton
-              title="Xác nhận"
-              bgColor="#FFAA02"
-              onClick={() => handleSubmit()}></CustomButton>
-            <CustomButton
-              title="Huỷ"
-              bgColor="#CC0E0E"
-              onClick={closeModal}></CustomButton>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[30%]">
+        <h2 className="text-center text-3xl font-bold mb-4 text-black">
+          Thông tin danh mục
+        </h2>
+        <div className="grid gap-4 mb-4">
+          <div className="col-span-1">
+            <input
+              type="text"
+              id="name"
+              value={formData.name}
+              onChange={(e) => handleChangeData(e.target.value, "name")}
+              className={`w-full px-3 py-2 border ${
+                errorMessage ? "border-red-500" : "bg-[#E2E2E2]"
+              } rounded-lg focus:outline-none focus:border-backgroundColor`}
+              placeholder="Tên danh mục"
+            />
+            {errorMessage && (
+              <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
+            )}
           </div>
         </div>
+
+        <div className="flex justify-end space-x-2">
+          <CustomButton
+            title="Xác nhận"
+            bgColor="#FFAA02"
+            onClick={() => handleSubmit()}
+          />
+          <CustomButton title="Huỷ" bgColor="#CC0E0E" onClick={closeModal} />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
