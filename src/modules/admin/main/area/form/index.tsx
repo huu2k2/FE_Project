@@ -35,15 +35,15 @@ export const Form: React.FC<FormPros> = ({
       try {
         let result = await updateArea(formData);
         console.log(result);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     } else {
       try {
         let result = await createArea(formData);
         console.log(result);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     }
     fetchData();

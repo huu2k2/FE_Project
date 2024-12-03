@@ -5,12 +5,10 @@ import baseUrl from "../utils/baseURL";
 const getAllRole = (): Promise<RoleModel[]> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await axiosInstance.get<RoleModel[]>(
-        `${baseUrl}/roles/`
-      );
+      let result = await axiosInstance.get<RoleModel[]>(`${baseUrl}/roles/`);
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Form } from "./form";
 import { TitleText } from "../../../../components/texts/title";
@@ -8,6 +8,7 @@ import { AccountModel } from "../../../../models/account";
 import { RoleModel } from "../../../../models/role";
 import { getAllRole } from "../../../../services/role-service";
 import { getAllAccount } from "../../../../services/account-service";
+import { toast } from "react-toastify";
 export const StaffCompoment: React.FC = () => {
   const [list, setList] = useState<AccountModel[]>([]);
   const [filteredList, setFilteredList] = useState<AccountModel[]>([]);
@@ -17,8 +18,9 @@ export const StaffCompoment: React.FC = () => {
     try {
       const result = await getAllRole();
       setRoles(result);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -26,8 +28,9 @@ export const StaffCompoment: React.FC = () => {
     try {
       const result = await getAllAccount();
       setList(result.data);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -37,7 +40,6 @@ export const StaffCompoment: React.FC = () => {
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   const [textSearch, setTextSearch] = useState<string>("");
 
@@ -149,8 +151,7 @@ export const StaffCompoment: React.FC = () => {
               {filteredList.map((account, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
-                >
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="text-black border-b py-2 px-4">
                     {account?.username}
                   </td>
@@ -167,8 +168,7 @@ export const StaffCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(account)}
-                      >
+                        onClick={() => handleEdit(account)}>
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                     </div>

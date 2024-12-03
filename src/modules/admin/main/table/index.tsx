@@ -7,6 +7,7 @@ import { TableItem } from "../../../../components/TableItem";
 import { Form } from "./form";
 import { TableModel } from "../../../../models/table";
 import { getAllTable } from "../../../../services/table-service";
+import { toast } from "react-toastify";
 
 export const TableCompoment: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -16,8 +17,9 @@ export const TableCompoment: React.FC = () => {
     try {
       const result = await getAllTable();
       setTableList(result.data);
-    } catch (error) {
-      console.error("Error fetching areas: ", error);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
     }
   };
 

@@ -26,8 +26,8 @@ const getAllCategory = (): Promise<API<CategoryModel[]>> => {
         `${baseUrl}/categories/`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -40,8 +40,8 @@ const updateCategory = (data: CategoryModel): Promise<API<CategoryModel>> => {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -53,8 +53,8 @@ const deleteCategory = (id: string): Promise<API<boolean>> => {
         `${baseUrl}/categories/${id}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

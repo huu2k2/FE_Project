@@ -42,8 +42,8 @@ export const Form: React.FC<FormPros> = ({
     try {
       const result = await getAllArea();
       setAreaList(result.data);
-    } catch (error) {
-      console.error("Error fetching areas: ", error);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -69,15 +69,15 @@ export const Form: React.FC<FormPros> = ({
       try {
         let result = await updateTable(formData);
         console.log(result);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     } else {
       try {
         let result = await createTable(formData);
         console.log(result);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     }
 

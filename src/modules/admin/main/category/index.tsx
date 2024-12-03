@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import Pagination from "../../../../components/Pagination";
 import { Form } from "./form";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
@@ -27,16 +26,6 @@ export const CategoryCompoment: React.FC = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
-  const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const totalPageNumber = 10;
-  const offset = 2;
-
-  const handlePageChange = (page: number | string) => {
-    if (typeof page == "number") {
-      setCurrentPageNumber(page);
-    }
-  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isState, setIsState] = useState(0);
@@ -125,8 +114,7 @@ export const CategoryCompoment: React.FC = () => {
               {filteredList.map((category, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
-                >
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="text-black border-b py-2 px-4">
                     {category.categoryId}
                   </td>
@@ -137,14 +125,12 @@ export const CategoryCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(category)}
-                      >
+                        onClick={() => handleEdit(category)}>
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                       <button
                         className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                        onClick={() => clickDelete(category)}
-                      >
+                        onClick={() => clickDelete(category)}>
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -182,8 +168,7 @@ export const CategoryCompoment: React.FC = () => {
           closeModel={handleModalClose}
           handle={() => {
             handleDelete(data);
-          }}
-        ></DeleteModal>
+          }}></DeleteModal>
       )}
     </>
   );

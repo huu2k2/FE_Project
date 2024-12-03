@@ -15,8 +15,8 @@ const createOrder = (data: {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -30,8 +30,8 @@ const getAllOrdersOfCustomer = (
         `${baseUrl}/orders/customer/${customerId}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -43,8 +43,8 @@ const getAllOrders = (): Promise<API<OrderModel[]>> => {
         `${baseUrl}/orders/`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -56,8 +56,8 @@ const getOrderById = (orderId: string): Promise<API<OrderModel>> => {
         `${baseUrl}/orders/${orderId}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -77,8 +77,8 @@ const updateOrder = (
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -92,8 +92,8 @@ const getOrderDetailByOrderId = (
         `${baseUrl}/orders/${orderId}/detail`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -107,13 +107,16 @@ const getOrderDetailByOrderIdOfMergeOrder = (
         `${baseUrl}/orders/${orderId}/detail/payment`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
 
-const getTurnOver = (fromDay: string, toDay: string): Promise<API<OrderModel[]>> => {
+const getTurnOver = (
+  fromDay: string,
+  toDay: string
+): Promise<API<OrderModel[]>> => {
   return new Promise(async (resolve, reject) => {
     try {
       let result = await axiosInstance.get<API<any[]>>(
@@ -123,8 +126,8 @@ const getTurnOver = (fromDay: string, toDay: string): Promise<API<OrderModel[]>>
         }
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

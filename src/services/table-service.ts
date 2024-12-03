@@ -16,8 +16,8 @@ const createTable = (data: {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -29,8 +29,8 @@ const getAllTable = (): Promise<API<TableModel[]>> => {
         `${baseUrl}/tables/`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -43,8 +43,8 @@ const updateTable = (data: TableModel): Promise<API<TableModel>> => {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -56,8 +56,8 @@ const deleteTable = (id: string): Promise<API<boolean>> => {
         `${baseUrl}/tables/${id}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -71,8 +71,8 @@ const createTableDetail = (
         API<{ order: OrderModel; tableDetail: TableDetailModel }>
       >(`${baseUrl}/tables/${id}/detail`);
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

@@ -16,8 +16,8 @@ const createCustomer = (data: {
       );
       console.log(result);
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -29,8 +29,8 @@ const getAllCustomer = (): Promise<API<CustomerModel[]>> => {
         `${baseUrl}/customers/`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -42,8 +42,8 @@ const getCustomerById = (customerId: string): Promise<API<CustomerModel>> => {
         `${baseUrl}/customers/${customerId}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -62,8 +62,8 @@ const updateCustomer = (
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

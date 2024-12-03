@@ -15,8 +15,8 @@ const createOrderDetail = (
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -30,8 +30,8 @@ const getOrderDetailById = (
         `${baseUrl}/orders/detail/${orderDetailId}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -45,8 +45,8 @@ const getOrderDetailByOrderId = (
         `${baseUrl}/orders/${orderId}/detail`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -60,8 +60,8 @@ const getOrderDetailByOrderIdKitchen = (
         `${baseUrl}/orders/${orderId}/detail/kitchen`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -80,8 +80,8 @@ const updateOrderDetail = (
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

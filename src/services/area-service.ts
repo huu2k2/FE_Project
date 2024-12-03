@@ -11,8 +11,8 @@ const createArea = (data: { name: string }): Promise<API<AreaModel[]>> => {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -24,8 +24,8 @@ const getAllArea = (): Promise<API<AreaModel[]>> => {
         `${baseUrl}/areas/`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -38,8 +38,8 @@ const updateArea = (data: AreaModel): Promise<API<AreaModel>> => {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -51,8 +51,8 @@ const deleteArea = (id: string): Promise<API<boolean>> => {
         `${baseUrl}/areas/${id}`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

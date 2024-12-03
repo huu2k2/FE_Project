@@ -10,8 +10,8 @@ const getNotifications = (): Promise<API<NotificationModel[]>> => {
         `${baseUrl}/notifications`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };

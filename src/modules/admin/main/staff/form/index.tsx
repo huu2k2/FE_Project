@@ -94,16 +94,16 @@ export const Form: React.FC<FormPros> = ({
       try {
         let result = await updateAccount(formData);
         console.log(result);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     } else {
       // console.log("create", formData);
       try {
         let result = await createAccount(formData);
         console.log(result);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.message);
       }
     }
     fetchAccount();

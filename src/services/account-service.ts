@@ -11,8 +11,8 @@ const createAccount = (data: AccountModel): Promise<API<IAccountResponse>> => {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -24,8 +24,8 @@ const getAllAccount = (): Promise<API<AccountModel[]>> => {
         `${baseUrl}/accounts/`
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
@@ -38,8 +38,8 @@ const updateAccount = (data: AccountModel): Promise<API<IAccountResponse>> => {
         data
       );
       resolve(result.data);
-    } catch (error) {
-      reject(error);
+    } catch (error: any) {
+      reject(error.response.data);
     }
   });
 };
