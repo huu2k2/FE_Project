@@ -44,8 +44,8 @@ export const Form: React.FC<FormPros> = ({
       }
       fetchData();
       closeModal();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
