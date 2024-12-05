@@ -8,6 +8,7 @@ import { getOrderDetailByOrderIdKitchen } from "../../../../services/order-detai
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 import { getSocket } from "../../../../hooks/useCheffSocket";
+import { toast } from "react-toastify";
 
 export const ListItemProductPage: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -171,6 +172,11 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleConfirm = () => {
+    if (activeItems().length == 0) {
+      toast.warning("Hãy chọn đơn trước!");
+      return;
+    }
+
     const cheffSocke = getSocket();
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,
@@ -180,6 +186,11 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleFinish = () => {
+    if (activeItems().length == 0) {
+      toast.warning("Hãy chọn đơn trước!");
+      return;
+    }
+
     const cheffSocke = getSocket();
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,
@@ -194,6 +205,16 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleCancel = (reason: string) => {
+    if (!reason.trim()) {
+      toast.warning("Hãy nhập lý do huỷ!");
+      return;
+    }
+
+    if (activeItems().length == 0) {
+      toast.warning("Hãy chọn đơn trước!");
+      return;
+    }
+
     const cheffSocke = getSocket();
     handleSendMess(cheffSocke!, "updateOrdersDetailFromCheff", {
       orderId: orderId,

@@ -162,7 +162,7 @@ export const StaffCompoment: React.FC = () => {
                     {account?.role?.name}
                   </td>
                   <td className="border-b py-2 px-4 text-black">
-                    {account?.isActive ? "Hoạt dộng" : "Nghỉ"}
+                    {account?.isActive ? "Hoạt động" : "Nghỉ"}
                   </td>
                   <td className="border-b py-2 px-4">
                     <div className="flex space-x-2">

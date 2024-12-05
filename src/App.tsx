@@ -5,35 +5,36 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { LoadingComponent } from "./components/loading";
 import { useLoading } from "./hooks/loading";
-import { initializeCheffSocket } from "./hooks/useCheffSocket";
-import useCustomerSocket from "./hooks/useCustomerSocket";
-import { handleReceiveMess } from "./hooks/fc.socket";
+// import { initializeCheffSocket } from "./hooks/useCheffSocket";
+// import useCustomerSocket from "./hooks/useCustomerSocket";
+// import { handleReceiveMess } from "./hooks/fc.socket";
 const App: React.FC = () => {
   const context = useLoading();
   useEffect(() => {
     if (window.location.pathname === "/") {
       window.location.href = "/login";
     }
-    initializeCheffSocket();
+    // initializeCheffSocket();
   }, []);
 
-  const customerSocket = useCustomerSocket();
+  // const customerSocket = useCustomerSocket();
 
-  useEffect(() => {
-    if (!customerSocket) return;
-    handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
-      toast.info(val.title);
-    });
-    handleReceiveMess(customerSocket!, "confirmPaymentSuccess", (val) => {
-      toast.info(val.title);
-    });
-  }, [customerSocket]);
+  // useEffect(() => {
+  //   if (!customerSocket) return;
+  //   console.log(customerSocket?.id);
+  //   handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
+  //     toast.info(val.title);
+  //   });
+  //   handleReceiveMess(customerSocket!, "confirmPaymentSuccess", (val) => {
+  //     toast.info(val.title);
+  //   });
+  // }, [customerSocket]);
 
   return (
     <>
       {context.isLoading && <LoadingComponent />}
       <ToastContainer />
-      <RouterProvider router={routers} />;
+      <RouterProvider router={routers} />
     </>
   );
 };

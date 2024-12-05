@@ -4,13 +4,13 @@ import { FinishOrderItem } from "../../../../components/FinishOrderItem";
 import { createPayment } from "../../../../services/payment-service";
 import { getOrderDetailByOrderIdOfMergeOrder } from "../../../../services/order-service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
-import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
 import { OrderDetailStatus } from "../../../../enum/enum";
 import { toast } from "react-toastify";
+import { getCustomerSocket } from "../../../../hooks/useCustomerSocket";
 
 export const Payment: React.FC = () => {
-  const customerSocket = useCustomerSocket();
+  const customerSocket = getCustomerSocket();
   const [orderDetails, setOrderDetails] = useState<OrderDetailModel[]>([]);
 
   const fetchData = async () => {
@@ -45,7 +45,7 @@ export const Payment: React.FC = () => {
       (item) => item.status === OrderDetailStatus.PENDING
     );
 
-    if(exists){
+    if (exists) {
       toast.info("Món ăn còn phục vụ chưa thể thanh toán được!");
       return;
     }
