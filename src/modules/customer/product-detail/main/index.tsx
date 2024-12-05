@@ -57,8 +57,8 @@ const ProductDetail: React.FC = () => {
       <CustomerHeader isBack={true} title="" bg="transparent"></CustomerHeader>
       <div className="w-full">
         <img
-          src="https://via.placeholder.com/150"
-          className="rounded-lg w-full h-full"
+          src={product?.image}
+          className="rounded-lg w-full h-[300px]"
         />
       </div>
 
@@ -108,14 +108,15 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-[30px]">
+      
+      </div>
+      <div className="mb-[30px] mx-10">
           <CustomButton
             bgColor="#ffaa02"
             title="Thêm vào đơn gọi"
             onClick={() => handleAddProduct()}
           ></CustomButton>
         </div>
-      </div>
     </div>
   );
 };

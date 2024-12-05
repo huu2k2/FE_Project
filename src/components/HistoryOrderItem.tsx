@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import imageUrl from "../assets/product.webp";
 import { OrderModel } from "../models/order";
 
@@ -9,9 +10,10 @@ export const HistoryOrderItem: React.FC<NotificationPros> = ({ data }) => {
   const createdAtDate = data.createdAt ? new Date(data.createdAt) : null;
   return (
     <>
-      <a
+      <Link
         className="flex items-start p-4 border-y border-gray-300  shadow-sm max-w-md"
-        href={`/order/history/${data.orderId}`}>
+        to={`/order/history/${data.orderId}`}
+      >
         <img
           src={imageUrl}
           alt="Dish"
@@ -19,15 +21,22 @@ export const HistoryOrderItem: React.FC<NotificationPros> = ({ data }) => {
         />
         <div className="flex-1">
           <h2 className="font-semibold text-lg text-black">
-            {data.customerId}
+            Tổng: {data.totalAmount.toLocaleString()} đ
           </h2>
+          <p
+            className={`${
+              data.status.toString() === "SUCCESS" ? "text-green-700" : "text-red-800"
+            } font-bold`}
+          >
+            {data.status}
+          </p>
           <p className="text-gray-600 line-clamp-2 ">
             {createdAtDate
-              ? createdAtDate.toISOString()
+              ? createdAtDate.toLocaleString()
               : "Ngày tạo không hợp lệ"}
           </p>
         </div>
-      </a>
+      </Link>
     </>
   );
 };

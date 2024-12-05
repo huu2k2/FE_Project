@@ -9,8 +9,10 @@ import { OrderDetailStatus } from "../../../../enum/enum";
 import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../../hooks/fc.socket";
 import { toast } from "react-toastify";
+import { useLoading } from "../../../../hooks/loading";
 
 export const Cart: React.FC = () => {
+  const { setIsLoading } = useLoading();
   const [items, setItems] = useState<CartModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -56,34 +58,41 @@ export const Cart: React.FC = () => {
     setItems(getCart());
   }, []);
 
-  const submit = async () => {
-    let details: OrderDetailModel[] = [];
-    const filteredItems = items.filter((item) =>
-      selectedItems.includes(item.id)
-    );
+  const submit = async (totalAmount: number) => {
+    if (totalAmount) {
+      setIsLoading(true);
+      let details: OrderDetailModel[] = [];
+      const filteredItems = items.filter((item) =>
+        selectedItems.includes(item.id)
+      );
 
-    let orderId = localStorage.getItem("orderId")!;
-    filteredItems.forEach((item) => {
-      details.push({
-        productId: item.id,
-        quantity: item.quantity,
-        price: item.price,
-        status: OrderDetailStatus.PENDING,
+      let orderId = localStorage.getItem("orderId")!;
+      filteredItems.forEach((item) => {
+        details.push({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          status: OrderDetailStatus.PENDING,
+          orderId: orderId,
+        });
+      });
+      let result = await createOrderDetail(details);
+
+      filteredItems.forEach((item) => {
+        removeFromCart(item.id);
+      });
+      setItems(getCart());
+      setSelectedItems([]);
+      setSelectAll(false);
+      handleSendMess(customerSocket!, "sendOrderDetail", {
+        data: result.data,
         orderId: orderId,
       });
-    });
-    let reulst = await createOrderDetail(details);
-    toast.success("Giử món thành công");
-    filteredItems.forEach((item) => {
-      removeFromCart(item.id);
-    });
-    setItems(getCart());
-    setSelectedItems([]);
-    setSelectAll(false);
-    handleSendMess(customerSocket!, "sendOrderDetail", {
-      data: reulst.data,
-      orderId: orderId,
-    });
+      setIsLoading(false);
+      toast.success("Giử món thành công");
+    } else {
+      toast.warn("Bạn chưa chọn món!");
+    }
   };
 
   useEffect(() => {
@@ -107,6 +116,13 @@ export const Cart: React.FC = () => {
             onQuantityChange={(amount) => handleQuantityChange(item.id, amount)}
           />
         ))}
+
+        {items.length === 0 && (
+          <img
+            src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
+            className={""}
+          />
+        )}
       </div>
 
       <div className="bg-white p-4 rounded-t-lg border-t border-gray-200 fixed left-0 right-0 bottom-[50px]">
@@ -114,25 +130,33 @@ export const Cart: React.FC = () => {
           <div className="flex items-center">
             <button
               onClick={handleSelectAll}
-              className={`w-6 h-6 text-white rounded-full flex items-center mr-3 justify-center ${
-                selectAll ? "bg-[#ffaa02]" : "bg-gray-300"
-              }`}
+              className={`w-6 h-6 text-white ${
+                selectAll && totalAmount !== 0 ? "bg-[#ffaa02]" : "bg-gray-300"
+              } rounded-full flex items-center mr-3 justify-center `}
             >
               <i className="fas fa-check"></i>
             </button>
-            <span className="text-[#ffaa02] font-semibold">Tất cả</span>
+            <span
+              className={`${
+                totalAmount === 0 ? "text-gray-500" : "text-[#ffaa02]"
+              }  font-semibold`}
+            >
+              Tất cả
+            </span>
           </div>
           <div className="text-lg font-semibold">
             Tổng tiền:{" "}
             <span className="text-[#ffaa02]">
-              {totalAmount.toLocaleString()}đ
+              {totalAmount.toLocaleString()} đ
             </span>
           </div>
         </div>
         <button
           disabled={setSelectedItems.length == 0}
-          className="w-full mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-lg mb-5"
-          onClick={submit}
+          className={`w-full mt-4 py-2 ${
+            totalAmount === 0 ? "bg-slate-500" : "bg-[#ffaa02]"
+          } bg-[#ffaa02] text-white font-bold rounded-lg mb-5`}
+          onClick={() => submit(totalAmount)}
         >
           Gửi đơn
         </button>

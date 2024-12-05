@@ -29,6 +29,7 @@ export const LoginPage: React.FC = () => {
     }
 
     const ks = await loginStaff(data);
+    console.log("===================" , ks)
     if (ks?.data) {
       const token = decodeToken(ks?.data.token);
       localStorage.setItem("token", ks?.data.token);

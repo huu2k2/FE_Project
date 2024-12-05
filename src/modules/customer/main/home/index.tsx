@@ -7,9 +7,6 @@ import { CategoryModel } from "../../../../models/category";
 import { ProductModel } from "../../../../models/product";
 import debounce from "lodash/debounce";
 import { getProductByCategoryId } from "../../../../services/product-service";
-import useCustomerSocket from "../../../../hooks/useCustomerSocket";
-import { handleReceiveMess } from "../../../../hooks/fc.socket";
-import { toast } from "react-toastify";
 
 export const HomeComponent: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
@@ -19,65 +16,52 @@ export const HomeComponent: React.FC = () => {
     name: "Tất cả",
   });
   const [textSearch, setTextSearch] = useState<string>("");
-  const [debouncedText, setDebouncedText] = useState<string>("");
 
-  // const customerSocket = useCustomerSocket();
-
-  // useEffect(() => {
-  //   if (!customerSocket) return;
-  //   console.log("Home1");
-  //   handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
-  //     console.log(val);
-  //     toast.info(val);
-  //   });
-  // }, [customerSocket]);
-
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const result = await getAllCategory();
       setCategories(result.data);
     } catch (error) {
       console.error("Error fetching categories: ", error);
     }
-  };
+  }, []);  
 
-  const fetchProducts = async (categoryId: string) => {
+  const fetchProducts = useCallback(async (categoryId: string) => {
     try {
       const result = await getProductByCategoryId(categoryId);
       setProduct(result.data);
     } catch (error) {
       console.error("Error fetching products: ", error);
     }
-  };
+  }, []); 
 
   const debounceSearch = useCallback(
     debounce((value: string) => {
-      setDebouncedText(value);
+      setTextSearch(value);
     }, 500),
-    []
+    []  
   );
-  const filteredProductList = useMemo(() => {
-    if (!debouncedText) return products;
-    return products.filter((product: { name: string }) =>
-      product.name.toLowerCase().includes(debouncedText.toLowerCase())
-    );
-  }, [products, debouncedText]);
 
-  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setTextSearch(value);
-    debounceSearch(value);
-  };
+  const filteredProductList = useMemo(() => {
+    if (!textSearch) return products;
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(textSearch.toLowerCase())
+    );
+  }, [products, textSearch]); 
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [fetchCategories]); 
 
   useEffect(() => {
     if (category.categoryId) {
       fetchProducts(category.categoryId);
     }
-  }, [category]);
+  }, [category, fetchProducts]);  
+
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debounceSearch(e.target.value);
+  };
 
   return (
     <div className="px-4 pt-4 min-h-screen overscroll-none">
@@ -92,9 +76,7 @@ export const HomeComponent: React.FC = () => {
           <input
             type="text"
             placeholder="Tìm kiếm"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChangeText(e)
-            }
+            onChange={handleChangeText}
             className="placeholder-gray-600 font-bold bg-transparent focus:outline-none 
             w-full h-full text-gray-600 rounded-[25px] pl-10"
             style={{ backgroundColor: "#D9D9D9", color: "000000" }}
@@ -129,7 +111,6 @@ export const HomeComponent: React.FC = () => {
         <div
           className="overflow-y-auto w-full h-[528px]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-          {" "}
           <div className="grid grid-cols-2 gap-4">
             {filteredProductList.map((product, index) => (
               <ProductItem key={index} data={product} />

@@ -5,6 +5,7 @@ import { getCustomerById } from "../../../services/customer-service";
 import { jwtDecode } from "jwt-decode";
 import useCustomerSocket from "../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../hooks/fc.socket";
+import { Link } from "react-router-dom";
 
 export const Drawer: React.FC = () => {
   const customerSocket = useCustomerSocket();
@@ -51,32 +52,32 @@ export const Drawer: React.FC = () => {
           <div className="flex-grow bg-white w-full">
             <ul className="menu flex flex-col text-black text-content p-4 space-y-2">
               <li className="flex items-left gap-3 p-2 border-b border-gray-300">
-                <a href={`/person`}>
+                <Link to={`/person`}>
                   <i className="fas fa-user"></i>Hồ sơ
-                </a>
+                </Link>
               </li>
               <li className="flex items-left gap-3 p-2 border-b border-gray-300">
-                <a href={`/order/history`}>
+                <Link to={`/order/history`}>
                   <i className="fas fa-history"></i>Lịch sử gọi món
-                </a>
+                </Link>
               </li>
               <li className="flex items-left gap-3 p-2 border-b border-gray-300">
                 {/* Change id */}
-                <a href={`/payment/order`}>
+                <Link to={`/payment/order`}>
                   <i className="fas fa-credit-card"></i>Thanh toán
-                </a>
+                </Link>
               </li>
               <li className="flex items-left gap-3 p-2 border-b border-gray-300">
-                <a href={`/order/status`}>
+                <Link to={`/order/status`}>
                   <i className="fas fa-shopping-cart"></i>Trạng thái đơn hiện
                   tại
-                </a>
+                </Link>
               </li>
               <li className="flex items-left gap-3 p-2 border-b border-gray-300">
                 {/* Send notification for staff */}
-                <a onClick={() => mergeTable()}>
+                <span onClick={() => mergeTable()}>
                   <i className="fas fa-table"></i>Gộp bàn
-                </a>
+                </span>
               </li>
             </ul>
           </div>

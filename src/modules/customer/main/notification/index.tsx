@@ -31,11 +31,19 @@ export const NotificaationComponent: React.FC = () => {
         <CustomerHeader
           isBack={false}
           title="Thông báo"
-          bg="white"></CustomerHeader>
+          bg="white"
+        ></CustomerHeader>
         <div className="flex flex-col mt-4">
           {datas.map((item, index) => (
             <NotificationItem key={index} data={item}></NotificationItem>
           ))}
+          
+          {datas.length === 0 && (
+            <img
+              src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
+              className={""}
+            />
+          )}
         </div>
       </div>
     </>

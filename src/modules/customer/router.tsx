@@ -4,9 +4,14 @@ import { HomeComponent } from "./main/home/index";
 import { NotificaationComponent } from "./main/notification/index";
 import { Cart } from "./main/cart";
 import { ProfilePage } from "./main/profile/index";
+import { CartProvider } from "../../hooks/addTotalContext";
 const RouterHome: RouteObject = {
   path: "/",
-  element: <LayoutCustomer />,
+  element: (
+    <CartProvider>
+      <LayoutCustomer />
+    </CartProvider>
+  ),
   children: [
     {
       path: "home",
