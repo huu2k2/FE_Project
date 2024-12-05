@@ -59,7 +59,9 @@ export const Form: React.FC<IFormData> = ({
       return;
     }
 
-    if (!formData.categoryId.trim()) {
+    console.log(getIdCategory);
+
+    if (!getIdCategory.trim()) {
       toast.error("Vui lòng chọn danh mục món ăn!");
       return;
     }
