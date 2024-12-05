@@ -9,7 +9,7 @@ export const initializeCheffSocket = (): Socket => {
     socket = io(URL, {
       transports: ["websocket"],
     });
-    console.log("Socket initialized!");
+    console.log("Socket Cheff initialized!");
   }
   return socket;
 };
@@ -22,6 +22,6 @@ export const disconnectSocket = (): void => {
   if (socket) {
     socket.disconnect();
     socket = null;
-    console.log("Socket disconnected!");
+    console.log("Socket Cheff disconnected!");
   }
 };

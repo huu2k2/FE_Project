@@ -3,11 +3,10 @@ import { LogoutButton } from "../../../components/buttons/logoutButton";
 import { CustomerModel } from "../../../models/customer";
 import { getCustomerById } from "../../../services/customer-service";
 import { jwtDecode } from "jwt-decode";
-import useCustomerSocket from "../../../hooks/useCustomerSocket";
 import { handleSendMess } from "../../../hooks/fc.socket";
+import { getCustomerSocket } from "../../../hooks/useCustomerSocket";
 
 export const Drawer: React.FC = () => {
-  const customerSocket = useCustomerSocket();
   const [customerInfor, setCustomerInfor] = useState<CustomerModel>();
   const fetchCustomerInfor = async () => {
     try {
@@ -28,6 +27,7 @@ export const Drawer: React.FC = () => {
 
   const mergeTable = () => {
     const orderId = localStorage.getItem("orderId")!;
+    const customerSocket = getCustomerSocket();
     handleSendMess(customerSocket!, "sendMergeTableRequest", orderId);
   };
 
@@ -37,7 +37,8 @@ export const Drawer: React.FC = () => {
         <label
           htmlFor="my-drawer"
           aria-label="close sidebar"
-          className="drawer-overlay"></label>
+          className="drawer-overlay"
+        ></label>
         <div className="flex flex-col min-h-full w-80 bg-backgroundColor rounded-r-[30px]">
           {/* Profile Section */}
           <div className="flex flex-col items-center p-4 bg-backgroundColor rounded-r-[30px]">

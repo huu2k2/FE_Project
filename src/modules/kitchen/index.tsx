@@ -3,22 +3,25 @@ import { NavBar } from "./navbar";
 import { DrawerBar } from "./drawer";
 import { useEffect, useState } from "react";
 import { initializeCheffSocket } from "../../hooks/useCheffSocket";
+import { set } from "lodash";
+import { useLoading } from "../../hooks/loading";
 // import { handleReceiveMess } from "../../hooks/fc.socket";
 
 export const LayoutKitchen: React.FC = () => {
-  // const [isLoading, setLoading] = useState<boolean>(false);
+  const { isLoading, setIsLoading } = useLoading();
   useEffect(() => {
-    // setTimeout(() => {
-    //   setLoading(true);
-    //   const socket = initializeCheffSocket();
-    //   return () => {
-    //     socket.disconnect();
-    //   };
-    // }, 100);
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      const socket = initializeCheffSocket();
+      return () => {
+        socket.disconnect();
+      };
+    }, 1000);
   }, []);
   return (
     <>
-      {true && (
+      {!isLoading && (
         <div className="flex flex-col h-screen">
           <NavBar />
           <div className="flex flex-1 overflow-hidden">

@@ -2,24 +2,29 @@ import React, { useEffect, useState } from "react";
 import { OrderStatusItem } from "../../../../components/customer/orderStatusItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { OrderDetailModel } from "../../../../models/orderdetail";
-import useCustomerSocket from "../../../../hooks/useCustomerSocket";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 import { OrderDetailStatus } from "../../../../enum/enum";
 import { toast } from "react-toastify";
+import { useLoading } from "../../../../hooks/loading";
+import {
+  getCustomerSocket,
+  initializeCustomerSocket,
+} from "../../../../hooks/useCustomerSocket";
 
 const OrderStatus: React.FC = () => {
   const [items, setItems] = useState<OrderDetailModel[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [status, isStatus] = useState<boolean>(false);
 
-  const customerSocket = useCustomerSocket();
+  const customerSocket = getCustomerSocket();
 
   useEffect(() => {
     if (!customerSocket) return;
+
     const orderId = localStorage.getItem("orderId");
-
+    handleSendMess(customerSocket!, "agianConnect", orderId);
     handleSendMess(customerSocket!, "requestGetOrderDetails", orderId);
-
+    console.log(customerSocket);
     handleReceiveMess(customerSocket!, "receiveNotification", (val) => {
       toast.info(val.title);
     });
@@ -59,7 +64,6 @@ const OrderStatus: React.FC = () => {
         orderDetailIds: string[];
         updateType: number;
       }) => {
-        // console.log("Order status update", vals);
         if (orderId === vals.orderId) {
           let newStatus = OrderDetailStatus.CONFIRMED;
           if (vals.updateType === 0) {
@@ -119,7 +123,8 @@ const OrderStatus: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Trạng thái đơn gọi"
-        bg="white"></CustomerHeader>
+        bg="white"
+      ></CustomerHeader>
       <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
         {items.map((item, index) => (
           <OrderStatusItem
@@ -143,14 +148,16 @@ const OrderStatus: React.FC = () => {
         {status && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[green] text-white font-bold rounded-[20px]"
-            onClick={handleAjustQuantity}>
+            onClick={handleAjustQuantity}
+          >
             Xác nhận
           </button>
         )}
         {selectedItems.length > 0 && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-[20px]"
-            onClick={handleCancel}>
+            onClick={handleCancel}
+          >
             Huỷ món
           </button>
         )}
