@@ -5,11 +5,14 @@ import baseUrl from "../utils/baseURL";
 
 const createArea = (data: { name: string }): Promise<API<AreaModel[]>> => {
   return new Promise(async (resolve, reject) => {
+    console.log(data);
     try {
       let result = await axiosInstance.post<API<AreaModel[]>>(
         `${baseUrl}/areas/`,
         data
       );
+
+      console.log(result.data);
       resolve(result.data);
     } catch (error: any) {
       reject(error.response.data);
