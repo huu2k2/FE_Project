@@ -1,5 +1,5 @@
 import { CustomButton } from "../../../../../components/CustomButton";
-import { createArea, updateArea } from "../../../../../services/area-service";
+import { createArea, updateArea } from "../../../../../services/area.service";
 import { toast } from "react-toastify";
 
 interface FormPros {

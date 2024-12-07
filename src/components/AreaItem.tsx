@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
 import { DeleteModal } from "./DeleteModal";
-import { deleteArea } from "../services/area-service";
+import { deleteArea } from "../services/area.service";
 
 interface AreaPros {
   area: { id: string; name: string };

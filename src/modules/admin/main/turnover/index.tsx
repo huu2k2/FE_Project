@@ -3,7 +3,7 @@ import { TitleText } from "../../../../components/texts/title";
 import LineChart from "../../../../components/LineChart";
 import img from "../../../../assets/product.webp";
 import { CustomButton } from "../../../../components/CustomButton";
-import { getTurnOver } from "../../../../services/order-service";
+import { getTurnOver } from "../../../../services/order.service";
 import { format, eachDayOfInterval, parse } from "date-fns";
 import { toast } from "react-toastify";
 

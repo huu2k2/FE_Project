@@ -2,7 +2,7 @@ import { useState } from "react";
 import MenuEditDelete from "./MenuEditDelete";
 import { DeleteModal } from "./DeleteModal";
 import { ProductModel } from "../models/product";
-import { deleteProduct } from "../services/product-service";
+import { deleteProduct } from "../services/product.service";
 import { toast } from "react-toastify";
 
 interface ProductPros {

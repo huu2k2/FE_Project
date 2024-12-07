@@ -3,7 +3,7 @@ import { TitleText } from "../../../../../components/texts/title";
 import { AccountModel } from "../../../../../models/account";
 import set from "lodash/set";
 import { RoleModel } from "../../../../../models/role";
-import { createAccount, updateAccount } from "../../../../../services/account-service";
+import { createAccount, updateAccount } from "../../../../../services/account.service";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
@@ -182,7 +182,7 @@ export const Form: React.FC<FormProps> = ({
               label="Chức vụ :"
               value={formData.role.roleId}
               options={roles.map((role) => ({ value: role.roleId, label: role.name }))}
-              onChange={(value) => handleChangeData(value, "role.roleId")}
+              onChange={(value) => handleChangeData(value || roles[0].roleId, "role.roleId")}
             />
             <SelectField
               label="Trạng thái:"
@@ -191,7 +191,7 @@ export const Form: React.FC<FormProps> = ({
                 { value: "Hoạt động", label: "Hoạt động" },
                 { value: "Nghỉ", label: "Nghỉ" },
               ]}
-              onChange={(value) => handleChangeData(value, "isActive")}
+              onChange={(value) => handleChangeData(value || "Hoạt động", "isActive")}
             />
             <InputField
               label="CCCD :"

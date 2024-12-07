@@ -6,8 +6,8 @@ import { CreateButton } from "../../../../components/buttons/createButton";
 import { SearchInput } from "../../../../components/inputs/search";
 import { AccountModel } from "../../../../models/account";
 import { RoleModel } from "../../../../models/role";
-import { getAllRole } from "../../../../services/role-service";
-import { getAllAccount } from "../../../../services/account-service";
+import { getAllRole } from "../../../../services/role.service";
+import { getAllAccount } from "../../../../services/account.service";
 import { toast } from "react-toastify";
 export const StaffCompoment: React.FC = () => {
   const [list, setList] = useState<AccountModel[]>([]);

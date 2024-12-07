@@ -1,16 +1,32 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { LocginModel } from "../../models/login";
-import { loginStaff } from "../../services/login-service";
+import { loginStaff } from "../../services/login.service";
 import { toast } from "react-toastify";
 import { decodeToken } from "../../utils/decode-token";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ERole } from "../../enum/enum";
 
 export const LoginPage: React.FC = () => {
   const [data, setDate] = useState<LocginModel>({ username: "", password: "" });
+
   const navigate = useNavigate();
+  const path = useLocation()
+  useLayoutEffect(()=>{
+    
+    if(path.pathname === '/'){
+      navigate('/login')
+    }
+    else{
+      const token = localStorage.getItem('token')?.toString().split('.')
+      if(token?.length === 3 && path.pathname === '/login'){
+        navigate('/management/staff')
+      }
+
+    }
+  },[path])
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -29,7 +45,6 @@ export const LoginPage: React.FC = () => {
     }
 
     const ks = await loginStaff(data);
-    console.log("===================" , ks)
     if (ks?.data) {
       const token = decodeToken(ks?.data.token);
       localStorage.setItem("token", ks?.data.token);

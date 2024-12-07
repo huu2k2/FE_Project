@@ -3,7 +3,7 @@ import { CustomButton } from "../../../../../components/CustomButton";
 import {
   createCategory,
   updateCategory,
-} from "../../../../../services/category-service";
+} from "../../../../../services/category.service";
 import { toast } from "react-toastify";
 
 interface FormPros {

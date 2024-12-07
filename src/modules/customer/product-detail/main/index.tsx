@@ -6,8 +6,8 @@ import { ProductModel } from "../../../../models/product";
 import {
   getProductById,
   getRandProduct,
-} from "../../../../services/product-service";
-import { addToCart, getCart } from "../../../../services/cart-service";
+} from "../../../../services/product.service";
+import { addToCart, getCart } from "../../../../services/cart.service";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();

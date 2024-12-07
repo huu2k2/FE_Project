@@ -8,7 +8,7 @@ import { AreaItem } from "../../../../components/AreaItem";
 import { TitleText } from "../../../../components/texts/title";
 import { CreateButton } from "../../../../components/buttons/createButton";
 import { SearchInput } from "../../../../components/inputs/search";
-import { getAllArea } from "../../../../services/area-service";
+import { getAllArea } from "../../../../services/area.service";
 
 import debounce from "lodash/debounce";
 import { AreaModel } from "../../../../models/area";

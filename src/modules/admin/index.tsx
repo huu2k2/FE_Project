@@ -1,8 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { NavBar } from "./navbar";
 import { DrawerBar } from "./drawer";
+import { useLayoutEffect } from "react";
 
 export const LayoutAdmin: React.FC = () => {
+  const path = useLocation()
+  const navigation = useNavigate()
+  useLayoutEffect(()=>{
+    if (path.pathname === '/management') {
+      navigation('/management/staff');
+    }
+    
+  },[path])
   return (
     <>
       <div className="flex flex-col h-screen ">

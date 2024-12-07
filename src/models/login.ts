@@ -13,3 +13,12 @@ export interface ResStaffLoginDto {
   message: string;
   data: DataToken;
 }
+
+export interface LogoutCustomerDto{
+  orderId: string,
+  tableId: string,
+}
+export interface ResLogoutCustomerDto {
+  message: string;
+  data: Boolean;
+}

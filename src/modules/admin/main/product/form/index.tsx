@@ -7,7 +7,7 @@ import {
 import {
   createProduct,
   updateProduct,
-} from "../../../../../services/product-service";
+} from "../../../../../services/product.service";
 import { toast } from "react-toastify";
 import { ProductModel } from "../../../../../models/product";
 import { useLoading } from "../../../../../hooks/loading";

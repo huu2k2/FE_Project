@@ -11,8 +11,8 @@ import { SearchInput } from "../../../../components/inputs/search";
 import debounce from "lodash/debounce";
 import { DropDown } from "../../../../components/dropdowns/dropdows";
 import { ProductModel, ProductQuery } from "../../../../models/product";
-import { getAllProduct } from "../../../../services/product-service";
-import { getAllCategory } from "../../../../services/category-service";
+import { getAllProduct } from "../../../../services/product.service";
+import { getAllCategory } from "../../../../services/category.service";
 import { CategoryModel } from "../../../../models/category";
 
 export const ProductCompoment: React.FC = () => {

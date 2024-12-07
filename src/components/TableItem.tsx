@@ -3,7 +3,7 @@ import MenuEditDelete from "./MenuEditDelete";
 import QRCodeGenerator from "./QRCodeGenerator";
 import { DeleteModal } from "./DeleteModal";
 import { TableModel } from "../models/table";
-import { deleteTable } from "../services/table-service";
+import { deleteTable } from "../services/table.service";
 import { ip } from "../utils/baseURL";
 
 interface TablePros {

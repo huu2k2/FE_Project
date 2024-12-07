@@ -9,7 +9,7 @@ import { DeleteModal } from "../../../../components/DeleteModal";
 import {
   deleteCategory,
   getAllCategory,
-} from "../../../../services/category-service";
+} from "../../../../services/category.service";
 export const CategoryCompoment: React.FC = () => {
   const [list, setList] = useState<CategoryModel[]>([]);
   const [filteredList, setFilteredList] = useState<CategoryModel[]>([]);

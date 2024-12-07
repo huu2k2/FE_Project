@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { FinishOrderItem } from "../../../../components/FinishOrderItem";
-import { createPayment } from "../../../../services/payment-service";
-import { getOrderDetailByOrderIdOfMergeOrder } from "../../../../services/order-service";
+import { createPayment } from "../../../../services/payment.service";
+import { getOrderDetailByOrderIdOfMergeOrder } from "../../../../services/order.service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { handleSendMess } from "../../../../hooks/fc.socket";
 import { OrderDetailStatus } from "../../../../enum/enum";

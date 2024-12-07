@@ -6,7 +6,7 @@ import { SearchInput } from "../../../../components/inputs/search";
 import { TableItem } from "../../../../components/TableItem";
 import { Form } from "./form";
 import { TableModel } from "../../../../models/table";
-import { getAllTable } from "../../../../services/table-service";
+import { getAllTable } from "../../../../services/table.service";
 import { toast } from "react-toastify";
 
 export const TableCompoment: React.FC = () => {

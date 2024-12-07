@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { OrderItem } from "../../../../components/customer/orderItem";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
-import { getCart, removeFromCart } from "../../../../services/cart-service";
+import { getCart, removeFromCart } from "../../../../services/cart.service";
 import { CartModel } from "../../../../models/cart";
-import { createOrderDetail } from "../../../../services/order-detail-service";
+import { createOrderDetail } from "../../../../services/order-detail.service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { OrderDetailStatus } from "../../../../enum/enum";
 import { handleSendMess } from "../../../../hooks/fc.socket";

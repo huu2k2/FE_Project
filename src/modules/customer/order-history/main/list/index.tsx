@@ -2,7 +2,7 @@ import { CustomerHeader } from "../../../../../components/CustomerHeader";
 import { HistoryOrderItem } from "../../../../../components/HistoryOrderItem";
 import { useLayoutEffect, useState } from "react";
 import { OrderModel } from "../../../../../models/order";
-import { getAllOrdersOfCustomer } from "../../../../../services/order-service";
+import { getAllOrdersOfCustomer } from "../../../../../services/order.service";
 import { jwtDecode } from "jwt-decode";
 
 export const ListComponent: React.FC = () => {

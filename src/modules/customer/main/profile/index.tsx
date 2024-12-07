@@ -5,7 +5,7 @@ import { CustomerModel } from "../../../../models/customer";
 import {
   getCustomerById,
   updateCustomer,
-} from "../../../../services/customer-service";
+} from "../../../../services/customer.service";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 

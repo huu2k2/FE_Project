@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Logo from "../../../../assets/logo.png";
 import { ProductItem } from "../../../../components/customer/productItem";
 import CategoryItem from "../../../../components/customer/categoryItem";
-import { getAllCategory } from "../../../../services/category-service";
+import { getAllCategory } from "../../../../services/category.service";
 import { CategoryModel } from "../../../../models/category";
 import { ProductModel } from "../../../../models/product";
 import debounce from "lodash/debounce";
-import { getProductByCategoryId } from "../../../../services/product-service";
+import { getProductByCategoryId } from "../../../../services/product.service";
 
 export const HomeComponent: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);

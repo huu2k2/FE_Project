@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CustomerHeader } from "../../../../components/CustomerHeader";
 import { NotificationItem } from "../../../../components/NotificationItem";
 import { NotificationModel } from "../../../../models/notification";
-import { getNotifications } from "../../../../services/notification-service";
+import { getNotifications } from "../../../../services/notification.service";
 
 export const NotificaationComponent: React.FC = () => {
   const [datas, setDatas] = useState<NotificationModel[]>([]);

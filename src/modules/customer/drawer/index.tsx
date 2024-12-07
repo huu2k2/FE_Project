@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { LogoutButton } from "../../../components/buttons/logoutButton";
 import { CustomerModel } from "../../../models/customer";
-import { getCustomerById } from "../../../services/customer-service";
+import { getCustomerById } from "../../../services/customer.service";
 import { jwtDecode } from "jwt-decode";
 import { handleSendMess } from "../../../hooks/fc.socket";
 import { Link } from "react-router-dom";
@@ -84,7 +84,7 @@ export const Drawer: React.FC = () => {
           </div>
 
           {/* Logout Button */}
-          <LogoutButton />
+          <LogoutButton type={"client"} />
         </div>
       </div>
     </>

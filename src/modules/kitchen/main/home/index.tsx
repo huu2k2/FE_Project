@@ -4,7 +4,7 @@ import { CustomCheckbox } from "../../../../components/CustomCheckbox";
 import { OrderItem } from "../../../../components/OrderItem";
 import { ReasonForm } from "./components/form";
 import { useParams } from "react-router-dom";
-import { getOrderDetailByOrderIdKitchen } from "../../../../services/order-detail-service";
+import { getOrderDetailByOrderIdKitchen } from "../../../../services/order-detail.service";
 import { OrderDetailModel } from "../../../../models/orderdetail";
 import { handleReceiveMess, handleSendMess } from "../../../../hooks/fc.socket";
 import { getSocket } from "../../../../hooks/useCheffSocket";

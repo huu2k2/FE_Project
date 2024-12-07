@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
-import { createCustomer } from "../../services/customer-service";
-import { createTableDetail } from "../../services/table-service";
+import { createCustomer } from "../../services/customer.service";
+import { createTableDetail } from "../../services/table.service";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getCustomerSocket,
@@ -54,18 +54,29 @@ export const LoginPage: React.FC = () => {
         name: data.fullName,
         phoneNumber: data.phoneNumber,
       });
+
       if (resultCustomer.data) {
         localStorage.setItem("token", resultCustomer.data.token);
-        toast.success("Hi! Wellcome to website!");
       } else {
         console.log("Customer created successfully:", resultCustomer.data);
       }
+
       const resultDetailTable = await createTableDetail(tableId as string);
-      localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
-      const orderId = localStorage.getItem("orderId");
-      const customerSocke = getCustomerSocket();
-      handleSendMess(customerSocke!, "sendOrder", orderId);
-      navigate("/home");
+
+      if (!resultDetailTable.data) {
+        toast.error(resultDetailTable.message);
+      } else {
+        localStorage.setItem("orderId", resultDetailTable.data.order.orderId);
+
+        const orderId = localStorage.getItem("orderId");
+        const customerSocke = getCustomerSocket();
+
+        localStorage.setItem('tableId', tableId?.toString() || '')
+
+        toast.success("Hi! Wellcome to website!");
+        handleSendMess(customerSocke!, "sendOrder", orderId);
+        navigate("/home");
+      }
     } catch (error) {
       console.error("Error creating customer: ", error);
     }

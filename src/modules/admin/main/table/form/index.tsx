@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { CustomButton } from "../../../../../components/CustomButton";
 import QRCodeGenerator from "../../../../../components/QRCodeGenerator";
-import { getAllArea } from "../../../../../services/area-service";
+import { getAllArea } from "../../../../../services/area.service";
 import {
   createTable,
   updateTable,
-} from "../../../../../services/table-service";
+} from "../../../../../services/table.service";
 import { AreaModel } from "../../../../../models/area";
 import { toast } from "react-toastify";
 
