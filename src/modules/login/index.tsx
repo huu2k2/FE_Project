@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { LocginModel } from "../../models/login";
@@ -10,7 +10,8 @@ import { ERole } from "../../enum/enum";
 
 export const LoginPage: React.FC = () => {
   const [data, setDate] = useState<LocginModel>({ username: "", password: "" });
-
+  const inputBRef = useRef<HTMLInputElement>(null);
+  
   const navigate = useNavigate();
   const path = useLocation()
   useLayoutEffect(()=>{
@@ -27,7 +28,7 @@ export const LoginPage: React.FC = () => {
     }
   },[path])
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement> |  React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
 
     let check = false;
@@ -72,6 +73,11 @@ export const LoginPage: React.FC = () => {
     }));
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+     return  handleLogin(event)
+    }
+  };
   return (
     <>
       <div className="flex flex-col w-[100%] h-screen lg:w-auto lg:flex-row lg:min-h-screen bg-gray-100 ">
@@ -92,15 +98,22 @@ export const LoginPage: React.FC = () => {
                 placeholder="Nhập tên đăng nhập"
                 value={data?.username}
                 onChange={(e) => handleChangeText("username", e.target.value)}
+                onKeyDown={(event:React.KeyboardEvent<HTMLInputElement>)=> {
+                  if (event.key === "Enter") {
+                    inputBRef.current?.focus();  
+                  }
+                }}
               />
 
               <input
                 type="password"
                 id="password"
+                ref={inputBRef}
                 className="w-[90%] lg:w-[70%] px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
                 placeholder="Nhập mật khẩu"
                 value={data?.password}
                 onChange={(e) => handleChangeText("password", e.target.value)}
+                onKeyDown={handleKeyDown}
               />
 
               <div className="flex items-center justify-between w-[90%]">

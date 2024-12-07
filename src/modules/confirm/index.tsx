@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
 import { CustomButton } from "../../components/CustomButton";
 import { ConfirmModel } from "../../models/confirm";
@@ -13,8 +13,11 @@ import { handleSendMess } from "../../hooks/fc.socket";
 import { toast } from "react-toastify";
 import { useLoading } from "../../hooks/loading";
 export const LoginPage: React.FC = () => {
+  const refName = useRef<HTMLInputElement>(null);
+
   const navigate = useNavigate();
   const { tableId } = useParams();
+
   const [data, setDate] = useState<ConfirmModel>({
     phoneNumber: "",
     fullName: "",
@@ -32,7 +35,9 @@ export const LoginPage: React.FC = () => {
     }, 1000);
   }, []);
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (
+    e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLInputElement>
+  ) => {
     e.preventDefault();
 
     let check = false;
@@ -71,7 +76,7 @@ export const LoginPage: React.FC = () => {
         const orderId = localStorage.getItem("orderId");
         const customerSocke = getCustomerSocket();
 
-        localStorage.setItem('tableId', tableId?.toString() || '')
+        localStorage.setItem("tableId", tableId?.toString() || "");
 
         toast.success("Hi! Wellcome to website!");
         handleSendMess(customerSocke!, "sendOrder", orderId);
@@ -107,21 +112,35 @@ export const LoginPage: React.FC = () => {
                 <input
                   type="text"
                   id="phoneNumber"
-                  className="w-[100%] px-3 py-2 border  bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
+                  className="w-[100%] px-3 py-2 border  bg-[#E2E2E2] rounded-lg
+                   focus:outline-none focus:border-backgroundColor
+                   placeholder:text-black   
+                  text-black "
                   placeholder="Nhập số điện thoại"
                   value={data?.phoneNumber}
                   onChange={(e) =>
                     handleChangeText("phoneNumber", e.target.value)
                   }
+                  onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (event.key === "Enter") {
+                      refName.current?.focus();
+                    }
+                  }}
                 />
 
                 <input
                   type="text"
                   id="fullName"
-                  className="w-[100%] px-3 py-2 border bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
+                  ref={refName}
+                  className="w-[100%] px-3 py-2 border placeholder:text-black  text-black  bg-[#E2E2E2] rounded-lg focus:outline-none focus:border-backgroundColor"
                   placeholder="Nhập họ tên"
                   value={data?.fullName}
                   onChange={(e) => handleChangeText("fullName", e.target.value)}
+                  onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (event.key === "Enter") {
+                      handleLogin(event);
+                    }
+                  }}
                 />
 
                 <CustomButton

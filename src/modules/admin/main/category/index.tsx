@@ -100,7 +100,7 @@ export const CategoryCompoment: React.FC = () => {
             <thead>
               <tr>
                 <th className="text-black border-b py-2 px-4 text-left">
-                  Mã danh mục
+                  STT
                 </th>
                 <th className="text-black  border-b py-2 px-4 text-left">
                   Tên danh mục
@@ -114,10 +114,9 @@ export const CategoryCompoment: React.FC = () => {
               {filteredList.map((category, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}>
-                  <td className="text-black border-b py-2 px-4">
-                    {category.categoryId}
-                  </td>
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                >
+                  <td className="text-black border-b py-2 px-4">{index + 1}</td>
                   <td className="border-b py-2 px-4 text-black">
                     {category.name}
                   </td>
@@ -125,12 +124,14 @@ export const CategoryCompoment: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                        onClick={() => handleEdit(category)}>
+                        onClick={() => handleEdit(category)}
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
                       <button
                         className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                        onClick={() => clickDelete(category)}>
+                        onClick={() => clickDelete(category)}
+                      >
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -168,7 +169,8 @@ export const CategoryCompoment: React.FC = () => {
           closeModel={handleModalClose}
           handle={() => {
             handleDelete(data);
-          }}></DeleteModal>
+          }}
+        ></DeleteModal>
       )}
     </>
   );
