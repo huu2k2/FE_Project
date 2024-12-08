@@ -45,6 +45,8 @@ export const Payment: React.FC = () => {
       (item) => item.status === OrderDetailStatus.PENDING
     );
 
+    console.log(exists);
+
     if (exists) {
       toast.info("Món ăn còn phục vụ chưa thể thanh toán được!");
       return;
@@ -63,8 +65,7 @@ export const Payment: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Bàn A02 - 27/10/2024"
-        bg="white"
-      ></CustomerHeader>
+        bg="white"></CustomerHeader>
       <div className="flex flex-1 flex-col mt-4">
         {orderDetails.map((item, index) => (
           <FinishOrderItem key={index} data={item}></FinishOrderItem>
@@ -79,8 +80,7 @@ export const Payment: React.FC = () => {
           <select
             value={paymentMethod}
             onChange={handlePaymentMethodChange}
-            className="flex-1 ml-4 p-2 rounded-lg bg-backgroundColor text-white"
-          >
+            className="flex-1 ml-4 p-2 rounded-lg bg-backgroundColor text-white">
             <option>Tiền mặt</option>
             <option>Chuyển khoản</option>
           </select>
@@ -88,13 +88,12 @@ export const Payment: React.FC = () => {
 
         <div className="flex items-center justify-between">
           <div className="flex-1 bg-backgroundColor text-white text-1xl p-4 rounded-l-md text-start h-full">
-            Tổng tiền: {totalAmount?.toLocaleString() || 0 }đ
+            Tổng tiền: {totalAmount?.toLocaleString() || 0}đ
           </div>
           <button
             onClick={handleSubmit}
             className="flex-1 bg-[#FFAA02] opacity-70 text-white text-1xl p-4 rounded-r-md hover:opacity-100 
-          hover:bg-backgroundColor transition"
-          >
+          hover:bg-backgroundColor transition">
             Gửi yêu cầu
           </button>
         </div>

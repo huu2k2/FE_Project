@@ -29,7 +29,7 @@ const OrderStatus: React.FC = () => {
       customerSocket!,
       "receiveOrderDetails",
       (val: OrderDetailModel[]) => {
-        setItems(val);
+        setItems(val.reverse());
       }
     );
 
@@ -37,7 +37,7 @@ const OrderStatus: React.FC = () => {
       customerSocket!,
       "updateOrderDetails",
       (val: OrderDetailModel[]) => {
-        setItems(val);
+        setItems(val.reverse());
       }
     );
 
@@ -118,49 +118,42 @@ const OrderStatus: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Trạng thái đơn gọi"
-        bg="white"
-      ></CustomerHeader>
+        bg="white"></CustomerHeader>
 
       <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
-        {(
-          items.map((item, index) => (
-            <OrderStatusItem
-              id={item.orderDetailId!}
-              key={index}
-              name={item.product!.name}
-              status={item.status!}
-              price={item.price!}
-              quantity={item.quantity!}
-              imageSrc={item.product!.image}
-              selected={selectedItems.includes(item.orderDetailId!)}
-              onSelect={() => handleItemSelect(item.orderDetailId!)}
-              onQuantityChange={(amount) =>
-                handleQuantityChange(item.orderDetailId!, amount)
-              }
-            />
-          ))
-        )  }
+        {items.map((item, index) => (
+          <OrderStatusItem
+            id={item.orderDetailId!}
+            key={index}
+            name={item.product!.name}
+            status={item.status!}
+            price={item.price!}
+            quantity={item.quantity!}
+            imageSrc={item.product!.image}
+            selected={selectedItems.includes(item.orderDetailId!)}
+            onSelect={() => handleItemSelect(item.orderDetailId!)}
+            onQuantityChange={(amount) =>
+              handleQuantityChange(item.orderDetailId!, amount)
+            }
+          />
+        ))}
       </div>
       {!items && (
-          <img
-            src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid"
-          />
-        )}
+        <img src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6665.jpg?semt=ais_hybrid" />
+      )}
 
       <div className="bg-white p-4 rounded-t-lg border-t border-gray-50">
         {status && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[green] text-white font-bold rounded-[20px]"
-            onClick={handleAjustQuantity}
-          >
+            onClick={handleAjustQuantity}>
             Xác nhận
           </button>
         )}
         {selectedItems.length > 0 && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-[20px]"
-            onClick={handleCancel}
-          >
+            onClick={handleCancel}>
             Huỷ món
           </button>
         )}

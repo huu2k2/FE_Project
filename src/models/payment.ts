@@ -5,4 +5,5 @@ export interface PaymentModel {
   method: string;
   status: string;
   createdAt: Date;
+  accountId?: string;
 }

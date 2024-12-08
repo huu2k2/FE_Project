@@ -1,6 +1,8 @@
 export interface NotificationModel {
+  notificationId: string;
   title: string;
   content: string;
-  receiverId: string;
+  customerId?: string;
+  accountId?: string;
   createdAt: Date;
 }

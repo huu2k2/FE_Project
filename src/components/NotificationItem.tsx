@@ -1,6 +1,5 @@
 import imageUrl from "../assets/product.webp";
 import { NotificationModel } from "../models/notification";
-import { useEffect } from "react";
 import { formatDate } from "../utils/formatDate";
 
 interface NotificationPros {
@@ -8,10 +7,6 @@ interface NotificationPros {
 }
 
 export const NotificationItem: React.FC<NotificationPros> = ({ data }) => {
-  // useEffect(() => {
-  //   formatDate(data.createdAt);
-  // }, []);
-
   return (
     <>
       <div className="flex items-start p-4 border-y border-gray-300 rounded-lg shadow-sm max-w-md">
