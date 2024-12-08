@@ -42,7 +42,7 @@ export const Payment: React.FC = () => {
 
   const handleSubmit = async () => {
     const exists = orderDetails.some(
-      (item) => item.status === OrderDetailStatus.PENDING
+      (item) => String(item.status) === String(OrderDetailStatus.PENDING)
     );
 
     console.log(exists);
@@ -52,12 +52,13 @@ export const Payment: React.FC = () => {
       return;
     }
 
-    const orderId = localStorage.getItem("orderId")!;
-    let result = await createPayment(orderId, {
-      method: paymentMethod,
-      amount: totalAmount,
-    });
-    handleSendMess(customerSocket!, "sendPaymentRequest", result.data);
+    // const orderId = localStorage.getItem("orderId")!;
+    // let result = await createPayment(orderId, {
+    //   method: paymentMethod,
+    //   amount: totalAmount,
+    // });
+    // handleSendMess(customerSocket!, "sendPaymentRequest", result.data);
+    console.log("Payment");
   };
 
   return (
