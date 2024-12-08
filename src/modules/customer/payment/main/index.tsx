@@ -59,12 +59,11 @@ export const Payment: React.FC = () => {
       return;
     }
 
-    // const orderId = localStorage.getItem("orderId")!;
-    // let result = await createPayment(orderId, {
-    //   method: paymentMethod,
-    //   amount: totalAmount,
-    // });
-    // handleSendMess(customerSocket!, "sendPaymentRequest", result.data);
+    let result = await createPayment(orderId!, {
+      method: paymentMethod,
+      amount: totalAmount,
+    });
+    handleSendMess(customerSocket!, "sendPaymentRequest", result.data);
     console.log("Payment");
   };
 
