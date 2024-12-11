@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { NavBar } from "./navbar";
 import { Drawer } from "./drawer";
 import { useEffect } from "react";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 export const LayoutCustomer: React.FC = () => {
   const { isLoading, setIsLoading } = useLoading();
+  const navigate = useNavigate();
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
@@ -33,6 +34,8 @@ export const LayoutCustomer: React.FC = () => {
     });
     handleReceiveMess(customerSocket!, "confirmPaymentSuccess", (val) => {
       toast.info(val.title);
+      navigate(`login/customer/${localStorage.getItem("tableId")}`);
+      localStorage.clear();
     });
   }, [customerSocket]);
 
