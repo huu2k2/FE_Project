@@ -35,6 +35,10 @@ export const LoginPage: React.FC = () => {
     }, 1000);
   }, []);
 
+  function isVietnamesePhoneNumber(number: string) {
+    return /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/.test(number);
+  }
+
   const handleLogin = async (
     e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLInputElement>
   ) => {
@@ -51,6 +55,11 @@ export const LoginPage: React.FC = () => {
     }
 
     if (check) {
+      return;
+    }
+
+    if (!isVietnamesePhoneNumber(data.phoneNumber.trim())) {
+      toast.error("Vui lòng nhập đúng định dạng số điện thoại!");
       return;
     }
 

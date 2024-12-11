@@ -143,7 +143,7 @@ export const ListItemProductPage: React.FC = () => {
       cheffSocke!,
       "sendOrderDetailForCheff",
       (val: OrderDetailModel[]) => {
-        console.log("Hello", val);
+        // console.log("Hello", val);
         setData((prevDatas) => [...prevDatas, ...val]);
       }
     );
@@ -205,13 +205,13 @@ export const ListItemProductPage: React.FC = () => {
   };
 
   const handleCancel = (reason: string) => {
-    if (!reason.trim()) {
-      toast.warning("Hãy nhập lý do huỷ!");
+    if (activeItems().length == 0) {
+      toast.warning("Hãy chọn đơn trước!");
       return;
     }
 
-    if (activeItems().length == 0) {
-      toast.warning("Hãy chọn đơn trước!");
+    if (!reason.trim()) {
+      toast.warning("Hãy nhập lý do huỷ!");
       return;
     }
 
