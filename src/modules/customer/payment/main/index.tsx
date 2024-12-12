@@ -69,7 +69,7 @@ export const Payment: React.FC = () => {
     <>
       <CustomerHeader
         isBack={true}
-        title="Bàn A02 - 27/10/2024"
+        title="Thanh toán"
         bg="white"
       ></CustomerHeader>
       <div className="flex flex-1 flex-col mt-4">
