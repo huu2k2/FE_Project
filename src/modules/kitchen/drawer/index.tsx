@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { handleReceiveMess, handleSendMess } from "../../../hooks/fc.socket";
 import { OrderModelSocket } from "../../../models/order";
 import { getSocket } from "../../../hooks/useCheffSocket";
+import { toast } from "react-toastify";
 export const DrawerBar: React.FC = () => {
   const [orders, setOrders] = useState<
     { order: OrderModelSocket; quantity: number }[]
@@ -27,11 +28,15 @@ export const DrawerBar: React.FC = () => {
           const validDetailsCount = order.orderDetails.filter(
             (detail) =>
               detail.status === "PENDING" || detail.status === "CONFIRMED"
-          ).length;
+          );
+          let quantity = 0;
+          validDetailsCount.forEach((item) => {
+            quantity += item.quantity!;
+          });
 
           return {
             order,
-            quantity: validDetailsCount, // Số lượng chi tiết 'PENDING' hoặc 'CONFIRMED'
+            quantity: quantity, // Số lượng chi tiết 'PENDING' hoặc 'CONFIRMED'
           };
         });
         setOrders(updatedOrders);
@@ -50,21 +55,23 @@ export const DrawerBar: React.FC = () => {
         const validDetailsCount = result.orderDetails.filter(
           (detail) =>
             detail.status === "PENDING" || detail.status === "CONFIRMED"
-        ).length;
+        );
+
+        let quantity = 0;
+        validDetailsCount.forEach((item) => {
+          quantity += item.quantity!;
+        });
 
         setOrders((prevOrders) => {
           const orderExists = prevOrders.some(
-            (order) => order.order.orderId === result.orderId // assuming `id` is the unique identifier
+            (order) => order.order.orderId === result.orderId
           );
 
           if (orderExists) {
-            return prevOrders; // Không thêm nếu order đã tồn tại
+            return prevOrders;
           }
 
-          return [
-            ...prevOrders,
-            { order: result, quantity: validDetailsCount }, // Cập nhật số lượng chi tiết hợp lệ
-          ];
+          return [...prevOrders, { order: result, quantity: quantity }];
         });
       }
     );
@@ -74,11 +81,10 @@ export const DrawerBar: React.FC = () => {
       "sendUpdateOrderQuantityForCheff",
       ({ orderId, quantity }: { orderId: string; quantity: number }) => {
         setOrders((prevOrders) =>
-          prevOrders.map(
-            (item) =>
-              item.order.orderId === orderId
-                ? { ...item, quantity: item.quantity + quantity } // Cập nhật quantity nếu orderId khớp
-                : item // Giữ nguyên nếu không khớp
+          prevOrders.map((item) =>
+            item.order.orderId === orderId
+              ? { ...item, quantity: quantity }
+              : item
           )
         );
       }
@@ -94,10 +100,7 @@ export const DrawerBar: React.FC = () => {
             item.order.orderId === value.orderId
               ? {
                   ...item,
-                  quantity:
-                    value.updateType === 2 || value.updateType === 0
-                      ? item.quantity - value.quantity
-                      : item.quantity,
+                  quantity: value.quantity,
                 }
               : item
           )
@@ -110,11 +113,10 @@ export const DrawerBar: React.FC = () => {
       "updateCancelOrderDetailsQuantity",
       ({ orderId, quantity }: { orderId: string; quantity: number }) => {
         setOrders((prevOrders) =>
-          prevOrders.map(
-            (item) =>
-              item.order.orderId === orderId
-                ? { ...item, quantity: item.quantity - quantity } // Cập nhật quantity nếu orderId khớp
-                : item // Giữ nguyên nếu không khớp
+          prevOrders.map((item) =>
+            item.order.orderId === orderId
+              ? { ...item, quantity: quantity }
+              : item
           )
         );
       }
