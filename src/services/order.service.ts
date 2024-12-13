@@ -132,6 +132,19 @@ const getTurnOver = (
   });
 };
 
+const getOrdersByStatus = (status: string): Promise<API<OrderModel[]>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.get<API<OrderModel[]>>(
+        `${baseUrl}/orders/status/${status}`
+      );
+      resolve(result.data);
+    } catch (error: any) {
+      reject(error.response.data);
+    }
+  });
+};
+
 export {
   createOrder,
   getAllOrders,
@@ -141,4 +154,5 @@ export {
   getOrderDetailByOrderIdOfMergeOrder,
   getAllOrdersOfCustomer,
   getTurnOver,
+  getOrdersByStatus,
 };

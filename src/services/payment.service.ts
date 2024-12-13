@@ -20,4 +20,17 @@ const createPayment = (
   });
 };
 
-export { createPayment };
+const paymentByOrderId = (orderId: string): Promise<API<any>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let result = await axiosInstance.post<API<any>>(
+        `${baseUrl}/payments/order/${orderId}/admin`
+      );
+      resolve(result.data);
+    } catch (error: any) {
+      reject(error.response.data);
+    }
+  });
+};
+
+export { createPayment, paymentByOrderId };

@@ -8,7 +8,7 @@ import { TableCompoment } from "../main/table";
 import { AreaCompoment } from "../main/area";
 import { TurnoverCompoment } from "../main/turnover";
 import { CategoryCompoment } from "../main/category";
-
+import { OrderCompoment } from "../main/order";
 
 export const DrawerBar: React.FC = () => {
   const navigate = useNavigate();
@@ -17,37 +17,43 @@ export const DrawerBar: React.FC = () => {
       id: "1",
       name: "Quản lí nhân viên",
       path: "staff",
-      compoment:<StaffCompoment/>
+      compoment: <StaffCompoment />,
     },
     {
       id: "2",
       name: "Quản lí món ăn",
       path: "product",
-      compoment:<ProductCompoment/>
+      compoment: <ProductCompoment />,
     },
     {
       id: "3",
       name: "Quản lí danh mục",
       path: "category",
-      compoment:<CategoryCompoment/>
+      compoment: <CategoryCompoment />,
     },
     {
       id: "4",
       name: "Quản lí khu vực",
       path: "area",
-      compoment:<AreaCompoment/>
+      compoment: <AreaCompoment />,
     },
     {
       id: "5",
       name: "Quản lí bàn",
       path: "table",
-      compoment:<TableCompoment/>
+      compoment: <TableCompoment />,
     },
     {
-      id: 5,
+      id: "6",
+      name: "Quản lí đơn gọi",
+      path: "order",
+      compoment: <OrderCompoment />,
+    },
+    {
+      id: "7",
       name: "Thống kê doanh thu",
       path: "turnover",
-      compoment:<TurnoverCompoment/>
+      compoment: <TurnoverCompoment />,
     },
   ];
   const [position, setPosition] = useState<number>(0);

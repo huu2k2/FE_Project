@@ -7,6 +7,7 @@ import { AreaCompoment } from "./main/area";
 import { TableCompoment } from "./main/table";
 import { TurnoverCompoment } from "./main/turnover";
 import { AuthGuard } from "../../hooks/auth-guard";
+import { OrderCompoment } from "./main/order";
 const RouterHome: RouteObject = {
   path: "/management",
   element: (
@@ -34,6 +35,10 @@ const RouterHome: RouteObject = {
     {
       path: "table",
       element: <TableCompoment />,
+    },
+    {
+      path: "order",
+      element: <OrderCompoment />,
     },
     {
       path: "turnover",
