@@ -118,9 +118,10 @@ const OrderStatus: React.FC = () => {
       <CustomerHeader
         isBack={true}
         title="Trạng thái đơn gọi"
-        bg="white"></CustomerHeader>
+        bg="white"
+      ></CustomerHeader>
 
-      <div className="space-y-2 flex-grow overflow-y-auto mt-[40px]">
+      <div className="space-y-2 flex-grow  mt-[40px]">
         {items.map((item, index) => (
           <OrderStatusItem
             id={item.orderDetailId!}
@@ -146,14 +147,16 @@ const OrderStatus: React.FC = () => {
         {status && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[green] text-white font-bold rounded-[20px]"
-            onClick={handleAjustQuantity}>
+            onClick={handleAjustQuantity}
+          >
             Xác nhận
           </button>
         )}
         {selectedItems.length > 0 && (
           <button
             className="w-full h-[50px] mt-4 py-2 bg-[#ffaa02] text-white font-bold rounded-[20px]"
-            onClick={handleCancel}>
+            onClick={handleCancel}
+          >
             Huỷ món
           </button>
         )}

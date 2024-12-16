@@ -27,13 +27,15 @@ export const OrderStatusItem: React.FC<FoodOrderProps> = ({
     <div
       className={`flex items-center justify-between p-2 border-b-2 border-gray-300 pb-2 ${
         selected ? "bg-gray-100" : ""
-      }`}>
+      }`}
+    >
       {status === "PENDING" ? (
         <button
           onClick={onSelect}
           className={`w-6 h-6 text-white rounded-full flex items-center mr-3 justify-center ${
             selected ? "bg-[#ffaa02]" : "bg-gray-300"
-          }`}>
+          }`}
+        >
           <i className="fas fa-check"></i>
         </button>
       ) : (
@@ -55,15 +57,17 @@ export const OrderStatusItem: React.FC<FoodOrderProps> = ({
               : status === "CONFIRMED"
               ? "text-[#ffdd33]"
               : "text-gray-500"
-          }`}>
+          }`}
+        >
           {status}
         </p>
-        <div className="flex items-center mt-1">
+        <div className="flex items-center mt-1 justify-between">
           <div className="flex items-center">
             {status === "PENDING" && (
               <button
                 className="w-6 h-6 bg-backgroundColor rounded-full text-white flex items-center justify-center"
-                onClick={() => onQuantityChange(-1)}>
+                onClick={() => onQuantityChange(-1)}
+              >
                 <i className="fa-solid fa-minus"></i>
               </button>
             )}
@@ -73,14 +77,13 @@ export const OrderStatusItem: React.FC<FoodOrderProps> = ({
             {status === "PENDING" && (
               <button
                 className="w-6 h-6 bg-backgroundColor rounded-full text-white flex items-center justify-center"
-                onClick={() => onQuantityChange(1)}>
+                onClick={() => onQuantityChange(1)}
+              >
                 <i className="fa-solid fa-plus"></i>
               </button>
             )}
           </div>
-          <p className="text-[#ffaa02] font-bold text-[18px] pl-[50%]">
-            {price}đ
-          </p>
+          <p className="text-[#ffaa02] font-bold text-[18px] ">{price}đ</p>
         </div>
       </div>
     </div>
